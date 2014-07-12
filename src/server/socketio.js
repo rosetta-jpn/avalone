@@ -3,8 +3,8 @@ var socketio = require('socket.io')
 
 function sio(server) {
   var ioserver = socketio(server);
-  return function (avalone) {
-    return new Connector(ioserver, avalone);
+  return function (avalon) {
+    return new Connector(ioserver, avalon);
   };
 }
 

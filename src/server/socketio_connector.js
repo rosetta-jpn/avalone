@@ -1,9 +1,9 @@
 var utils = require('../utils')
   , Controller = require('./controller');
 
-var SocketIOConnector = module.exports = function SocketIOConnector (ioserver, avalone) {
+var SocketIOConnector = module.exports = function SocketIOConnector (ioserver, avalon) {
   this.ioserver = ioserver;
-  this.avalone = avalone;
+  this.avalon = avalon;
   this.startListen();
 }
 
@@ -33,12 +33,12 @@ SocketIOConnector.prototype.newSocket = function (socket) {
   });
 
   socket.on('disconnect', function() {
-    self.avalone.leave(socket, socket.id);
+    self.avalon.leave(socket, socket.id);
   });
 }
 
 SocketIOConnector.prototype.callController = function (socket, type, data) {
-  new Controller(type, data, this.avalone, this, socket).dispatch();
+  new Controller(type, data, this.avalon, this, socket).dispatch();
 }
 
 
