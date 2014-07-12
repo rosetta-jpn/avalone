@@ -17,6 +17,12 @@ utils.property(User.prototype, {
   },
 });
 
+User.prototype.rename = function (name) {
+  var oldname = this.name;
+  this.name = name;
+  if (!(oldname === name)) this.emit('rename', name);
+}
+
 User.prototype.seePlayer = function (player) {
   return player.name + ": " + player.constructor.classMethods.className;
 }
