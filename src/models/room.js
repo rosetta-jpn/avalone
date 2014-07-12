@@ -21,3 +21,8 @@ Room.prototype.gameStart = function (controller) {
 Room.prototype.removeGame = function () {
   delete this.game;
 }
+
+Room.prototype.toString = function () {
+  return this.name;
+}
+
