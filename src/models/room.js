@@ -2,8 +2,11 @@ var utils = require('../utils')
   , events = require('events')
   , roomModule = require('../utils/room_module');
 
-var Room = module.exports = function Room() {
+var Room = module.exports = function Room(owner, name) {
+  this.owner = owner;
+  this.name = name;
   this.userList = {};
+  this.enter(owner);
 }
 
 utils.inherit(events.EventEmitter, Room);
