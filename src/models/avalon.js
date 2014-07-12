@@ -4,16 +4,16 @@ var utils = require('../utils')
   , Room = require('./room')
   , roomModule = require('../utils/room_module');
 
-var Avalone = module.exports = function Avalone(connectorConstructor) {
+var Avalon = module.exports = function Avalon(connectorConstructor) {
   this.connector = connectorConstructor(this);
   this.rooms = [];
   this.users = {};
   this.on('enter', this.onEnter.bind(this))
 }
 
-utils.inherit(events.EventEmitter, Avalone);
-utils.extend(Avalone.prototype, roomModule('users'));
-utils.extend(Avalone.prototype, {
+utils.inherit(events.EventEmitter, Avalon);
+utils.extend(Avalon.prototype, roomModule('users'));
+utils.extend(Avalon.prototype, {
   createRoom: function (owner, name) {
     var room = new Room(owner, name);
     this.rooms.push(room);
