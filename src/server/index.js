@@ -1,7 +1,8 @@
 var express = require('express')
   , http = require('http')
   , path = require('path')
-  , socketio = require('./socketio');
+  , socketio = require('./socketio')
+  , Avalone = require('../models/avalone');
 
 var app = express();
 var server = http.Server(app);
@@ -22,4 +23,6 @@ server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'))
 });
 
-socketio(server);
+var connectorConstructor = socketio(server);
+new Avalone(connectorConstructor);
+
