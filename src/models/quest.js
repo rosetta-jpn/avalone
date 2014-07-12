@@ -1,7 +1,7 @@
 var Team = require("./team")
   , events = require("events");
 
-function Quest(Game,success_number,team_sz){
+var Quest = function Quest(Game,success_number,team_sz){
     this.game = Game;
     this.success_number = success_number;
     this.team_sz = team_sz;

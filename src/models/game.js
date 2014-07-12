@@ -1,12 +1,14 @@
 var Team = require("./quest")
-  , events = require("events");
+  , events = require("events")
+  , utils = require("../utils");
 
-Jobs = {5:[Justice,Justice,Merlin,  Evil,Assasin],
-        6:[Justice,Justice,Merlin,Persival,   Modred,Assasin],
-        7:[Justice,Justice,Merlin,Persival,   Evil,Modred,Assasin],
-        8:[Justice,Justice,Justice,Merlin,Persival,   Evil,Modred,Assasin],
-        9:[Justice,Justice,Justice,Merlin,Persival,   Morgana,Modred,Assasin],
-       10:[Justice,Justice,Justice,Merlin,Persival,   Evil,Evil,Modred,Assasin]};
+
+Jobs = {5:[Justice,Justice,Merlin,  Evil,Assassin],
+        6:[Justice,Justice,Merlin,Percival,   Mordred,Assassin],
+        7:[Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
+        8:[Justice,Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
+        9:[Justice,Justice,Justice,Merlin,Percival,   Oberon,Mordred,Assassin],
+       10:[Justice,Justice,Justice,Merlin,Percival,   Evil,Oberon,Mordred,Assassin]};
 
 SuccessCondition = {5:[2,3,2,3,3],
                     6:[2,3,4,3,4],
@@ -24,7 +26,7 @@ TeamSize = {5:[2,3,2,3,3],
            10:[3,4,4,5,5]};
 
 
-function Game(users){
+var Game = function Game(users){
     this.players = this.define_jobs(users);
     this.quest_count = 0;
     this.success_condition = SuccessCondition[users.length.toString()];
@@ -33,6 +35,8 @@ function Game(users){
     this.quest_success_count = 0;
     this.quest_failure_count = 0;
 }
+
+utils.inherit(events.eventEmitter,Game);
 
 Game.prototype.define_jobs = function(users){
     var job_list = Jobs[users.length.toString()].concat();
@@ -51,7 +55,7 @@ Game.prototype.create_Quest = function(){
     this.team.on("failure",this.onFailure,bind(this));
 }
 
-Game.prototype.Assasinate_success = function(merlin_candidate){
+Game.prototype.Assassinate_success = function(merlin_candidate){
     if(merlin_candidate.is_Merlin()){
         this.emit("evilWin");
     }else{
@@ -62,14 +66,14 @@ Game.prototype.Assasinate_success = function(merlin_candidate){
 Game.prototype.onSuccess = function(){
     this.quest_success_count += 1;
     if(this.quest_success_count >= 3){
-        var assasin_index = 0;
+        var assassin_index = 0;
         for(var i = 0; i < players.length;i++){
-            if(players[i].is_Assasin()){
-                assasin_index = i;
+            if(players[i].is_Assassin()){
+                assassin_index = i;
             }
         }
-        this.emit("assasinPhase",players[assasin_index]);
-        this.Assasinate_success();
+        this.emit("assassinPhase",players[assassin_index]);
+        this.Assassinate_success();
     }
 }
 

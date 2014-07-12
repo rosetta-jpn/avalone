@@ -1,6 +1,6 @@
 States = ["select_member", "vote", "agree","disagree"]
 
-function Team(selector,group_sz,voter_sz){
+var Team = function Team(selector,group_sz,voter_sz){
     this.selector = selector;
     this.group = [];// User Array
     this.group_sz = group_sz;
