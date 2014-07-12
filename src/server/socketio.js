@@ -1,22 +1,11 @@
-var socketio = require('socket.io');
+var socketio = require('socket.io')
+  , Connector = require('./socketio_connector');
 
 function sio(server) {
   var ioserver = socketio(server);
-
-  ioserver.sockets.on('connection', function(socket) {
-    console.log('a user connected');
-
-    socket.on('notice', function(data) {
-      socket.broadcast.emit('receive', {
-        type : data.type,
-        user : data.user,
-        value : data.value,
-      });
-    });
-
-    socket.on('disconnect', function() {
-    });
-  });
+  return function (avalone) {
+    return new Connector(ioserver, avalone);
+  };
 }
 
 module.exports = sio;
