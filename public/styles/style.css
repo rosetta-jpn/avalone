@@ -1,0 +1,9 @@
+#container {
+  margin: 0 auto;  
+  max-width: 800px;
+}
+
+form {
+  max-width: 330px;
+  margin: 0 auto;  
+}

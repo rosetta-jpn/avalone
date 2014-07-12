@@ -3,14 +3,21 @@
   <head>
     <meta charset="utf-8"/>
     <title>Avalone</title>
+
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/styles/style.css">
+
     <script src="/jquery/dist/jquery.js"></script>
     <script src="/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+
     <script src="/client.js"></script>
   </head>
   <body>
-    <div id="container">hello, world!</div>
+    <div id="container">
+      <h1 id="title" class="page-header">Avalone Online</h1>
+      <% include 'start' %>
+    </div>
   </body>
 </html>
