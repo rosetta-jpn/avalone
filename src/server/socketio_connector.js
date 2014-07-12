@@ -1,4 +1,5 @@
-var utils = require('../utils');
+var utils = require('../utils')
+  , Controller = require('./controller');
 
 var SocketIOConnector = module.exports = function SocketIOConnector (ioserver, avalone) {
   this.ioserver = ioserver;
@@ -17,13 +18,17 @@ SocketIOConnector.prototype.startListen = function () {
 
 SocketIOConnector.prototype.newSocket = function (socket) {
   var self = this;
-  this.avalone.login(socket, socket.id);
+  this.callController(socket, 'connection', {})
+
+  socket.on('submit', function(data) {
+    self.callController(socket, data.type, data.value)
+  });
 
   socket.on('notice', function(data) {
     socket.broadcast.emit('receive', {
-      type : data.type,
-      user : data.user,
-      value : data.value,
+      type: data.type,
+      user: data.user,
+      value: data.value,
     });
   });
 
@@ -32,6 +37,19 @@ SocketIOConnector.prototype.newSocket = function (socket) {
   });
 }
 
+SocketIOConnector.prototype.callController = function (socket, type, data) {
+  new Controller(type, data, this.avalone, this, socket).dispatch();
+}
+
+
 SocketIOConnector.prototype.broadcast = function (type, data) {
   this.ioserver.emit(type, data);
+}
+
+SocketIOConnector.prototype.notice = function (type, value) {
+  console.log('notice:', type + ',', value);
+  this.ioserver.emit('notice', {
+    type: type,
+    value: value
+  });
 }
