@@ -4,7 +4,7 @@ function Team(selector,group_sz,voter_sz){
     this.selector = selector;
     this.group = [];// User Array
     this.group_sz = group_sz;
-    this.voter_map = {};//Teamr map User-> Yes/No(true/false)
+    this.voter_map = {};//Teamr map User.id -> Yes/No(true/false)
     this.voter_sz = voter_sz;
     this.state = States[0];
 }
@@ -67,16 +67,16 @@ Team.prototype.go_vote = function(){
 
 Team.prototype.judge = function(){
     if(this.state == States[1] && Object.keys(this.voter_map).length == voter_sz){
-        this.state = States[2];
-}
-    if(this.state == States[2]){
         if(this.is_vote_success()){
-            this.state = States[3];
-        }else{
             this.state = States[2];
+            this.emit("agree");
+        }else{
+            this.state = States[3];
+            this.emit("disAgree");
         }
     }
 }
+
 
 
 module.exports = Team;
