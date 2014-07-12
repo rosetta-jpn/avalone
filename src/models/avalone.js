@@ -1,7 +1,7 @@
 var utils = require('../utils')
   , events = require('events')
   , User = require('./user')
-  //, Room = require('./room')
+  , Room = require('./room')
   , roomModule = require('../utils/room_module');
 
 var Avalone = module.exports = function Avalone(connectorConstructor) {
