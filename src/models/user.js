@@ -11,8 +11,10 @@ var User = module.exports = function User(id, name, socket) {
 utils.inherit(events.EventEmitter, User);
 User.classMethods.className = 'User';
 
-utils.property(User.prototype, 'className', {
-  get: function(){ return this.classMethods.className; }
+utils.property(User.prototype, { 
+  className: {
+    get: function(){ return this.classMethods.className; }
+  },
 });
 
 User.prototype.seePlayer = function (player) {

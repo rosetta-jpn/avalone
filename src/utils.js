@@ -41,7 +41,9 @@ var inherit = exports.inherit = function (parent, child) {
   return child;
 }
 
-var property = exports.property = function (obj, name, prop) {
-  Object.defineProperty(obj, name, prop);
+var property = exports.property = function (obj, defs) {
+  for (var name in defs) {
+    Object.defineProperty(obj, name, defs[name]);
+  }
 }
 
