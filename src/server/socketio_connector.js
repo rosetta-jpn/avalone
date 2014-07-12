@@ -38,9 +38,13 @@ SocketIOConnector.prototype.newSocket = function (socket) {
 }
 
 SocketIOConnector.prototype.callController = function (socket, type, data) {
-  new Controller(type, data, this.avalon, this, socket).dispatch();
+  try {
+    new Controller(type, data, this.avalon, this, socket).dispatch();
+  } catch (e) {
+    console.log(e.stack);
+    console.log('An Error occurred when running Controller.');
+  }
 }
-
 
 SocketIOConnector.prototype.broadcast = function (type, data) {
   this.ioserver.emit(type, data);
