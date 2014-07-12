@@ -1,9 +1,9 @@
 var Team = require("./team")
-  , event = require("events");
+  , events = require("events");
 
-function Quest(Game,success_count,team_sz){
+function Quest(Game,success_number,team_sz){
     this.game = Game;
-    this.success_count = success_count;
+    this.success_number = success_number;
     this.team_sz = team_sz;
     this.vote_count = 0;
     this.members = [];//User Array
@@ -26,11 +26,14 @@ Quest.prototype.judge_success = function(){
                 success += 1;
             }
         }
-        if(success >= success_count){
-            return true;
+        if(success >= success_number){
+            this.emit("success");
+        }else{
+            this.emit("failure");
         }
+    }else{
+        this.emit("failure");
     }
-    return false;
 }
 
 Quest.prototype.change_mission_list = function(missioner,mission_res){
