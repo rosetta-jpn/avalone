@@ -1,15 +1,26 @@
+(function () {
+  var View = function View() {
+    this.client = new Client();
+    this.scenes = {
+      start: new Scene.StartScene(this),
+      lobby: new Scene.LobbyScene(this),
+    };
+    this.client.on('notice', this.onNotice.bind(this));
 
-$(function() {
-  var client = new Client();
+    this.scenes.start.show();
+  }
 
-  client.on('notice', function (data) {
+  View.prototype.onNotice = function (data) {
     console.log(data.type + ':', data.value);
-  });
+  }
 
-  $('form#enterRoom').on('submit', function (e) {
-    e.preventDefault();
-    client.submit('enter', $(e.target).formData());
-  });
+  View.prototype.changeScene = function (sceneId) {
+    var cs = this.currentScene, ns = this.scenes[sceneId];
+    if (cs && cs.onHide) cs.onHide();
+    ns.show();
+    if (ns && ns.onShow) ns.onShow();
+    this.currentScene = ns;
+  }
 
-});
-
+  $(function() { window.view = new View(); });
+}());
