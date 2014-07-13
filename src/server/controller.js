@@ -23,7 +23,13 @@ utils.property(Controller.prototype, {
 
 Controller.prototype.enterCallback = function () {
   this.user.rename(this.data.user.name);
-  this.avalon.createRoom(this.user, this.data.room.name)
+  var roomname = this.data.room.name;
+  var room = this.avalon.rooms[roomname];
+  if (room) {
+    room.enter(this.user);
+  } else {
+    this.avalon.createRoom(this.user, this.data.room.name);
+  }
 }
 
 Controller.prototype.connectionCallback = function () {
