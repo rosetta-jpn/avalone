@@ -1,5 +1,5 @@
 (function () {
-  var View = function View() {
+  var Page = function Page() {
     this.client = new Client();
     this.scenes = {
       start: new Scene.StartScene(this),
@@ -10,11 +10,11 @@
     this.changeScene('start');
   }
 
-  View.prototype.onNotice = function (data) {
+  Page.prototype.onNotice = function (data) {
     console.log(data.type + ':', data.value);
   }
 
-  View.prototype.changeScene = function (sceneId) {
+  Page.prototype.changeScene = function (sceneId) {
     var cs = this.currentScene, ns = this.scenes[sceneId];
     if (cs && cs.onHide) cs.onHide();
     ns.show();
@@ -22,9 +22,9 @@
     this.currentScene = ns;
   }
 
-  View.prototype.isCurrentScene = function (scene) {
+  Page.prototype.isCurrentScene = function (scene) {
     return this.currentScene === scene;
   }
 
-  $(function() { window.view = new View(); });
+  $(function() { window.page = new Page(); });
 }());

@@ -6,14 +6,14 @@
     return child;
   }
 
-  var Scene = global.Scene = function (view) {
-    this.view = view;
+  var Scene = global.Scene = function (page) {
+    this.page = page;
   }
 
   Scene.extend = function (obj) {
     var parent = this;
-    var child = function (view) { 
-      parent.call(this, view);
+    var child = function (page) { 
+      parent.call(this, page);
       if (this.bind) this.bind();
     };
     inherit(parent, child);
@@ -29,7 +29,7 @@
   }
 
   Object.defineProperty(Scene.prototype, 'client', {
-    get: function () { return this.view.client; },
+    get: function () { return this.page.client; },
   });
 
   Object.defineProperty(Scene.prototype, '$el', {
@@ -50,8 +50,8 @@
     },
 
     goLobby: function () {
-      if (this.view.isCurrentScene(this))
-        this.view.changeScene('lobby');
+      if (this.page.isCurrentScene(this))
+        this.page.changeScene('lobby');
     },
   });
 
