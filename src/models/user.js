@@ -24,6 +24,10 @@ utils.extend(User.prototype, {
     if (!(oldname === name)) this.emit('rename', name);
   },
 
+  disconnect: function () {
+    this.emit('destroy');
+  },
+
   seePlayer: function (player) {
     return player.name + ": " + player.constructor.classMethods.className;
   },

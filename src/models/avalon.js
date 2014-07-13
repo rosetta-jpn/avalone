@@ -2,6 +2,7 @@ var utils = require('../utils')
   , events = require('events')
   , User = require('./user')
   , Room = require('./room')
+  , RoomObserver = require('../observers/room_observer')
   , roomModule = require('../utils/room_module');
 
 var Avalon = module.exports = function Avalon(connectorConstructor) {
@@ -18,6 +19,7 @@ utils.extend(Avalon.prototype, {
     if (this.rooms[name]) throw new Error('Room: ' + name + ' is already exists.');
     var room = new Room(owner, name);
     this.rooms[room.name] = room;
+    new RoomObserver(room, this);
     this.trigger('createRoom', room);
     room.on('destroy', this.removeRoom.bind(this, room));
   },
@@ -30,7 +32,9 @@ utils.extend(Avalon.prototype, {
     user = new User(id, id, socket);
     this.enter(user);
     user.on('rename', this.onUserRename.bind(this, user));
+    user.on('destroy', this.leave.bind(this, user));
   },
+
 
   onEnter: function (user) {
     this.connector.notice('login', user.toString());

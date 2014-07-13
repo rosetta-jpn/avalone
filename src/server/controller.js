@@ -37,3 +37,8 @@ Controller.prototype.connectionCallback = function () {
   this.avalon.login(this.socket, this.id);
   this.user.notify('go:start');
 }
+
+Controller.prototype.disconnectCallback = function () {
+  console.log('Disconnect:', this.user.toJson());
+  this.user.disconnect();
+}
