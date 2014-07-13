@@ -33,7 +33,7 @@ SocketIOConnector.prototype.newSocket = function (socket) {
   });
 
   socket.on('disconnect', function() {
-    self.avalon.leave(socket, socket.id);
+    self.callController(socket, 'disconnect', {})
   });
 }
 

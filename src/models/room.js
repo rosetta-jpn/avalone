@@ -7,6 +7,7 @@ var Room = module.exports = function Room(owner, name) {
   this.name = name;
   this.userList = {};
   this.enter(owner);
+  this.on('enter', this.onEnter.bind(this));
 }
 
 utils.inherit(events.EventEmitter, Room);
@@ -27,6 +28,10 @@ Room.prototype.removeGame = function () {
 
 Room.prototype.toString = function () {
   return this.name;
+}
+
+Room.prototype.onEnter = function (user) {
+  user.on('destroy', this.leave.bind(this, user));
 }
 
 Room.prototype.calcUsers = function () {
