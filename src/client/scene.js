@@ -41,11 +41,17 @@
 
     bind: function () {
       $('form#enterRoom').on('submit', this.onSubmitRoom.bind(this));
+      this.client.on('go:lobby', this.goLobby.bind(this))
     },
 
     onSubmitRoom: function (e) {
       e.preventDefault();
       this.client.submit('enter', $(e.target).formData());
+    },
+
+    goLobby: function () {
+      if (this.view.isCurrentScene(this))
+        this.view.changeScene('lobby');
     },
   });
 

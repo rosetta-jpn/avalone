@@ -30,6 +30,7 @@ Controller.prototype.enterCallback = function () {
   } else {
     this.avalon.createRoom(this.user, this.data.room.name);
   }
+  this.user.notify('go:lobby');
 }
 
 Controller.prototype.connectionCallback = function () {

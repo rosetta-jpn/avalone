@@ -7,7 +7,7 @@
     };
     this.client.on('notice', this.onNotice.bind(this));
 
-    this.scenes.start.show();
+    this.changeScene('start');
   }
 
   View.prototype.onNotice = function (data) {
@@ -20,6 +20,10 @@
     ns.show();
     if (ns && ns.onShow) ns.onShow();
     this.currentScene = ns;
+  }
+
+  View.prototype.isCurrentScene = function (scene) {
+    return this.currentScene === scene;
   }
 
   $(function() { window.view = new View(); });

@@ -17,17 +17,31 @@ utils.property(User.prototype, {
   },
 });
 
-User.prototype.rename = function (name) {
-  var oldname = this.name;
-  this.name = name;
-  if (!(oldname === name)) this.emit('rename', name);
-}
+utils.extend(User.prototype, {
+  rename: function (name) {
+    var oldname = this.name;
+    this.name = name;
+    if (!(oldname === name)) this.emit('rename', name);
+  },
 
-User.prototype.seePlayer = function (player) {
-  return player.name + ": " + player.constructor.classMethods.className;
-}
+  seePlayer: function (player) {
+    return player.name + ": " + player.constructor.classMethods.className;
+  },
 
-User.prototype.toString = function () {
-  return user.name;
-}
+  toString: function () {
+    return this.name;
+  },
+
+  toJson: function () {
+    return {
+      id: this.id,
+      name: this.name,
+    }
+  },
+
+  notify: function (type, value) {
+    console.log("Notify", "(" + this.toString() + ")", type, value)
+    this.socket.emit(type, value);
+  }
+});
 
