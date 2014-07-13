@@ -14,7 +14,7 @@ utils.extend(Room.prototype, roomModule('userList'));
 
 Room.prototype.gameStart = function (controller) {
   if (this.game || !controller) { return; }
-  users = Object.values(this.userList);
+  users = this.calcUsers();
   if (users.length >= 5) {
     var game = this.game = new Game(users);
     game.on('end', this.removeGame.bind(this));
@@ -29,3 +29,6 @@ Room.prototype.toString = function () {
   return this.name;
 }
 
+Room.prototype.calcUsers = function () {
+  return Object.values(this.userList);
+}
