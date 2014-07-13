@@ -11,3 +11,9 @@ form {
   max-width: 330px;
   margin: 0 auto;  
 }
+
+
+#team form{
+    float:left;
+    width: 300px;
+}

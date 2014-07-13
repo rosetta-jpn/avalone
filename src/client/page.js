@@ -4,6 +4,14 @@
     this.scenes = {
       start: new Scene.StartScene(this),
       lobby: new Scene.LobbyScene(this),
+      jobs: new Scene.JobsScene(this),
+      team: new Scene.TeamScene(this),
+      vote: new Scene.VoteScene(this),
+      vote_result: new Scene.VoteResultScene(this),
+      mission: new Scene.MissionScene(this),
+      mission_result: new Scene.MissionResultScene(this),
+      assassin_phase: new Scene.AssassinPhaseScene(this),
+      game_result: new Scene.GameResultScene(this),
     };
     this.client.on('notice', this.onNotice.bind(this));
     this.client.on('go:start', this.returnStart.bind(this));
