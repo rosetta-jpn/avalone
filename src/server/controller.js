@@ -35,4 +35,5 @@ Controller.prototype.enterCallback = function () {
 
 Controller.prototype.connectionCallback = function () {
   this.avalon.login(this.socket, this.id);
+  this.user.notify('go:start');
 }

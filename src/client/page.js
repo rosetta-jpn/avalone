@@ -6,6 +6,7 @@
       lobby: new Scene.LobbyScene(this),
     };
     this.client.on('notice', this.onNotice.bind(this));
+    this.client.on('go:start', this.returnStart.bind(this));
 
     this.changeScene('start');
   }
@@ -24,6 +25,11 @@
 
   Page.prototype.isCurrentScene = function (scene) {
     return this.currentScene === scene;
+  }
+
+  Page.prototype.returnStart = function () {
+    if (this.isCurrentScene(this.scenes.start)) return;
+    this.changeScene('start');
   }
 
   $(function() { window.page = new Page(); });
