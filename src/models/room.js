@@ -44,3 +44,10 @@ Room.prototype.onLeave = function (user) {
 Room.prototype.calcUsers = function () {
   return Object.values(this.userList);
 }
+
+Room.prototype.notifyAll = function (type, data) {
+  users = this.calcUsers();
+  users.forEach(function (user) {
+    user.notify(type, data);
+  });
+}

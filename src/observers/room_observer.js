@@ -14,24 +14,16 @@ utils.extend(RoomObserver.prototype, {
   }, 
 
   onEnter: function (user) {
-    var self = this;
-    members = this.room.calcUsers();
-    members.forEach(function (member) {
-      member.notify('enterRoom', {
-        room: self.room.name,
-        user: user.toJson(),
-      });
+    this.room.notifyAll('enterRoom', {
+      room: this.room.name,
+      user: user.toJson(),
     });
   },
 
   onLeave: function (user) {
-    var self = this;
-    members = this.room.calcUsers();
-    members.forEach(function (member) {
-      member.notify('leaveRoom', {
-        room: self.room.name,
-        user: user.toJson(),
-      });
+    this.room.notifyAll('leaveRoom', {
+      room: this.room.name,
+      user: user.toJson(),
     });
   }
 })
