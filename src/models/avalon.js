@@ -19,6 +19,7 @@ utils.extend(Avalon.prototype, {
     this.rooms[room.name] = room;
     this.emit('createRoom', room);
     room.on('destroy', this.removeRoom.bind(this, room));
+    return room;
   },
 
   removeRoom: function (room) {
