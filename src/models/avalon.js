@@ -2,7 +2,6 @@ var utils = require('../utils')
   , events = require('events')
   , User = require('./user')
   , Room = require('./room')
-  , RoomObserver = require('../observers/room_observer')
   , roomModule = require('../utils/room_module');
 
 var Avalon = module.exports = function Avalon() {
