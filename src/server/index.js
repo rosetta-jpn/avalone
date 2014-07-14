@@ -5,7 +5,8 @@ var express = require('express')
   , path = require('path')
   , ECT = require('ect')
   , socketio = require('./socketio')
-  , Avalon = require('../models/avalon');
+  , Avalon = require('../models/avalon')
+  , AvalonObserver = require('../observers/avalon_observer');
 
 var app = express();
 var server = http.Server(app);
@@ -31,5 +32,5 @@ server.listen(app.get('port'), function() {
 });
 
 var connectorConstructor = socketio(server);
-new Avalon(connectorConstructor);
+new AvalonObserver(new Avalon(), connectorConstructor);
 
