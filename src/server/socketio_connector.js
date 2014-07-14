@@ -21,7 +21,8 @@ SocketIOConnector.prototype.newSocket = function (socket) {
   this.callController(socket, 'connection', {})
 
   socket.on('submit', function(data) {
-    self.callController(socket, data.type, data.value)
+    console.log('Receive:', '(' + socket.id + ')', data.type, data.value);
+    self.callController(socket, data.type, data.value);
   });
 
   socket.on('notice', function(data) {
