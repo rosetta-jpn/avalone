@@ -15,5 +15,11 @@
     "ejs": "^1.0.0",
     "express": "^4.5.1",
     "socket.io": "^1.0.6"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1",
+    "sinon": "^1.10.3",
+    "sinon-chai": "^2.5.0"
   }
 }

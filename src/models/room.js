@@ -6,8 +6,9 @@ var Room = module.exports = function Room(owner, name) {
   this.owner = owner;
   this.name = name;
   this.userList = {};
-  this.enter(owner);
   this.on('enter', this.onEnter.bind(this));
+  this.on('leave', this.onLeave.bind(this));
+  this.enter(owner);
 }
 
 utils.inherit(events.EventEmitter, Room);
@@ -31,7 +32,12 @@ Room.prototype.toString = function () {
 }
 
 Room.prototype.onEnter = function (user) {
+  user.room = this;
   user.on('destroy', this.leave.bind(this, user));
+}
+
+Room.prototype.onLeave = function (user) {
+  delete user.room;
 }
 
 Room.prototype.calcUsers = function () {
