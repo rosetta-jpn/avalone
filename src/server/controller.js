@@ -21,28 +21,31 @@ utils.property(Controller.prototype, {
   },
 })
 
-Controller.prototype.enterCallback = function () {
-  this.user.rename(this.data.user.name);
-  var roomname = this.data.room.name;
-  var room = this.avalon.rooms[roomname];
-  if (room) {
-    room.enter(this.user);
-  } else {
-    this.avalon.createRoom(this.user, this.data.room.name);
-  }
-  this.user.notify('go:lobby');
-}
+utils.extend(Controller.prototype, {
+  connectionCallback: function () {
+    this.avalon.login(this.socket, this.id);
+    this.user.notify('go:start');
+  },
 
-Controller.prototype.gameStartCallback = function () {
-  this.user.room.newGame(this.user);
-}
+  disconnectCallback: function () {
+    console.log('Disconnect:', this.user.toJson());
+    this.user.disconnect();
+  },
 
-Controller.prototype.connectionCallback = function () {
-  this.avalon.login(this.socket, this.id);
-  this.user.notify('go:start');
-}
+  enterCallback: function () {
+    this.user.rename(this.data.user.name);
+    var roomname = this.data.room.name;
+    var room = this.avalon.rooms[roomname];
+    if (room) {
+      room.enter(this.user);
+    } else {
+      this.avalon.createRoom(this.user, this.data.room.name);
+    }
+    this.user.notify('go:lobby');
+  },
 
-Controller.prototype.disconnectCallback = function () {
-  console.log('Disconnect:', this.user.toJson());
-  this.user.disconnect();
-}
+  gameStartCallback: function () {
+    this.user.room.newGame(this.user);
+  },
+
+});
