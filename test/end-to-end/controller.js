@@ -1,8 +1,10 @@
-var chai = require('chai')
+var helper = require('../helper')
+  , chai = require('chai')
   , sinon = require('sinon')
   , sinonChai = require('sinon-chai')
   , Avalon = require('../../src/models/avalon')
   , User = require('../../src/models/user')
+  , RoomObserver = require('../../src/observers/room_observer')
   , Controller = require('../../src/server/controller');
 
 chai.use(sinonChai);
@@ -35,24 +37,16 @@ describe('Controller', function () {
     });
   });
 
-  xdescribe('#gameStartCallback', function () {
+  describe('#gameStartCallback', function () {
     before(function () {
-      ctx.avalon = ctx.avalon || new Avalon();
-      var sockets = ['hoge', 'fuga', 'java', 'gava', 'yaba'].map(function (name) {
-        return { id: name };
-      });
-      ctx.socket = socket[0];
-      var users = sockets.map(function (socket) {
-        return new User(socket.id, socket.id, socket);
-      });
-      ctx.user = users[0];
-
-      room = ctx.avalon.createRoom(ctx.user, 'room');
-      for (var i = 1; i < users.length; i++) room.enter(users[i]);
+      helper.createRoom(ctx);
+      ctx.spy = sinon.spy();
+      ctx.socket.emit = ctx.spy;
     });
 
-    it('#gameStartCallback', function () {
+    it('notify go:jobs', function () {
       controller.gameStartCallback();
+      expect(ctx.spy).to.have.been.calledWith('go:jobs');
     });
   });
 
