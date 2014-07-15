@@ -37,6 +37,7 @@ var TeamSize = {5:[2,3,2,3,3],
 
 var Game = module.exports = function Game(users){
     this.players = this.define_jobs(users);
+    this.buildPlayerMap();
     this.success_condition = SuccessCondition[users.length.toString()];
     this.team_sz = TeamSize[users.length.toString()];
     this.quests = [];
@@ -61,6 +62,14 @@ Game.prototype.define_jobs = function(users){
     return players;
 }
 
+Game.prototype.buildPlayerMap = function () {
+    var playerMap = this.playerMap = {};
+    this.players.forEach(function (player) {
+      playerMap[player.id] = player;
+    });
+    return playerMap;
+}
+
 Game.prototype.nextSelector = function () {
   this.selectorIdx = (this.selectorIdx || 0) % this.players.length;
   return this.currentSelector = this.players[this.selectorIdx++];
@@ -71,6 +80,7 @@ Game.prototype.create_Quest = function(){
     var teamSize =  this.team_sz[this.quests.length];
     var quest = new Quest(this, successCondition, teamSize);
     this.quests.push(quest);
+    this.currentQuest = quest;
     this.emit('newQuest', quest);
     quest.on("success", this.onSuccess.bind(this));
     quest.on("failure", this.onFailure.bind(this));
