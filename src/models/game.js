@@ -49,11 +49,12 @@ utils.inherit(events.EventEmitter,Game);
 Game.prototype.define_jobs = function(users){
     var job_list = Jobs[users.length.toString()].concat();
     job_list.sort(function () { return Math.random() - Math.random(); });
-    var players_ = [];
-    for(var i = 0; i < users.length;i++){
-        players_.push(job_list[i](users[i]));
+    var players = [];
+    for(var i = 0; i < users.length; i++){
+        players.push(new job_list[i](users[i]));
     }
-    return players_;
+    players.sort(function () { return Math.random() - Math.random(); });
+    return players;
 }
 
 Game.prototype.nextSelector = function () {
