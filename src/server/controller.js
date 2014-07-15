@@ -33,6 +33,10 @@ Controller.prototype.enterCallback = function () {
   this.user.notify('go:lobby');
 }
 
+Controller.prototype.gameStartCallback = function () {
+  this.user.room.newGame(this.user);
+}
+
 Controller.prototype.connectionCallback = function () {
   this.avalon.login(this.socket, this.id);
   this.user.notify('go:start');

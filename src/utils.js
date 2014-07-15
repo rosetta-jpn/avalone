@@ -34,7 +34,7 @@ var inherit = exports.inherit = function (parent, child) {
   });
 
   if (!child) {
-    child = function (){};
+    child = function (){ parent.apply(this, arguments) };
   }
   child.prototype = Object.create(parent.prototype);
   useClassMethods(child, classMethods);
