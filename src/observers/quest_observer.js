@@ -1,6 +1,5 @@
 var utils = require('../utils')
-//  , TeamObserver = require('./team_observer');
-;
+  , TeamObserver = require('./team_observer');
 
 var QuestObserver = module.exports = function QuestObserver(quest, game) {
   this.quest = quest;
@@ -17,10 +16,12 @@ utils.extend(QuestObserver.prototype, {
   },
 
   onNewQuest: function () {
+    this.game.notifyAll('newQuest');
     this.quest.voter_map
   },
 
   onNewTeam: function (team) {
+    this.game.notifyAll('newTeam');
     new TeamObserver(team, this.game);
   },
 
