@@ -1,4 +1,5 @@
 var Team = require("./team")
+  , utils = require("../utils")
   , events = require("events");
 
 var Quest = function Quest(Game,success_number,team_sz){
@@ -10,6 +11,7 @@ var Quest = function Quest(Game,success_number,team_sz){
     this.mission_list = {};//User.id -> Success/Failure(True/False) Hash
 }
 
+utils.inherit(events.EventEmitter, Quest);
 
 Quest.prototype.create_Team = function(){
     this.team = new Team(this.game.next_selector(),team_sz,this.game.players.length());
