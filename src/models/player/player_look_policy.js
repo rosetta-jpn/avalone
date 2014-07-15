@@ -1,21 +1,21 @@
 var PlayerLookPolicy = module.exports = function(looker, target) {
     this.looker = looker;
     this.target = target;
-    this.look = _judgeLook();
+    this.look = this._judgeLook();
 }
 
-PlayerLookPolicy.prototype.anonymousClassName = '*********';
+PlayerLookPolicy.prototype.anonymousClassName = 'Unknown';
 
 PlayerLookPolicy.prototype._judgeLook = function () {
   imports = lazyLoad();
 
-  if (target.look.mordred && !looker.ability.findMordred)
+  if (this.target.look.mordred && !this.looker.ability.findMordred)
     return this.anonymousClassName;
 
-  if (target.look.merlin && looker.ability.findMerlin)
+  if (this.target.look.merlin && this.looker.ability.findMerlin)
     return imports.merlin.classMethods.className;
 
-  if (target.look.evil && looker.ability.findEvil)
+  if (this.target.look.evil && this.looker.ability.findEvil)
     return imports.evil.classMethods.className;
 
   return this.anonymousClassName;
