@@ -18,7 +18,6 @@ describe('Controller', function () {
   });
 
   beforeEach(function () {
-    debugger;
     controller = new Controller(ctx.type, ctx.data, ctx.avalon, {}, ctx.socket);
     controller._user = ctx.user || new User(ctx.socket.id, ctx.username, ctx.socket);
   });
@@ -28,7 +27,6 @@ describe('Controller', function () {
       ctx.spy = sinon.spy();
       ctx.avalon = ctx.avalon || new Avalon();
       ctx.socket = { id: 'hoge', emit: ctx.spy };
-      debugger;
     });
 
     it('emit', function () {
