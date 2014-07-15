@@ -40,13 +40,26 @@ describe('Controller', function () {
   describe('#gameStartCallback', function () {
     before(function () {
       helper.createRoom(ctx);
-      ctx.spy = sinon.spy();
-      ctx.socket.emit = ctx.spy;
+      helper.spyRoomMembers(ctx);
     });
 
     it('notify go:jobs', function () {
       controller.gameStartCallback();
-      expect(ctx.spy).to.have.been.calledWith('go:jobs');
+      expect(ctx.room.owner.socket.emit).to.have.been.calledWith('go:jobs');
+    });
+  });
+
+  describe('#gameStartCallback', function () {
+    before(function () {
+      helper.createRoom(ctx);
+      helper.spyRoomMembers(ctx);
+    });
+
+    context('create quest', function () {
+      it('notify go:team', function () {
+        ctx.game = ctx.room.newGame(ctx.user);
+        expect(ctx.game.currentSelector.socket.emit).to.have.been.calledWith('go:team');
+      });
     });
   });
 

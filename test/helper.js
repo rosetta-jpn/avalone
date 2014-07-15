@@ -31,3 +31,9 @@ exports.createRoom = function (ctx) {
 
   for (var i = 1; i < users.length; i++) ctx.room.enter(users[i]);
 }
+
+exports.spyRoomMembers = function (ctx) {
+  ctx.users.forEach(function (user) {
+    user.socket.emit = sinon.spy();
+  });
+}
