@@ -71,6 +71,7 @@ Game.prototype.create_Quest = function(){
     var teamSize =  this.team_sz[this.quests.length];
     var quest = new Quest(this, successCondition, teamSize);
     this.quests.push(quest);
+    this.emit('newQuest', quest);
     quest.on("success", this.onSuccess.bind(this));
     quest.on("failure", this.onFailure.bind(this));
 }

@@ -1,5 +1,5 @@
 var utils = require('../utils')
-//  , QuestObserver = require('./quest_observer');
+  , QuestObserver = require('./quest_observer');
 ;
 
 var GameObserver = module.exports = function GameObserver(game, room) {
