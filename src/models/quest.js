@@ -14,10 +14,12 @@ var Quest = function Quest(Game,success_number,team_sz){
 utils.inherit(events.EventEmitter, Quest);
 
 Quest.prototype.create_Team = function(){
-    this.team = new Team(this.game.next_selector(),team_sz,this.game.players.length());
+    var selector = this.game.nextSelector();
+    this.team = new Team(selector, this.team_sz, this.game.players.length);
     this.vote_count += 1;
     this.team.on("agree",this.onAgree.bind(this));
     this.team.on("disAgree",this.onDisAgree.bind(this));
+    return this.team;
 }
 
 Quest.prototype.judge_success = function(){

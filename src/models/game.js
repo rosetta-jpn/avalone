@@ -56,6 +56,11 @@ Game.prototype.define_jobs = function(users){
     return players_;
 }
 
+Game.prototype.nextSelector = function () {
+  this.selectorIdx = (this.selectorIdx || 0) % this.players.length;
+  return this.currentSelector = this.players[this.selectorIdx++];
+}
+
 Game.prototype.create_Quest = function(){
     this.quests.push(new Quest(this,this.success_condition[quest_count],this.team_sz[quest_count]));
     this.quest_count += 1;
