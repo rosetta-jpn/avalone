@@ -1,16 +1,24 @@
 var Team = require("./quest")
   , events = require("events")
-  , utils = require("../utils");
+  , utils = require("../utils")
+  , Evil = require('./player/evil')
+  , Justice = require('./player/justice')
+  , Merlin = require('./player/merlin')
+  , Mordred = require('./player/mordred')
+  , Morgana = require('./player/morgana')
+  , Oberon = require('./player/oberon')
+  , Percival = require('./player/percival')
+  , Assassin = require('./player/assassin');
 
 
-Jobs = {5:[Justice,Justice,Merlin,  Evil,Assassin],
+var Jobs = {5:[Justice,Justice,Merlin,  Evil,Assassin],
         6:[Justice,Justice,Merlin,Percival,   Mordred,Assassin],
         7:[Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
         8:[Justice,Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
         9:[Justice,Justice,Justice,Merlin,Percival,   Oberon,Mordred,Assassin],
        10:[Justice,Justice,Justice,Merlin,Percival,   Evil,Oberon,Mordred,Assassin]};
 
-SuccessCondition = {5:[2,3,2,3,3],
+var SuccessCondition = {5:[2,3,2,3,3],
                     6:[2,3,4,3,4],
                     7:[2,3,3,3,4],
                     8:[3,4,4,4,5],
@@ -18,7 +26,7 @@ SuccessCondition = {5:[2,3,2,3,3],
                    10:[3,4,4,4,5]};
 
 
-TeamSize = {5:[2,3,2,3,3],
+var TeamSize = {5:[2,3,2,3,3],
             6:[2,3,4,3,4],
             7:[2,3,3,4,4],
             8:[3,4,4,5,5],
@@ -26,7 +34,7 @@ TeamSize = {5:[2,3,2,3,3],
            10:[3,4,4,5,5]};
 
 
-var Game = function Game(users){
+var Game = module.exports = function Game(users){
     this.players = this.define_jobs(users);
     this.quest_count = 0;
     this.success_condition = SuccessCondition[users.length.toString()];
@@ -36,7 +44,7 @@ var Game = function Game(users){
     this.quest_failure_count = 0;
 }
 
-utils.inherit(events.eventEmitter,Game);
+utils.inherit(events.EventEmitter,Game);
 
 Game.prototype.define_jobs = function(users){
     var job_list = Jobs[users.length.toString()].concat();
@@ -68,7 +76,7 @@ Game.prototype.onSuccess = function(){
     if(this.quest_success_count >= 3){
         var assassin_index = 0;
         for(var i = 0; i < players.length;i++){
-            if(players[i].is_Assassin()){
+            if(players[i].isAssassin){
                 assassin_index = i;
             }
         }
