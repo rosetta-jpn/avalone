@@ -13,6 +13,10 @@ var Quest = function Quest(Game,success_number,team_sz){
 
 utils.inherit(events.EventEmitter, Quest);
 
+Quest.prototype.start = function () {
+  this.create_Team();
+}
+
 Quest.prototype.create_Team = function(){
     var selector = this.game.nextSelector();
     this.team = new Team(selector, this.team_sz, this.game.players.length);

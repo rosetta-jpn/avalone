@@ -74,6 +74,8 @@ Game.prototype.create_Quest = function(){
     this.emit('newQuest', quest);
     quest.on("success", this.onSuccess.bind(this));
     quest.on("failure", this.onFailure.bind(this));
+    quest.start();
+    return quest;
 }
 
 Game.prototype.Assassinate_success = function(merlin_candidate){
