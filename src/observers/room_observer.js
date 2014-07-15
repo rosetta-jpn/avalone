@@ -1,4 +1,5 @@
-var utils = require('../utils');
+var utils = require('../utils')
+  , GameObserver = require('./game_observer');
 
 var RoomObserver = module.exports = function RoomObserver(room, avalon) {
   this.room = room;
@@ -11,6 +12,7 @@ utils.extend(RoomObserver.prototype, {
   bind: function () {
     this.room.on('enter', this.onEnter.bind(this))
     this.room.on('leave', this.onLeave.bind(this))
+    this.room.on('newGame', this.onNewGame.bind(this))
   }, 
 
   onEnter: function (user) {
@@ -25,5 +27,9 @@ utils.extend(RoomObserver.prototype, {
       room: this.room.name,
       user: user.toJson(),
     });
-  }
+  },
+
+  onNewGame: function (game) {
+    new GameObserver(game, this.room);
+  },
 })
