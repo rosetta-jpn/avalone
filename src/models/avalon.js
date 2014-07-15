@@ -30,6 +30,7 @@ utils.extend(Avalon.prototype, {
     user = new User(id, id, socket);
     this.enter(user);
     user.on('destroy', this.leave.bind(this, user));
+    return user;
   },
 });
 

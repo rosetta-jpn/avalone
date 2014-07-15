@@ -18,10 +18,9 @@ exports.createRoom = function (ctx) {
     return { id: name, emit: function () {} };
   });
   ctx.sockets = sockets;
-  ctx.socket = sockets[0];
 
   var users = sockets.map(function (socket) {
-    return new User(socket.id, socket.id, socket);
+    return ctx.avalon.login(socket, socket.id);
   });
   ctx.users = users;
   ctx.user = users[0];

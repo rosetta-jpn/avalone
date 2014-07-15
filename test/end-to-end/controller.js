@@ -20,8 +20,8 @@ describe('Controller', function () {
   });
 
   beforeEach(function () {
-    controller = new Controller(ctx.type, ctx.data, ctx.avalon, {}, ctx.socket);
-    controller._user = ctx.user || new User(ctx.socket.id, ctx.username, ctx.socket);
+    var socket = ctx.user ? ctx.user.socket : {}
+    controller = new Controller(ctx.type, ctx.data, ctx.avalon, {}, ctx.socket || socket);
   });
 
   describe('#connectionCallback', function () {
