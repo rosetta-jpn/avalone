@@ -1,3 +1,6 @@
+var utils = require("../utils")
+  , events = require("events");
+
 States = ["select_member", "vote", "agree","disagree"]
 
 var Team = function Team(selector,group_sz,voter_sz){
@@ -8,6 +11,8 @@ var Team = function Team(selector,group_sz,voter_sz){
     this.voter_sz = voter_sz;
     this.state = States[0];
 }
+
+utils.inherit(events.EventEmitter, Team);
 
 Team.prototype.add_group = function(pusher,add_man) {
     if(this.selector === pusher && this.group.length < group_sz){
