@@ -24,8 +24,6 @@
 
     bind: function () {
       this.$el.find('a#start-game').on('click', this.onSubmitStartGame.bind(this));
-      this.client.on('enterRoom', this.onUserEnterRoom.bind(this))
-      this.client.on('leaveRoom', this.onUserLeaveRoom.bind(this))
     },
 
     onSubmitStartGame: function (e) {
@@ -33,20 +31,6 @@
       this.client.submit('gameStart');
     },
 
-    onUserEnterRoom: function (data) {
-      var user = data.user;
-      if (!this.users[user.id]) {
-        this.users[user.id] = user;
-        var newDom = $('<li>').attr({id: 'user-' + user.id}).text(user.name);
-        this.$el.find('.users').append(newDom);
-      }
-    },
-
-    onUserLeaveRoom: function (data) {
-      var user = data.user;
-      delete this.users[user.id]
-      this.$el.find('#user-' + user.id).remove();
-    }
   });
   
   Scene.JobsScene = Scene.extend({
