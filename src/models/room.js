@@ -1,5 +1,6 @@
 var utils = require('../utils')
   , events = require('events')
+  , Game = require('./game')
   , roomModule = require('../utils/room_module');
 
 var Room = module.exports = function Room(owner, name) {
