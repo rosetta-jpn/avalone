@@ -20,8 +20,10 @@ Room.prototype.gameStart = function (controller) {
   users = this.calcUsers();
   if (users.length >= 5) {
     var game = this.game = new Game(users);
-    this.emit('newGame', game);
     game.on('end', this.removeGame.bind(this));
+    this.emit('newGame', game);
+    game.start();
+    return game;
   }
 }
 

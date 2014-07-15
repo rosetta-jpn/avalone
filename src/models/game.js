@@ -1,6 +1,7 @@
 var Team = require("./quest")
   , events = require("events")
   , utils = require("../utils")
+  , Quest = require('./quest')
   , Evil = require('./player/evil')
   , Justice = require('./player/justice')
   , Merlin = require('./player/merlin')
@@ -36,7 +37,6 @@ var TeamSize = {5:[2,3,2,3,3],
 
 var Game = module.exports = function Game(users){
     this.players = this.define_jobs(users);
-    this.quest_count = 0;
     this.success_condition = SuccessCondition[users.length.toString()];
     this.team_sz = TeamSize[users.length.toString()];
     this.quests = [];
@@ -45,6 +45,10 @@ var Game = module.exports = function Game(users){
 }
 
 utils.inherit(events.EventEmitter,Game);
+
+Game.prototype.start = function () {
+  this.create_Quest();
+}
 
 Game.prototype.define_jobs = function(users){
     var job_list = Jobs[users.length.toString()].concat();
@@ -63,10 +67,12 @@ Game.prototype.nextSelector = function () {
 }
 
 Game.prototype.create_Quest = function(){
-    this.quests.push(new Quest(this,this.success_condition[quest_count],this.team_sz[quest_count]));
-    this.quest_count += 1;
-    this.team.on("success",this.onSuccess.bind(this));
-    this.team.on("failure",this.onFailure,bind(this));
+    var successCondition = this.success_condition[this.quests.length];
+    var teamSize =  this.team_sz[this.quests.length];
+    var quest = new Quest(this, successCondition, teamSize);
+    this.quests.push(quest);
+    quest.on("success", this.onSuccess.bind(this));
+    quest.on("failure", this.onFailure.bind(this));
 }
 
 Game.prototype.Assassinate_success = function(merlin_candidate){
@@ -96,5 +102,11 @@ Game.prototype.onFailure = function(){
     if(this.quest_failure_count >= 3){
         this.emit("evilWin");
     }
+}
+
+Game.prototype.notifyAll = function (type, data) {
+  this.players.forEach(function (player) {
+    player.notify(type, data);
+  });
 }
 
