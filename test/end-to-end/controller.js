@@ -63,4 +63,40 @@ describe('Controller', function () {
     });
   });
 
+  describe('#orgTeamCallback', function () {
+    before(function () {
+      var players = [];
+      helper.createRoom(ctx);
+      helper.spyRoomMembers(ctx);
+      ctx.game = ctx.room.newGame(ctx.user);
+
+      ctx.user = ctx.game.currentSelector.user;
+      ctx.data = { players: players };
+      for (var i = 0; i < ctx.game.quests[0].team.group_sz; i++) {
+        players.push({ id: ctx.game.players[i].id });
+      }
+    });
+
+    it('with no error', function () {
+      controller.orgTeamCallback();
+      expect(ctx.user.socket.emit).to.have.been.calledWith('go:vote');
+    });
+  });
+
+  describe('#voteApproveCallback', function () {
+    before(function () {
+      helper.createRoom(ctx);
+      helper.spyRoomMembers(ctx);
+      ctx.game = ctx.room.newGame(ctx.user);
+
+      for (var i = 0; i < ctx.game.quests[0].team.group_sz; i++) {
+        ctx.game.quests[0].team.add_group(ctx.game.currentSelector, ctx.game.players[i]);
+      }
+    });
+
+    it('with no error', function () {
+      controller.voteApproveCallback();
+      expect(ctx.user.socket.emit).to.have.been.calledWith('vote');
+    });
+  });
 });

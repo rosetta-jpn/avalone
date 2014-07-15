@@ -116,7 +116,7 @@
     
     onGoVote: function (e) {
       e.preventDefault();
-      this.client.submit('go_vote');
+      this.client.submit('orgTeam', $(e.target).formData());
     },
     
     goVote: function () {
@@ -137,12 +137,12 @@
     
     onVoteApprove: function (e) {
       e.preventDefault();
-      this.client.submit('vote_approve');
+      this.client.submit('voteApprove');
     },
 
     onVoteReject: function (e){
       e.preventDefault();
-      this.client.submit('vote_reject');
+      this.client.submit('voteReject');
     },
     
     goVoteResult: function (){

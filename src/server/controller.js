@@ -19,6 +19,16 @@ utils.property(Controller.prototype, {
   user: {
     get: function () { return this._user = this._user || this.avalon.users[this.id]; },
   },
+  player: {
+    get: function () {
+      return this._player = this._player || this.user.room.game.playerMap[this.id];
+    },
+  },
+  game: {
+    get: function () {
+      return this._game = this._game || this.user.room.game;
+    },
+  },
 })
 
 utils.extend(Controller.prototype, {
@@ -48,4 +58,21 @@ utils.extend(Controller.prototype, {
     this.user.room.newGame(this.user);
   },
 
+  orgTeamCallback: function () {
+    var selector = this.player, self = this;
+    this.data.players.forEach(function (playerData) {
+      var player =  self.game.playerMap[playerData.id];
+      self.game.currentQuest.team.add_group(selector, player);
+    })
+    self.game.currentQuest.team.go_vote();
+  },
+
+  voteApproveCallback: function () {
+    debugger;
+    this.game.currentQuest.team.change_voter_map(this.player, true);
+  },
+
+  voteRejectCallback: function () {
+    this.game.currentQuest.team.change_voter_map(this.player, false);
+  },
 });

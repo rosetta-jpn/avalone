@@ -44,6 +44,20 @@ Player.prototype._seePlayerClass = function (player) {
   return new PlayerLookPolicy(this, player).look;
 }
 
+Player.prototype.toString = function (looker) {
+  var json = this.toJson(looker);
+  return json.name + ': ' + json.class;
+}
+
+Player.prototype.toJson = function (looker) {
+  var pclass = looker ? looker._seePlayerClass(this) : this.classMethods.className;
+  return {
+    id: this.id,
+    name: this.name,
+    class: pclass,
+  };
+}
+
 Player.prototype.isEvil = false;
 Player.prototype.isJustice = false;
 Player.prototype.isAssassin = false;

@@ -10,6 +10,7 @@ var TeamObserver = module.exports = function TeamObserver(team, game) {
 utils.extend(TeamObserver.prototype, {
   bind: function () {
     this.team.on('newTeam', this.onNewTeam.bind(this))
+    this.team.on('go:vote', this.onGoVote.bind(this))
     this.team.on('vote', this.onVote.bind(this))
     this.team.on('agree', this.onAgree.bind(this))
     this.team.on('disAgree', this.onDisagree.bind(this))
@@ -25,6 +26,12 @@ utils.extend(TeamObserver.prototype, {
   },
 
   onVote: function (voter, isAgree) {
+    this.game.players.forEach(function (player) {
+      player.notify('vote', {
+        player: voter.toJson(player),
+        isAgree: isAgree,
+      });
+    });
   },
 
   onAgree: function () {
