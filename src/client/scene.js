@@ -60,14 +60,14 @@
     users: {},
 
     bind: function () {
-      $('a#start_game').on('click', this.onSubmitStartGame.bind(this));
+      this.$el.find('a#start-game').on('click', this.onSubmitStartGame.bind(this));
       this.client.on('enterRoom', this.onUserEnterRoom.bind(this))
       this.client.on('leaveRoom', this.onUserLeaveRoom.bind(this))
     },
 
     onSubmitStartGame: function (e) {
       e.preventDefault();
-      console.log('hoge');
+      this.client.submit('gameStart');
     },
 
     onUserEnterRoom: function (data) {
