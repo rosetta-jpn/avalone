@@ -43,13 +43,7 @@
     selector: '#jobs',
 
     bind: function() {
-      this.$el.find('#go_team').on('click',this.onGoTeam.bind(this));
-      this.client.on('go:team',this.goTeam.bind(this));
-    },
-    
-    onGoTeam: function (e) {
-      e.preventDefault();
-      this.client.submit('go_team');
+      this.$el.find('#go_team').on('click',this.goTeam.bind(this));
     },
     
     goTeam: function () {
