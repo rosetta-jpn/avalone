@@ -8,6 +8,8 @@ PlayerLookPolicy.prototype.anonymousClassName = 'Unknown';
 
 PlayerLookPolicy.prototype._judgeLook = function () {
   imports = lazyLoad();
+  if (this.looker === this.target)
+    return this.target.classMethods.className;
 
   if (this.target.look.mordred && !this.looker.ability.findMordred)
     return this.anonymousClassName;
@@ -16,6 +18,9 @@ PlayerLookPolicy.prototype._judgeLook = function () {
     return imports.merlin.classMethods.className;
 
   if (this.target.look.evil && this.looker.ability.findEvil)
+    return imports.evil.classMethods.className;
+
+  if (this.target.look.oberon && this.looker.ability.findOberonAsEvil)
     return imports.evil.classMethods.className;
 
   return this.anonymousClassName;

@@ -5,6 +5,7 @@ var Merlin = module.exports = utils.inherit(Justice);
 
 Merlin.prototype.ability = utils.merge(Merlin.prototype.ability, {
   findEvil: true,
+  findOberonAsEvil: true,
 });
 
 Merlin.prototype.look = utils.merge(Merlin.prototype.look, {
