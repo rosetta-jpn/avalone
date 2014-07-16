@@ -11,6 +11,18 @@ var Avalon = require('../src/models/avalon')
   , User = require('../src/models/user')
   , RoomObserver = require('../src/observers/room_observer');
 
+exports.createConnectorDummy = function (ctx) {
+  function notice (type, data) {
+    for (var id in this.avalon.users) {
+      this.avalon.users[id].notify(type, data);
+    }
+  }
+
+  ctx.connectorCreate = function (avalon) {
+    return { avalon: avalon, notice: notice };
+  }
+}
+
 exports.createRoom = function (ctx) {
   ctx.avalon = ctx.avalon || new Avalon();
 

@@ -5,6 +5,7 @@ var helper = require('../helper')
   , Avalon = require('../../src/models/avalon')
   , User = require('../../src/models/user')
   , RoomObserver = require('../../src/observers/room_observer')
+  , AvalonObserver = require('../../src/observers/avalon_observer')
   , Controller = require('../../src/server/controller');
 
 chai.use(sinonChai);
@@ -28,6 +29,8 @@ describe('Controller', function () {
     before(function () {
       ctx.spy = sinon.spy();
       ctx.avalon = ctx.avalon || new Avalon();
+      helper.createConnectorDummy(ctx)
+      new AvalonObserver(ctx.avalon, ctx.connectorCreate);
       ctx.socket = { id: 'hoge', emit: ctx.spy };
     });
 

@@ -20,6 +20,7 @@ utils.extend(RoomObserver.prototype, {
       room: this.room.name,
       user: user.toJson(),
     });
+    user.notify('go:lobby');
   },
 
   onLeave: function (user) {

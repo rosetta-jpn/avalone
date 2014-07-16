@@ -34,7 +34,6 @@ utils.property(Controller.prototype, {
 utils.extend(Controller.prototype, {
   connectionCallback: function () {
     this.avalon.login(this.socket, this.id);
-    this.user.notify('go:start');
   },
 
   disconnectCallback: function () {
@@ -51,7 +50,6 @@ utils.extend(Controller.prototype, {
     } else {
       this.avalon.createRoom(this.user, this.data.room.name);
     }
-    this.user.notify('go:lobby');
   },
 
   gameStartCallback: function () {
@@ -68,7 +66,6 @@ utils.extend(Controller.prototype, {
   },
 
   voteApproveCallback: function () {
-    debugger;
     this.game.currentQuest.team.change_voter_map(this.player, true);
   },
 
