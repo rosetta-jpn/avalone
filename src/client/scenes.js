@@ -24,6 +24,7 @@
 
     bind: function () {
       this.$el.find('a#start-game').on('click', this.onSubmitStartGame.bind(this));
+      this.client.on('go:jobs',this.goJobs.bind(this));
     },
 
     onSubmitStartGame: function (e) {
@@ -31,6 +32,11 @@
       this.client.submit('gameStart');
     },
 
+    goJobs: function () {
+      if(this.page.isCurrentScene(this)){
+        this.page.changeScene('jobs');
+      }
+    },
   });
   
   Scene.JobsScene = Scene.extend({
