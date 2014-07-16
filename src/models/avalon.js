@@ -4,6 +4,7 @@ var utils = require('../utils')
   , Room = require('./room')
   , roomModule = require('../utils/room_module');
 
+// Public: Avalon - treat Users and Rooms
 var Avalon = module.exports = function Avalon() {
   this.rooms = {};
   this.users = {};

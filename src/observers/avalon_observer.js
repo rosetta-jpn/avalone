@@ -1,6 +1,11 @@
 var utils = require('../utils')
   , RoomObserver = require('./room_observer');
 
+/* Public: AvalonObserver - observe Avalon and notify its events to clients.
+ *
+ * avalon - the Avalon object to observe.
+ * connectorCreate - the constructor of SocketIOConnector.
+ */
 var AvalonObserver = module.exports = function AvalonObserver(avalon, connectorCreate) {
   this.avalon = avalon;
   this.bind();

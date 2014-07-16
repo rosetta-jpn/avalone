@@ -1,5 +1,13 @@
 var utils = require('../utils')
 
+/* Public: Controller - dispatches received requests
+ * 
+ * type - the string which represents the method to handle the request.
+ * data - the object as the received data.
+ * avalon - the Avalon object.
+ * connector - the SocketIOConnector object which received the request.
+ * socket - the SocketIO object which represents the sender.
+ */
 var Controller = module.exports = function Controller(type, data, avalon, connector, socket) {
   this.type = type;
   this.data = data;
@@ -8,6 +16,13 @@ var Controller = module.exports = function Controller(type, data, avalon, connec
   this.socket = socket;
 }
 
+/* Public: Run hander method.
+ * Run the "this.type + 'Callback'" method as the hander method.
+ *
+ * Example
+ *   controller.type; => 'connection'
+ *   controller.dispatch(); => Run the 'connectionCallback'
+ */
 Controller.prototype.dispatch = function () {
   this[this.type + 'Callback']();
 }
@@ -32,6 +47,17 @@ utils.property(Controller.prototype, {
 })
 
 utils.extend(Controller.prototype, {
+  debugCallback: function () {
+    var users = []
+    var room = this.avalon.createRoom(this.user, 'debug');
+    for (var id in this.avalon.users)
+      if (id !== this.id) {
+        users.push(this.avalon.users[id]);
+        room.enter(this.avalon.users[id]);
+      }
+    if (users.length < 4) throw new Error('debug fail');
+  },
+
   connectionCallback: function () {
     this.avalon.login(this.socket, this.id);
   },
