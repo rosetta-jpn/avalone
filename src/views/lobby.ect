@@ -2,6 +2,9 @@
   <div class="col-lg-6">
     <font size="5">
       <ol class="users">
+        <li v-repeat="users" v-attr="id:id | toClassName">
+          {{ name }}
+        </li>
       </ol>
     </font>
   </div>

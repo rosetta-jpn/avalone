@@ -13,6 +13,13 @@
       assassin_phase: new Scene.AssassinPhaseScene(this),
       game_result: new Scene.GameResultScene(this),
     };
+
+    this.models = {
+      users: new Model.Users(this),
+    }
+
+    ViewModel.boot(this.models); 
+
     this.client.on('notice', this.onNotice.bind(this));
     this.client.on('go:start', this.returnStart.bind(this));
 

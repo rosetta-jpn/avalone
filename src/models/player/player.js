@@ -21,13 +21,15 @@ Player.prototype.notify = User.prototype.notify;
 Player.prototype.ability = {
   findMerlin: false,
   findEvil: false,
-  findMordred: false
+  findMordred: false,
+  findOberonAsEvil: false,
 }
 
 Player.prototype.look = {
   merlin: false,
   evil: false,
   mordred: false,
+  oberon: false,
 }
 
 Player.prototype.rename = function (name) {

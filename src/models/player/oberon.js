@@ -9,6 +9,7 @@ Oberon.prototype.ability = utils.merge(Oberon.prototype.ability, {
 
 Oberon.prototype.look = utils.merge(Oberon.prototype.look, {
   evil: false,
+  oberon: true,
 });
 Oberon.classMethods.className = 'Oberon';
 
