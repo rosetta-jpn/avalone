@@ -5,7 +5,8 @@
   }
 
   Client.prototype.on = function (type, callback) {
-    this.socket.on(type, callback);
+    var delayfunc = function (data) { setTimeout(callback, 0, data) };
+    this.socket.on(type, delayfunc);
   }
 
   Client.prototype.submit = function emit(type, value) {
