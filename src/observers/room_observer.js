@@ -16,11 +16,16 @@ utils.extend(RoomObserver.prototype, {
   }, 
 
   onEnter: function (user) {
+    var users = this.room.calcUsers().map(function (user) { return user.toJson(); })
     this.room.notifyAll('enterRoom', {
       room: this.room.name,
       user: user.toJson(),
     });
     user.notify('go:lobby');
+    user.notify('room', {
+      room: this.room.name,
+      users: users,
+    });
   },
 
   onLeave: function (user) {

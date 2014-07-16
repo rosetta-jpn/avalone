@@ -15,7 +15,9 @@
     };
 
     this.models = {
+      profile: new Model.Profile(this),
       users: new Model.Users(this),
+      players: new Model.Players(this),
     }
 
     ViewModel.boot(this.models); 

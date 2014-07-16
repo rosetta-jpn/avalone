@@ -26,6 +26,7 @@ utils.extend(AvalonObserver.prototype, {
   onUserEnter: function (user) {
     user.on('rename', this.onUserRename.bind(this, user));
     this.connector.notice('login', user.toString());
+    user.notify('connection', user.id);
     user.notify('go:start');
   },
 

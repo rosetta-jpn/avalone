@@ -18,6 +18,11 @@ utils.extend(GameObserver.prototype, {
 
   onNewGame: function () {
     this.game.notifyAll('go:jobs');
+    var players = this.game.players
+    players.forEach(function (looker) {
+      playersLook = players.map(function (pl) { return pl.toJson(looker); } );
+      looker.notify('players', { players: playersLook });
+    });
   },
 
   onNewQuest: function (quest) {

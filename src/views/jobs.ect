@@ -1,29 +1,18 @@
 <div id="jobs" class="scene">
   <h2 class="page-header">Your job</h2>
-  <h3>atetubou</h3>
-  <div align="center">
-    <p>
-      <img src="images/Merlin.jpg">
-    </p>
+  <div class="profile">
+    <h3>{{ player.name }}</h3>
+    <div align="center">
+      <p>
+        <img v-attr="src:player.class | imagePath">
+      </p>
+    </div>
   </div>
   <h2 class="page-header">Others jobs</h2>
-  <div class="row placeholders">
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Merlin.jpg">
-      <h4>atetubou</h4>
-    </div>
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Back.jpg">
-      <h4>atetubou1</h4>
-    </div>
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Assassin.jpg">
-      <h4>atetubou2</h4>
-    </div>
-    
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Back.jpg">
-      <h4>atetubou3</h4>
+  <div class="row placeholders other-jobs">
+    <div class="col-xs-6 col-sm-3 placeholder" v-repeat="players">
+      <img v-attr="src:class | imagePath">
+      <h4>{{ name }}</h4>
     </div>
   </div>
   <br>
