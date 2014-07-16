@@ -50,10 +50,10 @@
   }
 
   Model.prototype.set = function (ary, idx, value) {
-    if (obj.$set) {
-      obj.$set(idx, value);
+    if (ary.$set) {
+      ary.$set(idx, value);
     } else {
-      obj[idx] = value;
+      ary[idx] = value;
     }
     return value;
   }
@@ -61,7 +61,7 @@
   Model.prototype.remove = function (ary, tgt) {
     if (typeof tgt === "number") {
       var value = ary[tgt];
-      if (obj.$remove) {
+      if (ary.$remove) {
         ary.$remove(ary, tgt);
       } else {
         ary.splice(tgt, 1);
@@ -70,7 +70,7 @@
     } else {
       var idx = ary.indexOf(tgt);
       var value = idx < 0 ? undefined : ary[idx];
-      if (obj.$remove) {
+      if (ary.$remove) {
         ary.$remove(ary, tgt);
       } else {
         if (idx >= 0) {
