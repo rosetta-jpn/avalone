@@ -28,6 +28,21 @@
 
   });
 
+  m.Selection = m.extend({
+    bind: function () {
+      this.data.selection = {
+        selector: {},
+        teamSize: 0,
+        successSize: 0,
+      };
+      this.client.on('selection', this.onReceiveSelection.bind(this));
+    },
+
+    onReceiveSelection: function (selection) {
+      this.update(this.data, 'selection', selection);
+    },
+  });
+
   m.Users = m.extend({
     bind: function () {
       this.data.users = [];

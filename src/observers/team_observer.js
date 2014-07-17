@@ -1,7 +1,8 @@
 var utils = require('../utils');
 
-var TeamObserver = module.exports = function TeamObserver(team, game) {
+var TeamObserver = module.exports = function TeamObserver(team, quest, game) {
   this.team = team;
+  this.quest = quest;
   this.game = game;
   this.bind();
   this.onNewTeam();
@@ -17,8 +18,16 @@ utils.extend(TeamObserver.prototype, {
   },
 
   onNewTeam: function () {
+    var selector = this.team.selector;
+    var self = this;
     this.game.notifyAll('newTeam');
-    this.team.selector.notify('go:team');
+    this.game.players.forEach(function (player) {
+      player.notify('selection', {
+        selector: selector.toJson(player),
+        teamSize: self.team.group_sz,
+        successSize: self.quest.success_number,
+      });
+    });
   },
 
   onGoVote: function () {

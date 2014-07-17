@@ -18,6 +18,7 @@
       profile: new Model.Profile(this),
       users: new Model.Users(this),
       players: new Model.Players(this),
+      selection: new Model.Selection(this),
     }
 
     ViewModel.boot(this.models); 
