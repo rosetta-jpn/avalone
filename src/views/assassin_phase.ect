@@ -2,27 +2,17 @@
   <h2 class="page-header">Assassin Phase</h2>
   <form>
     <font size="5">
-      <div class="checkbox" style="width:25px;height:25px">
-        <label>
-          <input type="checkbox" align="left"> atetubou
-        </label>
-      </div>
-      <div class="alert alert-success" role="alert">
-        <div class="checkbox" style="width:25px;height:25px">
-          <label>
-            <input type="checkbox"> <strong>atetubou1</strong>
-          </label>
+      <div class="radio" style="width:25px;height:25px" v-repeat="p : players">
+        <div v-show="p.isJustice">
+           <div v-class="
+                    alert: isTeamMember,
+                    alert-success: isTeamMember,
+                    " role="alert">
+            <label>
+              <input type="radio" align="left" v-model="isTeamMember"> {{p.name}}
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="checkbox" style="width:25px;height:25px">
-        <label>
-          <input type="checkbox"> atetubou2
-        </label>
-      </div>
-      <div class="checkbox" style="width:25px;height:25px">
-        <label>
-          <input type="checkbox"> atetubou3
-        </label>
       </div>
     </font>
     <br>

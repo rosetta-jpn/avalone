@@ -17,3 +17,8 @@ form {
     float:left;
     width: 300px;
 }
+
+.vote_approve {
+    background-color: #ffff00;
+}
+

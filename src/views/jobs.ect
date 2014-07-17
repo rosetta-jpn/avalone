@@ -9,14 +9,9 @@
     </div>
   </div>
   <h2 class="page-header">Others jobs</h2>
-  <div class="row placeholders other-jobs">
-    <div class="col-xs-6 col-sm-3 placeholder" v-repeat="players">
-      <img v-attr="src:class | imagePath">
-      <h4>{{ name }}</h4>
-    </div>
-  </div>
+  <% include "players_jobs" %>
   <br>
-  <div class="col-lg-6" align="right" >
+  <div class="col-lg-6" align="right">
     <p>
       <a class="btn btn-lg btn-success" role="button" id="go_team">Go Team</a>
     </p>
