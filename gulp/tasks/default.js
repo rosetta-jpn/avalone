@@ -1,4 +1,4 @@
 var gulp = require('gulp');
 
 // The default task (called when you run `gulp` from cli)
-gulp.task('default', ['watch', 'browserify']);
+gulp.task('default', ['watch', 'browserify', 'boot']);
