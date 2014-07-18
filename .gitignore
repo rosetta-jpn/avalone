@@ -21,6 +21,7 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+dist
 
 # Dependency directory
 # Commenting this out is preferred by some people, see
@@ -32,4 +33,3 @@ bower_components
 .lock-wscript
 
 .DS_Store
-
