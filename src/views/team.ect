@@ -1,37 +1,5 @@
 <div id="team" class="scene">
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-        <h3 class ="panel-title">Team Selector</h3>
-        </div>
-        <div class="panel-body" align="center">
-          <h4>atetubou</h4>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-        <h3 class="panel-title">number of Team</h3>
-        </div>
-        <div class="panel-body" align="center">
-          <h4>4</h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-        <h3 class="panel-title">Success condition</h3>
-        </div>
-        <div class="panel-body" align="center">
-          <h4>4 / 4</h4>
-        </div>
-      </div>
-    </div>
-  </div>
+  <% include 'selection_partial' %>
   <h2 class="page-header">Progress</h2>
   <div class="row placeholders">
     <div class="col-xs-6 placeholder">
@@ -60,34 +28,16 @@
       <span class="text-muted">mada</span>
     </div>
   </div>
-  <h2 class="page-header">Team</h2>
-  <form>
-    <div class="checkbox" style="width:25px;height:25px">
-      <label>
-        <input type="checkbox" align="left"> atetubou
-      </label>
-    </div>
-    <div class="alert alert-success" role="alert">
-      <div class="checkbox" style="width:25px;height:25px">
+  <div id="team-org" v-show="isSelector">
+    <h2 class="page-header">Team</h2>
+    <form>
+      <div class="checkbox" style="width:25px;height:25px" v-repeat="players">
         <label>
-          <input type="checkbox"> <strong>atetubou1</strong>
+          <input type="checkbox" align="left" v-model="checked"> {{ name }}
         </label>
       </div>
-    </div>
-    <div class="checkbox" style="width:25px;height:25px">
-      <label>
-        <input type="checkbox"> atetubou2
-      </label>
-    </div>
-    <div class="checkbox" style="width:25px;height:25px">
-      <label>
-        <input type="checkbox"> atetubou3
-      </label>
-    </div>
-    
-    <br>
-    <input type="submit" class="btn btn-primary btn-lg" role="button" id="go_vote" value="Vote »">
-    <br>
-    <br>
-  </form>
+      <br>
+      <input type="submit" class="btn btn-primary btn-lg" role="button" id="go_vote" value="Vote »">
+    </form>
+  </div>
 </div>

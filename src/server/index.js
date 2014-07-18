@@ -18,6 +18,7 @@ app.set('views', path.join(__dirname, '/../views'));
 
 app.engine('ect', ectRenderer.render);
 
+app.use(express.static(path.join(__dirname, '/../../dist/js')));
 app.use(express.static(path.join(__dirname, '/../client')));
 app.use(express.static(path.join(__dirname, '/../../public')));
 app.use(express.static(path.join(__dirname, '/../../bower_components')));

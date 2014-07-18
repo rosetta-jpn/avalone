@@ -22,7 +22,7 @@ utils.extend(QuestObserver.prototype, {
 
   onNewTeam: function (team) {
     this.game.notifyAll('newTeam');
-    new TeamObserver(team, this.game);
+    new TeamObserver(team, this.quest, this.game);
   },
 
   onSuccess: function () {
