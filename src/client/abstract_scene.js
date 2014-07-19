@@ -1,30 +1,19 @@
-var inherit = function (parent, child) {
-  var bridge = function (){};
-  bridge.prototype = parent.prototype;
-  child.prototype = new bridge();
-  return child;
-}
+var utils = require('../utils');
 
 var AbstractScene = module.exports = function (page) {
   this.page = page;
 }
 
-AbstractScene.extend = function (obj) {
-  var parent = this;
-  var child = function (page) {
-    parent.call(this, page);
-    if (this.bind) this.bind();
-  };
-  inherit(parent, child);
-  for (var prop in obj || {}) {
-    child.prototype[prop] = obj[prop];
-  }
-  return child;
+AbstractScene.extend = function () {
+  var args = Array.prototype.slice.call(arguments);
+  args.unshift(this);
+  return utils.inherit.apply(this, args);
 }
 
 AbstractScene.prototype.show = function() {
   $('.scene').hide();
   this.$el.fadeIn();
+  if (this.bind) this.bind();
 }
 
 Object.defineProperty(AbstractScene.prototype, 'client', {
