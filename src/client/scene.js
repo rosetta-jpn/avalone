@@ -1,4 +1,4 @@
-AbstractScene = require('./abstract_scene');
+var AbstractScene = require('./abstract_scene');
 
 var Scene = module.exports = {};
 
