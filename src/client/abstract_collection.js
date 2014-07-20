@@ -1,28 +1,15 @@
-var inherit = function (parent, child) {
-  var bridge = function (){};
-  bridge.prototype = parent.prototype;
-  child.prototype = new bridge();
-  return child;
-}
-
-var extend = function (obj) {
-  var parent = this;
-  var child = function () {
-    parent.apply(this, arguments);
-    if (this.bind) this.bind();
-  };
-  inherit(parent, child);
-  for (var prop in obj || {}) {
-    child.prototype[prop] = obj[prop];
-  }
-  return child;
-}
+var utils = require('../utils');
 
 var AbstractCollection = module.exports = function (page) {
   this.data = {};
   this.page = page;
+  if (this.bind) this.bind();
 }
-AbstractCollection.extend = extend;
+AbstractCollection.extend = function () {
+  var args = Array.prototype.slice.call(arguments);
+  args.unshift(this);
+  return utils.inherit.apply(this, args);
+}
 
 var add = AbstractCollection.prototype.add = function (obj, key, value) {
   if (obj.$add) {

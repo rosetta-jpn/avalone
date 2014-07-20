@@ -33,10 +33,13 @@ var inherit = exports.inherit = function (parent, child) {
     super: parent,
   });
 
-  if (!child) {
+  var proto = Object.create(parent.prototype);
+  if (!child || typeof child !== 'function') {
+    var properties = child || {};
     child = function (){ parent.apply(this, arguments) };
+    extend(proto, properties);
   }
-  child.prototype = Object.create(parent.prototype);
+  child.prototype = proto;
   useClassMethods(child, classMethods);
   return child;
 }
