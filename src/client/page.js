@@ -1,7 +1,5 @@
-var Collection = require('./collection');
 var Scene = require('./scene');
 var Client = require('./client');
-var ViewModel = require('./viewmodel');
 
 var Page = module.exports = function Page(client) {
   this.client = client;
@@ -17,15 +15,6 @@ var Page = module.exports = function Page(client) {
     assassin_phase: new Scene.AssassinPhaseScene(this),
     game_result: new Scene.GameResultScene(this),
   };
-
-  this.models = {
-    profile: new Collection.Profile(this),
-    users: new Collection.Users(this),
-    players: new Collection.Players(this),
-    selection: new Collection.Selection(this),
-  }
-
-  ViewModel.boot(this.models);
 
   this.client.on('notice', this.onNotice.bind(this));
   this.client.on('go:start', this.returnStart.bind(this));
