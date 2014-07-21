@@ -76,6 +76,15 @@ Team.prototype.judge = function(){
     }
 }
 
-
+Team.prototype.toJson = function (user) {
+  var toJson = function (obj) { return obj.toJson(user); }
+  return {
+    selector: toJson(this.selector),
+    group: Object.values(this.group).map(toJson),
+    group_sz: this.group_sz,
+    voter_map: this.voter_map,
+    voter_sz: this.voter_sz,
+  };
+}
 
 module.exports = Team;

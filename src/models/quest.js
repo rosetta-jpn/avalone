@@ -70,4 +70,12 @@ Quest.prototype.onDisAgree = function(){
     this.create_Team();
 }
 
+Quest.prototype.toJson = function (user) {
+  var toJson = function (obj) { return obj.toJson(user); }
+  return {
+    success_number: this.success_number,
+    team: team ? toJson(this.team) : null,
+  };
+}
+
 module.exports = Quest;

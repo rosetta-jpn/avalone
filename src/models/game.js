@@ -123,3 +123,12 @@ Game.prototype.notifyAll = function (type, data) {
   });
 }
 
+Game.prototype.toJson = function (user) {
+  var toJson = function (obj) { return obj.toJson(user); }
+  return {
+    players: this.players.map(toJson),
+    quests: this.quests.map(toJson),
+    selectorIdx: (this.selectorIdx || 0),
+  };
+}
+

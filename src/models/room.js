@@ -60,3 +60,13 @@ Room.prototype.notifyAll = function (type, data) {
     user.notify(type, data);
   });
 }
+
+Room.prototype.toJson = function (user) {
+  var toJson = function (obj) { return obj.toJson(user); }
+  return {
+    name: this.name,
+    owner: toJson(this.owner),
+    users: users.map(toJson),
+    game: this.game ? this.game.toJson() : null,
+  }
+}
