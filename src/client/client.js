@@ -1,6 +1,5 @@
-var Client = module.exports = function Client() {
-  this.socket = io();
-  console.log("Connect with socketIO")
+var Client = function Client() {
+  this.listening = {};
 }
 
 Client.prototype.on = function (type, callback) {
@@ -15,4 +14,13 @@ Client.prototype.submit = function emit(type, value) {
     value: value,
   });
 }
+
+Client.prototype.start = function () {
+  if (this.started) return;
+  this.started = true;
+  this.socket = io();
+  console.log("Connect with socketIO")
+}
+
+Client.client = module.exports = new Client();
 

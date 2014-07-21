@@ -1,6 +1,6 @@
 var Page = require('./page');
-var Client = require('./client');
+var client = require('./client');
+client.start();
 
-var client = new Client();
 
 $(function() { window.page = new Page(client); });
