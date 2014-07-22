@@ -1,16 +1,17 @@
 <div id="lobby" class="scene">
-  <div class="col-lg-6">
+  <div class="col-lg-6 room">
     <font size="5">
-      <ol class="users">
-        <li v-repeat="users" v-attr="id:id | toClassName">
-          {{ name }}
+      <h2>{{ room.name }}</h2>
+      <ol>
+        <li rv-each-user="room#users" rv-id="user.id | toClassName">
+          {{ user.name }}
         </li>
       </ol>
     </font>
   </div>
   <img src="images/loading.gif" width="1000" height="300" border="0" align="center">
-  <div class="col-lg-6" align="center" >
-    <p>
+  <div class="col-lg-6 room" align="center" >
+    <p rv-show="room#canSubmit">
       <a class="btn btn-lg btn-success" role="button" id="start-game">Start Game</a>
     </p>
 

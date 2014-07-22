@@ -15,6 +15,15 @@ var Room = module.exports = function Room(owner, name) {
 utils.inherit(events.EventEmitter, Room);
 utils.extend(Room.prototype, roomModule('userList'));
 
+utils.property(Room.prototype, {
+  users: {
+    get: function () {
+      if (this._users) return this._users;
+      return this._users = Object.values(this.userList);
+    }
+  },
+});
+
 Room.prototype.newGame = function (controller) {
   if (this.game)
     throw new Error('game is already started');
@@ -43,11 +52,14 @@ Room.prototype.toString = function () {
 
 Room.prototype.onEnter = function (user) {
   user.room = this;
-  user.on('destroy', this.leave.bind(this, user));
+  user.once('destroy', this.leave.bind(this, user));
+  this._users = null;
+  this.emit('update');
 }
 
 Room.prototype.onLeave = function (user) {
   delete user.room;
+  this.emit('update');
 }
 
 Room.prototype.calcUsers = function () {
