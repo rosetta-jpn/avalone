@@ -26,7 +26,7 @@ Room.prototype.newGame = function (controller) {
     throw new Error('To start game, the room must have more than 5 users (current users: '
                     + users.length + ')');
 
-  var game = this.game = new Game(users);
+  var game = this.game = Game.classMethods.assignAndCreate(users);
   game.on('end', this.removeGame.bind(this));
   this.emit('newGame', game);
   game.start();

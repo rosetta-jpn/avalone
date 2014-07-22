@@ -35,11 +35,11 @@ var TeamSize = {5:[2,3,2,3,3],
            10:[3,4,4,5,5]};
 
 
-var Game = module.exports = function Game(users){
-    this.players = this.define_jobs(users);
+var Game = module.exports = function Game(players){
+    this.players = players;
     this.buildPlayerMap();
-    this.success_condition = SuccessCondition[users.length.toString()];
-    this.team_sz = TeamSize[users.length.toString()];
+    this.success_condition = SuccessCondition[players.length.toString()];
+    this.team_sz = TeamSize[players.length.toString()];
     this.quests = [];
     this.quest_success_count = 0;
     this.quest_failure_count = 0;
@@ -47,19 +47,29 @@ var Game = module.exports = function Game(users){
 
 utils.inherit(events.EventEmitter,Game);
 
-Game.prototype.start = function () {
-  this.create_Quest();
-}
-
-Game.prototype.define_jobs = function(users){
+utils.extend(Game.classMethods, {
+  assignJobs: function(users){
     var job_list = Jobs[users.length.toString()].concat();
+    // suffle jobs
     job_list.sort(function () { return Math.random() - Math.random(); });
+    // assign jobs
     var players = [];
     for(var i = 0; i < users.length; i++){
-        players.push(new job_list[i](users[i]));
+      players.push(new job_list[i](users[i]));
     }
+    // shuffle players
     players.sort(function () { return Math.random() - Math.random(); });
     return players;
+  },
+
+  assignAndCreate: function(users) {
+    return new Game(this.assignJobs(users));
+  },
+
+});
+
+Game.prototype.start = function () {
+  this.create_Quest();
 }
 
 Game.prototype.buildPlayerMap = function () {
