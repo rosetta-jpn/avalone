@@ -147,6 +147,7 @@ Game.prototype.toJson = function (user) {
     quests: this.quests.map(toJson),
     selectorIdx: (this.selectorIdx || 0),
   };
+}
 
 Game.prototype.isQuest = function(){
   return this.state == "quest";
