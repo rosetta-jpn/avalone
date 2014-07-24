@@ -16,12 +16,13 @@ utils.extend(QuestObserver.prototype, {
   },
 
   onNewQuest: function () {
-    this.game.notifyAll('newQuest');
-    this.quest.voter_map
+    var quest = this.quest;
+    this.game.players.forEach(function (looker) {
+      looker.notify('new:Quest', { quest: quest.toJson(looker) });
+    });
   },
 
   onNewTeam: function (team) {
-    this.game.notifyAll('newTeam');
     new TeamObserver(team, this.quest, this.game);
   },
 

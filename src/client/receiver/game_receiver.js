@@ -1,6 +1,6 @@
 var Game = require('../../models/game')
   , Base = require('./base')
-//  , QuestReceiver = require('./quest_receiver');
+  , QuestReceiver = require('./quest_receiver');
 
 var GameReceiver = module.exports = Base.extend({
   initialize: function (game) {
@@ -18,7 +18,7 @@ var GameReceiver = module.exports = Base.extend({
   onNewQuest: function (json) {
     var quest = this.database.createQuest(json.quest)
     this.game.addQuest(quest);
- //   var questReceiver = new QuestReceiver(quest);
+    var questReceiver = new QuestReceiver(quest);
     this.game.once('new:Team', function () {
       questReceiver.stopListening();
     });
