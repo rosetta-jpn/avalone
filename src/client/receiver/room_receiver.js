@@ -1,7 +1,7 @@
 var Room = require('../../models/room')
   , User = require('../../models/user')
   , Base = require('./base')
-//  , GameReceiver = require('./game_receiver');
+  , GameReceiver = require('./game_receiver');
 
 var RoomReceiver = module.exports = Base.extend({
   initialize: function () {
@@ -29,7 +29,7 @@ var RoomReceiver = module.exports = Base.extend({
 
   onNewGame: function (game) {
     this.room.game = this.database.createGame(json.game);
-    // new GameReceiver(this.room.game);
+    new GameReceiver(this.room.game);
     // this.room.emit('update:Room.game')
   }
 });

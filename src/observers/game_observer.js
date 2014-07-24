@@ -14,14 +14,13 @@ utils.extend(GameObserver.prototype, {
     this.game.on('newQuest', this.onNewQuest.bind(this))
     this.game.on('evilWin', this.onEvilWin.bind(this))
     this.game.on('justiceWin', this.onJusticeWin.bind(this))
-  }, 
+  },
 
   onNewGame: function () {
     this.game.notifyAll('go:jobs');
-    var players = this.game.players
-    players.forEach(function (looker) {
-      playersLook = players.map(function (pl) { return pl.toJson(looker); } );
-      looker.notify('players', { players: playersLook });
+    var game = this.game;
+    this.game.players.forEach(function (looker) {
+      looker.notify('new:Game', { game: game.toJson(looker) });
     });
   },
 
