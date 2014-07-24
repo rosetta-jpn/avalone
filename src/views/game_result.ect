@@ -1,29 +1,7 @@
 <div id="game_result" class="scene">
-  <img src="images/Justice.jpg" alt="Justice" height="400" width="300">
+  <img v-attr="src: game.winner | imageUrl" alt="Justice" height="400" width="300">
   <h2 class="page-header">Players Jobs</h2>
-  <div class="row placeholders">
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Merlin.jpg">
-      <h4>atetubou</h4>
-      <span class="text-muted">Merlin</span>
-    </div>
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Evil.jpg">
-      <h4>atetubou1</h4>
-      <span class="text-muted">Evil</span>
-    </div>
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Assassin.jpg">
-      <h4>atetubou2</h4>
-      <span class="text-muted">Assassin</span>
-    </div>
-    
-    <div class="col-xs-6 col-sm-3 placeholder">
-      <img src="images/Justice.jpg">
-      <h4>atetubou3</h4>
-      <span class="text-muted">Justice</span>
-    </div>
-  </div>
+  <% include "players_jobs" %>
   <div class="col-lg-6" align="center" >
     <p>
       <a class="btn btn-lg btn-success" role="button">Next game</a>

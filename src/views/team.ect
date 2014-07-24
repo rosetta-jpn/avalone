@@ -1,43 +1,30 @@
 <div id="team" class="scene">
-  <% include 'selection_partial' %>
+  <% include "team_select_info" %>
   <h2 class="page-header">Progress</h2>
   <div class="row placeholders">
-    <div class="col-xs-6 placeholder">
-      <img class="img-responsive"  width="100" height="30"src="images/quest_success.jpg">
-      <h4>Success 2-0(atetubou,2)</h4>
-      <span class="text-muted">atetubou,atetubou2</span>
+    <div class="col-xs-6 placeholder" v-repeat="q : quests">
+      
+      <img class="img-responsive"  width="100" height="30" v-attr="src:class | imagePath">
+      <h4>{{q.state}} ({{q.team.selector}},{{q.team_size}})</h4>
+      <span class="text-muted">
+        <span v-repeat="q.members">
+          {{name}}
+        </span>
+      </span>
     </div>
-    <div class="col-xs-6 placeholder">
-      <img class="img-responsive"  width="100" height="30" src="images/quest_fail.jpg">
-      <h4>Fail 2-1(atetubou1,3)</h4>
-      <span class="text-muted">atetubou,atetubou1,atetubou2</span>
-    </div>
-    <div class="col-xs-6 placeholder">
-      <img class="img-responsive"  width="100" height="30" src="images/quest_success.jpg">
-      <h4>Success 3-0(atetbou2,3)</h4>
-      <span class="text-muted">atetubou1,atetubou2,atetubou3</span>
-    </div>
-    <div class="col-xs-6 placeholder">
-      <img class="img-responsive" alt="(4)" width="100" height="30" src="images/quest_now.jpg">
-      <h4>NOW</h4>
-      <span class="text-muted">madagi</span>
-    </div>
-    <div class="col-xs-6 placeholder">
-      <img class="img-responsive" alt="(4)" width="100" height="30" src="images/quest_yet.jpg">
-      <h4>Yet</h4>
-      <span class="text-muted">mada</span>
-    </div>
-  </div>
-  <div id="team-org" v-show="isSelector">
-    <h2 class="page-header">Team</h2>
-    <form>
-      <div class="checkbox" style="width:25px;height:25px" v-repeat="players">
+  <form id="team_candidate" v-show="isTeamSelector">
+    <div class="checkbox" style="width:25px,height:25px" v-repeat="players">
+      <div v-class="
+                    alert: isTeamMember,
+                    alert-success: isTeamMember,
+                    " role="alert">
         <label>
-          <input type="checkbox" align="left" v-model="checked"> {{ name }}
+          <input type="checkbox" align="left" v-model="isTeamMember"> {{name}}
         </label>
       </div>
-      <br>
-      <input type="submit" class="btn btn-primary btn-lg" role="button" id="go_vote" value="Vote »">
-    </form>
-  </div>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary btn-lg" role="button" id="go_vote" value="Vote »">
+    <br>
+  </form>
 </div>

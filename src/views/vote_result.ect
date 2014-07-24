@@ -1,7 +1,7 @@
 <div id="vote_result" class="scene">
   <h2 class="page-header">Vote Result</h2>
   <div align="center">
-    <img src="images/Approve.jpg" alt="Approve" height="400" width="300">
+    <img v-attr="src:isApprove | approveImagePath" height="400" width="300">
   </div>
   <h2 class="page-header">Vote Detail</h2>
   <div class="col-md-6">
@@ -13,42 +13,30 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><span style="background-color: #ffff00">atetubou</span></td>
-          <td>Approve</td>
-        </tr>
-        <tr>
-          <td>atetubou</td>
-          <td>Reject</td>
-        </tr>
-        <tr>
-          <td><span style="background-color: #ffff00">atetubou2</span></td>
-          <td>Approve</td>
-        </tr>
-        <tr>
-          <td><span style="background-color: #ffff00">atetbou3</span></td>
-          <td>Approve</td>
-        </tr>
+        <div v-repeat="p : players">
+          <tr>
+            <td>
+              <div v-class="vote_approve: p | playerIsApprove currentQuest">
+                <span>{{p.name}}</span>
+              </div>
+            </td>
+            <td>{{p | playerIsApprove currentQuest | approveName}}</td>
+          </tr>
+        </div>
       </tbody>
     </table>
   </div>
-  <h2 class="page-header">Team meber</h2>
-  <div class="col-lg-6">
-    <font size="5">
-      <ul>
-        <li> atetubou </li>
-        <li> atetubou1 </li> 
-        <li> atetubou2 </li>
-      </ul>
-    </font>
+  <% include "team_member" %>
+  <div class="col-lg-6" align="center">
+    <div v-show="currentQuest.team.isApprove">
+      <p>
+        <a class="btn btn-lg btn-success" role="button" id="go_mission">Go Mission</a>
+      </p>
+    </div>
+    <div v-show="!currentQuest.team.isAprrove">
+      <p>
+        <a class="btn btn-lg btn-success" role="button" id="next_team">Next Team</a>
+      </p>
+    </div>
   </div>
-  <div class="col-lg-6" align="center" >
-    <p>
-      <a class="btn btn-lg btn-success" role="button" id="go_mission">Go Mission</a>
-    </p>
-    <p>
-      <a class="btn btn-lg btn-success" role="button" id="next_team">Next Team</a>
-    </p>
-  </div>
-  
 </div>
