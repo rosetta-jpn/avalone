@@ -106,7 +106,8 @@ Quest.prototype.toJson = function (user) {
   var toJson = function (obj) { return obj.toJson(user); }
   return {
     success_number: this.success_number,
-    team: team ? toJson(this.team) : null,
+    team_sz: this.team_sz,
+    team: this.team ? toJson(this.team) : null,
   };
 }
 
