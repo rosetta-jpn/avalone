@@ -20,12 +20,9 @@ utils.extend(TeamObserver.prototype, {
   onNewTeam: function () {
     var selector = this.team.selector;
     var self = this;
-    this.game.notifyAll('newTeam');
     this.game.players.forEach(function (player) {
-      player.notify('selection', {
-        selector: selector.toJson(player),
-        teamSize: self.team.group_sz,
-        successSize: self.quest.success_number,
+      player.notify('new:Team', {
+        team: self.team.toJson(player),
       });
     });
   },
@@ -36,7 +33,7 @@ utils.extend(TeamObserver.prototype, {
 
   onVote: function (voter, isAgree) {
     this.game.players.forEach(function (player) {
-      player.notify('vote', {
+      player.notify('vote:Team', {
         player: voter.toJson(player),
         isAgree: isAgree,
       });
@@ -44,11 +41,11 @@ utils.extend(TeamObserver.prototype, {
   },
 
   onAgree: function () {
-    this.game.notifyAll('agreeTeam', this.team.voter_map);
+    this.game.notifyAll('agree:Team', this.team.voter_map);
   },
 
   onDisagree: function () {
-    this.game.notifyAll('disagreeTeam', this.team.voter_map);
+    this.game.notifyAll('disagree:Team', this.team.voter_map);
   },
 });
 

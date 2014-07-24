@@ -1,6 +1,6 @@
 var Quest = require('../../models/quest')
   , Base = require('./base')
-//  , TeamReceiver = require('./team_receiver');
+  , TeamReceiver = require('./team_receiver');
 
 var QuestReceiver = module.exports = Base.extend({
   initialize: function (quest) {
