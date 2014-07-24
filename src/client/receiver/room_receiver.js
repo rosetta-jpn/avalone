@@ -5,14 +5,10 @@ var Room = require('../../models/room')
 
 var RoomReceiver = module.exports = Base.extend({
   initialize: function () {
-    this.onReceiveRoom = this.onReceiveRoom.bind(this);
-    this.onReceiveUser = this.onReceiveUser.bind(this)
-    this.onNewGame = this.onNewGame.bind(this)
-
-    this.client.on('new:Room', this.onReceiveRoom);
-    this.client.on('new:User', this.onReceiveUser);
-
-    this.client.on('new:Game', this.onNewGame);
+    this.listen(this.client, 'new:Room', this.onReceiveRoom.bind(this));
+    this.listen(this.client, 'new:User', this.onReceiveUser.bind(this));
+    this.listen(this.client, 'leave:User', this.onLeaveUser.bind(this));
+    this.listen(this.client, 'new:Game', this.onNewGame.bind(this));
   },
 
   onReceiveRoom: function (json) {
@@ -24,6 +20,11 @@ var RoomReceiver = module.exports = Base.extend({
     var user = this.database.createUser(json.user);
     if (this.room) this.room.enter(user);
     // this.room.emit('update:Room.users')
+  },
+
+  onLeaveUser: function (json) {
+    var user = this.database.createUser(json.user);
+    if (this.room) this.room.leave(user);
   },
 
   onNewGame: function (game) {
