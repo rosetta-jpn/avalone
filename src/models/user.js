@@ -45,7 +45,10 @@ utils.extend(User.prototype, {
 
   notify: function (type, value) {
     console.log("Notify", "(" + this.toString() + ")", type, value)
-    this.socket.emit(type, value);
+    this.socket.emit('event', {
+      type: type,
+      content: value,
+    });
   }
 });
 
