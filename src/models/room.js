@@ -59,7 +59,8 @@ Room.prototype.onEnter = function (user) {
 
 Room.prototype.onLeave = function (user) {
   delete user.room;
-  this.emit('update');
+  if (this.owner === user) this.emit('destroy');
+  else this.emit('update');
 }
 
 Room.prototype.calcUsers = function () {
@@ -78,7 +79,7 @@ Room.prototype.toJson = function (user) {
   return {
     name: this.name,
     owner: toJson(this.owner),
-    users: users.map(toJson),
+    users: this.users.map(toJson),
     game: this.game ? this.game.toJson() : null,
   }
 }
