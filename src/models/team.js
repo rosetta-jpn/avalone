@@ -3,7 +3,8 @@ var utils = require("../utils")
 
 States = ["select_member", "vote", "agree","disagree"]
 
-var Team = function Team(selector,group_sz,voter_sz){
+var Team = function Team(game, selector,group_sz,voter_sz){
+  this.game = game;
   this.selector = selector;
   this.group = {};// User Array
   this.group_sz = group_sz;

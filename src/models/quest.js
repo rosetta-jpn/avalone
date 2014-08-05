@@ -61,7 +61,7 @@ Quest.prototype.start = function () {
 
 Quest.prototype.create_Team = function(){
   var selector = this.game.nextSelector();
-  this.team = new Team(selector, this.team_sz, this.game.players.length);
+  this.team = new Team(this.game, selector, this.team_sz, this.game.players.length);
   this.vote_count += 1;
   this.emit('newTeam', this.team);
   this.team.on("agree",this.onAgree.bind(this));

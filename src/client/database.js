@@ -107,15 +107,11 @@ Database.prototype.readQuest = function (json, save) {
 }
 
 Database.prototype.readTeam = function (json, save) {
-  var selector;
-  if (!players) {
-    selector = this.parsePlayer(json.selector, save);
-  } else {
-    selector = this.findPlayer(json.selector)
-  }
-  var team = new Model.Team(selector, json.group_sz, json.voter_sz);
+  var selector = this.parsePlayer(json.selector, save);
+  var team = new Model.Team(this.findGame(), selector, json.group_sz, json.voter_sz);
   team.group = json.group;
   team.voter_map = json.voter_map;
+  return team;
 }
 
 Database.prototype.readUser = function (json, save) {
