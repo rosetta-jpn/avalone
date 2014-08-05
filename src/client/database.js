@@ -140,8 +140,14 @@ Database.prototype.readRoom = function (json, save) {
   return room;
 }
 
+Database.prototype.log = function () {
+  var args = Array.prototype.slice.call(arguments);
+  args.unshift('Database:');
+  console.log.apply(console, args)
+}
+
 Database.prototype.notify = function (type, obj) {
-  console.log('Database:', type, obj);
+  this.log(type, obj);
   return this.emit(type, obj);
 }
 
