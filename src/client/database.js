@@ -93,6 +93,21 @@ Object.keys(Model).forEach(function (key) {
     }
   }
 
+  var property = {};
+  property['current' + key] = {
+    get: function () {
+      return this['_current' + key];
+    },
+
+    set: function (newObj) {
+      this['_current' + key] = newObj;
+      this.log('change:current' + key, newObj);
+      this.emit('change:current' + key, newObj);
+      return newObj;
+    },
+  }
+
+  utils.property(Database.prototype, property);
 });
 
 Database.prototype.readGame = function (json, save) {
