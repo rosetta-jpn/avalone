@@ -2,7 +2,7 @@ var BasePresenter = require('./base')
   , utils = require('../../utils');
 
 RoomPresenter = module.exports = function () {
-  this.$el = $('.room')
+  this.$el = $('.rv-room')
   this.model = {
     room: this.database.Room,
   };
