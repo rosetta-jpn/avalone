@@ -58,6 +58,30 @@ utils.extend(Controller.prototype, {
     if (users.length < 4) throw new Error('debug fail');
   },
 
+  debugTeamCallback: function () {
+    var team = this.game.currentQuest.team;
+    for (var i = 0; i < this.game.currentQuest.team_sz; i++) {
+       team.add_group(team.selector, this.game.players[i])
+    }
+    team.go_vote();
+  },
+
+  debugVoteCallback: function () {
+    var team = this.game.currentQuest.team;
+    for (var i = 0; i < this.game.players.length; i++) {
+       team.change_voter_map(this.game.players[i], true);
+    }
+    team.judge();
+  },
+
+  debugMissionCallback: function () {
+    var quest = this.game.currentQuest;
+    for (var i = 0; i < quest.members.length; i++) {
+       quest.change_mission_list(quest.members[i], true);
+    }
+    quest.judge_success();
+  },
+
   connectionCallback: function () {
     this.avalon.login(this.socket, this.id);
   },

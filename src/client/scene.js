@@ -7,12 +7,18 @@ Scene.StartScene = AbstractScene.extend({
 
   bind: function () {
     $('form#enterRoom').on('submit', this.onSubmitRoom.bind(this));
+    this.$el.find('button.debug').on('click', this.onDebug.bind(this));
     this.client.on('go:lobby', this.goLobby.bind(this))
   },
 
   onSubmitRoom: function (e) {
     e.preventDefault();
     this.client.submit('enter', $(e.target).formData());
+  },
+
+  onDebug: function (e) {
+    e.preventDefault();
+    this.client.submit('debug');
   },
 
   goLobby: function () {
@@ -60,11 +66,17 @@ Scene.TeamScene = AbstractScene.extend({
   bind: function() {
     this.$el.find('#go_vote').on('submit',this.onGoVote.bind(this));
     this.client.on('go:vote', this.goVote.bind(this));
+    this.$el.find('button.debug').on('click', this.onDebug.bind(this));
   },
 
   onGoVote: function (e) {
     e.preventDefault();
     this.client.submit('orgTeam', $(e.target).formData());
+  },
+
+  onDebug: function (e) {
+    e.preventDefault();
+    this.client.submit('debugTeam');
   },
 
   goVote: function () {
@@ -76,7 +88,13 @@ Scene.VoteScene = AbstractScene.extend({
   selector: '#vote',
 
   bind: function() {
+    this.$el.find('button.debug').on('click', this.onDebug.bind(this));
     this.client.on('go:vote_result',this.goVoteResult.bind(this));
+  },
+
+  onDebug: function (e) {
+    e.preventDefault();
+    this.client.submit('debugVote');
   },
 
   goVoteResult: function (){
@@ -113,6 +131,7 @@ Scene.MissionScene = AbstractScene.extend({
   bind: function(){
     this.$el.find('#mission_success').on('click',this.onMissionSuccess.bind(this));
     this.$el.find('#mission_fail').on('click',this.onMissionFail.bind(this));
+    this.$el.find('button.debug').on('click', this.onDebug.bind(this));
     this.client.on('go:mission_result',this.goMissionResult.bind(this));
   },
 
@@ -124,6 +143,11 @@ Scene.MissionScene = AbstractScene.extend({
   onMissionFail: function(e){
     e.preventDefault();
     this.client.submit('mission_fail');
+  },
+
+  onDebug: function (e) {
+    e.preventDefault();
+    this.client.submit('debugMission');
   },
 
   goMissionResult: function(){

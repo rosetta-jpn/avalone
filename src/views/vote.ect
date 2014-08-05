@@ -2,9 +2,12 @@
   <% include "team_select_info" %>
   <% include "team_member" %>
   <br>
-  <div align="center">
-    <a href="#" id="approve"><img src="images/Approve.jpg" alt="Approve" style="margin-right:100px;"></a>
-    <a href="#" id="reject"><img src="images/Reject.jpg" alt="Reject"></a>
+  <div align="center" class="rv-team">
+    <a href="#" id="approve"><img src="images/Approve.jpg" alt="Approve" style="margin-right:100px;"
+      rv-on-click="handlers#submitApprove"></a>
+    <a href="#" id="reject"><img src="images/Reject.jpg" alt="Reject"
+      rv-on-click="handlers#submitReject"></a>
   </div>
   <br><br>
+  <button class="btn btn-default debug">Debug</button>
 </div>
