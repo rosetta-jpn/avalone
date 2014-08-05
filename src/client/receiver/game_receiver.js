@@ -17,7 +17,7 @@ var GameReceiver = module.exports = Base.extend({
 
   onNewQuest: function (json) {
     var quest = this.database.createQuest(json.quest)
-    this.game.addQuest(quest);
+    this.game.create_Quest(quest);
     var questReceiver = new QuestReceiver(quest);
     this.game.once('new:Team', function () {
       questReceiver.stopListening();

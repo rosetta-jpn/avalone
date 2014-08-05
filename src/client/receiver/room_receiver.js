@@ -27,7 +27,7 @@ var RoomReceiver = module.exports = Base.extend({
     if (this.room) this.room.leave(user);
   },
 
-  onNewGame: function (game) {
+  onNewGame: function (json) {
     this.room.game = this.database.createGame(json.game);
     new GameReceiver(this.room.game);
     // this.room.emit('update:Room.game')
