@@ -15,7 +15,7 @@ var QuestReceiver = module.exports = Base.extend({
     var team = this.database.createTeam(json.team);
     this.quest.team = team;
 
-    this.classMethods.changeCurrentTeam(team);
+    this.database.currentTeam = team;
     var teamReceiver = new TeamReceiver(team);
 
     this.quest.emit('new:Quest.team')
