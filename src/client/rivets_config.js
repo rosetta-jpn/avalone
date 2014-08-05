@@ -8,11 +8,18 @@ rivets.adapters['#'] = {
     if (obj.removeListener)
       obj.removeListener('update', callback);
   },
+
   read: function(obj, keypath) {
-    return obj[keypath];
+    var value = obj[keypath]
+    if (value && value.read) return value.read;
+    else return value;
   },
+
   publish: function(obj, keypath, value) {
-    obj[keypath] = value;
+    if (obj[keypath] && obj[keypath].publish)
+      obj[keypath].publish(value);
+    else
+      obj[keypath] = value;
   }
 }
 
