@@ -3,14 +3,12 @@ var utils = require('../utils')
 /* Public: Controller - dispatches received requests
  * 
  * type - the string which represents the method to handle the request.
- * data - the object as the received data.
  * avalon - the Avalon object.
  * connector - the SocketIOConnector object which received the request.
  * socket - the SocketIO object which represents the sender.
  */
-var Controller = module.exports = function Controller(type, data, avalon, connector, socket) {
+var Controller = module.exports = function Controller(type, avalon, connector, socket) {
   this.type = type;
-  this.data = data;
   this.avalon = avalon;
   this.connector = connector;
   this.socket = socket;
@@ -19,12 +17,14 @@ var Controller = module.exports = function Controller(type, data, avalon, connec
 /* Public: Run hander method.
  * Run the "this.type + 'Callback'" method as the hander method.
  *
+ * data - the received data.
+ *
  * Example
  *   controller.type; => 'connection'
  *   controller.dispatch(); => Run the 'connectionCallback'
  */
-Controller.prototype.dispatch = function () {
-  this[this.type + 'Callback']();
+Controller.prototype.dispatch = function (data) {
+  this[this.type + 'Callback'](data);
 }
 
 utils.property(Controller.prototype, {
@@ -67,14 +67,14 @@ utils.extend(Controller.prototype, {
     this.user.disconnect();
   },
 
-  enterCallback: function () {
-    this.user.rename(this.data.user.name);
-    var roomname = this.data.room.name;
+  enterCallback: function (data) {
+    this.user.rename(data.user.name);
+    var roomname = data.room.name;
     var room = this.avalon.rooms[roomname];
     if (room) {
       room.enter(this.user);
     } else {
-      this.avalon.createRoom(this.user, this.data.room.name);
+      this.avalon.createRoom(this.user, data.room.name);
     }
   },
 
@@ -82,9 +82,9 @@ utils.extend(Controller.prototype, {
     this.user.room.newGame(this.user);
   },
 
-  orgTeamCallback: function () {
+  orgTeamCallback: function (data) {
     var selector = this.player, self = this;
-    this.data.players.forEach(function (playerData) {
+    data.players.forEach(function (playerData) {
       var player =  self.game.playerMap[playerData.id];
       self.game.currentQuest.team.add_group(selector, player);
     })

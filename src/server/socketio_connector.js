@@ -40,7 +40,7 @@ SocketIOConnector.prototype.newSocket = function (socket) {
 
 SocketIOConnector.prototype.callController = function (socket, type, data) {
   try {
-    new Controller(type, data, this.avalon, this, socket).dispatch();
+    new Controller(type, this.avalon, this, socket).dispatch(data);
   } catch (e) {
     console.log(e.name);
     console.log(e.message);

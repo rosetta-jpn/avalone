@@ -22,7 +22,7 @@ describe('Controller', function () {
 
   beforeEach(function () {
     var socket = ctx.user ? ctx.user.socket : {}
-    controller = new Controller(ctx.type, ctx.data, ctx.avalon, {}, ctx.socket || socket);
+    controller = new Controller(ctx.type, ctx.avalon, {}, ctx.socket || socket);
   });
 
   describe('#connectionCallback', function () {
@@ -35,7 +35,7 @@ describe('Controller', function () {
     });
 
     it('emit', function () {
-      controller.connectionCallback();
+      controller.connectionCallback(ctx.data);
       expect(ctx.spy).to.have.been.calledWith('go:start');
     });
   });
@@ -47,7 +47,7 @@ describe('Controller', function () {
     });
 
     it('notify go:jobs', function () {
-      controller.gameStartCallback();
+      controller.gameStartCallback(ctx.data);
       expect(ctx.room.owner.socket.emit).to.have.been.calledWith('go:jobs');
     });
   });
@@ -81,7 +81,7 @@ describe('Controller', function () {
     });
 
     it('with no error', function () {
-      controller.orgTeamCallback();
+      controller.orgTeamCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been.calledWith('go:vote');
     });
   });
@@ -98,7 +98,7 @@ describe('Controller', function () {
     });
 
     it('with no error', function () {
-      controller.voteApproveCallback();
+      controller.voteApproveCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been.calledWith('vote');
     });
   });
