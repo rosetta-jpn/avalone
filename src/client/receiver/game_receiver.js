@@ -6,8 +6,8 @@ var GameReceiver = module.exports = Base.extend({
   initialize: function (game) {
     this.game = game;
 
-    this.client.on('new:Quest', this.onNewQuest.bind(this));
-    this.client.on('update:Game', this.onUpdateGame.bind(this));
+    this.listen(this.client, 'new:Quest', this.onNewQuest.bind(this));
+    this.listen(this.client, 'update:Game', this.onUpdateGame.bind(this));
   },
 
   onUpdateGame: function (json) {
