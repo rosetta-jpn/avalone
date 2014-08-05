@@ -1,14 +1,16 @@
 <div id="jobs" class="scene">
-  <h2 class="page-header">Your job</h2>
-  <div class="profile">
+  <h2 class="page-header">Player jobs</h2>
+  <div class="profile rv-game" rv-each-player="game#players">
     <h3>{{ player.name }}</h3>
     <div align="center">
       <p>
-        <img v-attr="src:player.class | imagePath">
+        <img rv-src="player.classMethods.className | imagePath"
+             rv-alt="player.classMethods.className"
+             rv-title="player.classMethods.className"
+             >
       </p>
     </div>
   </div>
-  <h2 class="page-header">Others jobs</h2>
   <% include "players_jobs" %>
   <br>
   <div class="col-lg-6" align="right">

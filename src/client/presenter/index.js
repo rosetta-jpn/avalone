@@ -7,4 +7,5 @@ var Presenter = module.exports = function () {
 }
 
 Presenter.RoomPresenter = require('./room_presenter');
+Presenter.GamePresenter = require('./game_presenter');
 

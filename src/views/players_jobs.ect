@@ -1,6 +1,6 @@
-<div class="row placeholders other-jobs">
-    <div class="col-xs-6 col-sm-3 placeholder" v-repeat="players">
-      <img v-attr="src:class | imagePath" height="170px" width="110px">
-      <h4>{{ name }}</h4>
-    </div>
+<div class="row placeholders other-jobs rv-game">
+  <div class="col-xs-6 col-sm-3 placeholder" rv-each-player="game#players">
+    <img rv-src="player.class | imagePath" rv-alt="player.class" height="170px" width="110px">
+    <h4>{{ player.name }}</h4>
   </div>
+</div>

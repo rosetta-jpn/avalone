@@ -1,22 +1,22 @@
 <div id="mission_result" class="scene">
-  <div align="center">
-    <img v-attr="src:currentQuest.result |  imagePath" height="400" width="300">
+  <div class="rv-quest" align="center">
+    <img v-attr="quest.result | imagePath" height="400" width="300">
   </div>
   <br>
   <br>
   <br>
   <div class="col-lg-6" align="center">
-    <div v-show="game.isQuest">
+    <div v-show="game#isQuest">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="go_next_team">Go Next Team</a>
       </p>
     </div>
-    <div v-show="game.isAssassin">
+    <div v-show="game#isAssassin">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="assassinate">Assassinate</a>
       </p>
     </div>
-    <div v-show="game.isEvilWin">
+    <div v-show="game#isEvilWin">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="go_game_result">Go Game Result</a>
       </p>

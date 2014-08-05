@@ -1,17 +1,17 @@
 <div id="assassin_phase" class="scene">
   <h2 class="page-header">Assassin Phase</h2>
-  <form>
+  <form class="rv-game">
     <font size="5">
-      <div class="radio" style="width:25px;height:25px" v-repeat="p : players">
-        <div v-show="p.isJustice">
-           <div v-class="
-                    alert: isTeamMember,
-                    alert-success: isTeamMember,
-                    " role="alert">
-            <label>
-              <input type="radio" align="left" v-model="isTeamMember"> {{p.name}}
-            </label>
-          </div>
+      <div class="radio" style="width:25px;height:25px"
+        rv-each-selection="game#playerSelections"
+        rv-hide="selection.player#isEvil">
+        <div
+          rv-class-alert="selection#isSelected"
+          rv-class-alert-success="selection#isSelected"
+          role="alert">
+          <label>
+            <input type="radio" align="left" rv-checked="selection#isSelected"> {{ selection.player.name }}
+          </label>
         </div>
       </div>
     </font>
