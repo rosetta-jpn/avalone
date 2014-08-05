@@ -1,39 +1,39 @@
 <div id="vote_result" class="scene">
   <h2 class="page-header">Vote Result</h2>
-  <div align="center">
-    <img v-attr="src:isApprove | approveImagePath" height="400" width="300">
-  </div>
-  <h2 class="page-header">Vote Detail</h2>
-  <div class="col-md-6">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Vote</th>
-        </tr>
-      </thead>
-      <tbody>
-        <div v-repeat="p : players">
+  <div class="rv-team">
+    <div align="center">
+      <img rv-src="team#isApprove | showIsApprove | imagePath" height="400" width="300">
+    </div>
+    <h2 class="page-header">Vote Detail</h2>
+    <div class="col-md-6">
+      <table class="table">
+        <thead>
           <tr>
+            <th>#</th>
+            <th>Vote</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr rv-each-vote="team#votes">
             <td>
-              <div v-class="vote_approve: p | playerIsApprove currentQuest">
-                <span>{{p.name}}</span>
+              <div rv-class-vote_approve="vote.isApprove">
+                <span>{{ vote.player.name }}</span>
               </div>
             </td>
-            <td>{{p | playerIsApprove currentQuest | approveName}}</td>
+            <td>{{ vote#isApprove | showIsApprove }}</td>
           </tr>
-        </div>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
   <% include "team_member" %>
-  <div class="col-lg-6" align="center">
-    <div v-show="currentQuest.team.isApprove">
+  <div class="col-lg-6 rv-team" align="center">
+    <div rv-show="team#isApprove">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="go_mission">Go Mission</a>
       </p>
     </div>
-    <div v-show="!currentQuest.team.isAprrove">
+    <div rv-hide="team#isApprove">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="next_team">Next Team</a>
       </p>

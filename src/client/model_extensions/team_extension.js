@@ -27,11 +27,15 @@ Team.prototype.votes = function () {
   return this.game.players.map(function (player) {
     return {
       isApprove: function () {
-        return self.isApprove(player);
+        return self.isApprovedBy(player);
       },
 
       player: player,
     }
   });
+}
+
+Team.prototype.isMember = function () {
+  return this.isContainMember(database.playerProfile);
 }
 

@@ -84,7 +84,7 @@ utils.extend(Controller.prototype, {
 
   orgTeamCallback: function (data) {
     var selector = this.player, self = this;
-    data.players.forEach(function (playerData) {
+    data.group.forEach(function (playerData) {
       var player =  self.game.playerMap[playerData.id];
       self.game.currentQuest.team.add_group(selector, player);
     })
