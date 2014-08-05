@@ -91,11 +91,11 @@ utils.extend(Controller.prototype, {
     self.game.currentQuest.team.go_vote();
   },
 
-  voteApproveCallback: function () {
+  approveTeamCallback: function () {
     this.game.currentQuest.team.change_voter_map(this.player, true);
   },
 
-  voteRejectCallback: function () {
+  rejectTeamCallback: function () {
     this.game.currentQuest.team.change_voter_map(this.player, false);
   },
 });

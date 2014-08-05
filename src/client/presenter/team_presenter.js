@@ -30,6 +30,16 @@ TeamPresenter.prototype.eventHandlers = {
   submitTeam: function (ev) {
     ev.preventDefault();
     this.client.submit('orgTeam', this.model.team.toJson());
-  }
+  },
+
+  submitApprove: function (ev) {
+    ev.preventDefault();
+    this.client.submit('approveTeam', this.model.team.toJson());
+  },
+
+  submitReject: function (ev) {
+    ev.preventDefault();
+    this.client.submit('rejectTeam', this.model.team.toJson());
+  },
 }
 

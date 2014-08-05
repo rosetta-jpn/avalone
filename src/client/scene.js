@@ -80,19 +80,7 @@ Scene.VoteScene = AbstractScene.extend({
   selector: '#vote',
 
   bind: function() {
-    this.$el.find('#approve').on('click',this.onVoteApprove.bind(this));
-    this.$el.find('#reject').on('click',this.onVoteReject.bind(this));
     this.client.on('go:vote_result',this.goVoteResult.bind(this));
-  },
-
-  onVoteApprove: function (e) {
-    e.preventDefault();
-    this.client.submit('voteApprove');
-  },
-
-  onVoteReject: function (e){
-    e.preventDefault();
-    this.client.submit('voteReject');
   },
 
   goVoteResult: function (){
