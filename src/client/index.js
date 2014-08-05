@@ -2,7 +2,7 @@ require('../utils/extensions')
 require('./rivets_config')
 require('./model_extensions')
 
-var Page = require('./page');
+var Router = require('./router');
 var client = require('./client');
 var Presenter = require('./presenter');
 var database = require('./database');
@@ -19,5 +19,5 @@ new ProfileReceiver();
 $(function() {
   window.database = database;
   window.presenters = Presenter();
-  window.page = new Page(client);
+  window.router = new Router(client);
 });

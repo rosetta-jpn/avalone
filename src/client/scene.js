@@ -16,8 +16,8 @@ Scene.StartScene = AbstractScene.extend({
   },
 
   goLobby: function () {
-    if (this.page.isCurrentScene(this))
-      this.page.changeScene('lobby');
+    if (this.router.isCurrentScene(this))
+      this.router.changeScene('lobby');
   },
 });
 
@@ -36,8 +36,8 @@ Scene.LobbyScene = AbstractScene.extend({
   },
 
   goJobs: function () {
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('jobs');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('jobs');
     }
   },
 });
@@ -50,8 +50,8 @@ Scene.JobsScene = AbstractScene.extend({
   },
 
   goTeam: function () {
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('team');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('team');
     }
   },
 });
@@ -70,8 +70,8 @@ Scene.TeamScene = AbstractScene.extend({
   },
 
   goVote: function () {
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('vote');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('vote');
     }
   },
 });
@@ -96,8 +96,8 @@ Scene.VoteScene = AbstractScene.extend({
   },
 
   goVoteResult: function (){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('vote_result');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('vote_result');
     }
   },
 });
@@ -121,13 +121,13 @@ Scene.VoteResultScene = AbstractScene.extend({
     this.client.submit('next_team');
   },
   goMission: function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('mission');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('mission');
     }
   },
   goNextTeam: function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('team');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('team');
     }
   }
 });
@@ -152,8 +152,8 @@ Scene.MissionScene = AbstractScene.extend({
   },
 
   goMissionResult: function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('mission_result');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('mission_result');
     }
   },
 });
@@ -186,20 +186,20 @@ Scene.MissionResultScene = AbstractScene.extend({
   },
 
   goGoNextTeam: function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('team');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('team');
     }
   },
 
   goAssassinate: function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('assassin_phase');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('assassin_phase');
     }
   },
 
   goGameResult: function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('game_result');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('game_result');
     }
   },
 });
@@ -218,8 +218,8 @@ Scene.AssassinPhaseScene = AbstractScene.extend({
     this.client.submit('go_game_result');
   },
   goAssassinGameResult: function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('game_result');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('game_result');
     }
   },
 });
@@ -245,14 +245,14 @@ Scene.GameResultScene= AbstractScene.extend({
   },
 
   goNextGame:function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('lobby');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('lobby');
     }
   },
 
   goExitGame:function(){
-    if(this.page.isCurrentScene(this)){
-      this.page.changeScene('start');
+    if(this.router.isCurrentScene(this)){
+      this.router.changeScene('start');
     }
   },
 

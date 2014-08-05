@@ -1,7 +1,7 @@
 var utils = require('../utils');
 
-var AbstractScene = module.exports = function (page) {
-  this.page = page;
+var AbstractScene = module.exports = function (router) {
+  this.router = router;
 }
 
 AbstractScene.extend = function () {
@@ -17,7 +17,7 @@ AbstractScene.prototype.show = function() {
 }
 
 Object.defineProperty(AbstractScene.prototype, 'client', {
-  get: function () { return this.page.client; },
+  get: function () { return this.router.client; },
 });
 
 Object.defineProperty(AbstractScene.prototype, '$el', {
