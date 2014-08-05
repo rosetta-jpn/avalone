@@ -5,8 +5,9 @@ var client = require('../client')
 module.exports = Presenter = function () {}
 
 utils.extend(Presenter.prototype, {
-  bind: function () {
+  bind: function (range) {
     var self = this;
+    this.$el = (range || $).find(this.selector);
     this.view = rivets.bind(this.$el, this.model, {
       formatters: this.formatters,
       config: {

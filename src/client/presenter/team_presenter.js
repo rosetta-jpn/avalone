@@ -1,17 +1,18 @@
 var BasePresenter = require('./base')
   , utils = require('../../utils');
 
-TeamPresenter = module.exports = function () {
-  this.$el = $('.rv-team')
+TeamPresenter = module.exports = function (range) {
   this.prepareModel({
     team: this.database.team,
   });
-  this.bind();
+  this.bind(range);
 
   this.database.on('new:Team', this.changeTeam.bind(this));
 }
 
 utils.inherit(BasePresenter, TeamPresenter);
+
+TeamPresenter.prototype.selector = '.rv-team'
 
 TeamPresenter.prototype.changeTeam = function (team) {
   this.model.team = team;

@@ -1,17 +1,18 @@
 var BasePresenter = require('./base')
   , utils = require('../../utils');
 
-QuestPresenter = module.exports = function () {
-  this.$el = $('.rv-quest')
+QuestPresenter = module.exports = function (range) {
   this.model = {
     quest: this.database.quest,
   };
-  this.bind();
+  this.bind(range);
 
   this.database.on('new:Quest', this.changeQuest.bind(this));
 }
 
 utils.inherit(BasePresenter, QuestPresenter);
+
+QuestPresenter.prototype.selector = '.rv-quest'
 
 QuestPresenter.prototype.changeQuest = function (quest) {
   this.model.quest = quest;

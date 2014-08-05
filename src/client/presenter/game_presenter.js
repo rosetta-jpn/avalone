@@ -1,17 +1,18 @@
 var BasePresenter = require('./base')
   , utils = require('../../utils');
 
-GamePresenter = module.exports = function () {
-  this.$el = $('.rv-game')
+GamePresenter = module.exports = function (range) {
   this.model = {
     game: this.database.game,
   };
-  this.bind();
+  this.bind(range);
 
   this.database.on('new:Game', this.changeGame.bind(this));
 }
 
 utils.inherit(BasePresenter, GamePresenter);
+
+GamePresenter.prototype.selector = '.rv-game'
 
 GamePresenter.prototype.changeGame = function (game) {
   this.model.game = game;
