@@ -1,6 +1,7 @@
 var Model = require('../models')
   , utils = require('../utils')
-  , events = require('events');
+  , events = require('events')
+  , createDummy = require('./dummy_data')
 
 var Database = function () {
   for (var key in identifiers) {
@@ -9,6 +10,9 @@ var Database = function () {
 }
 
 utils.inherit(events.EventEmitter, Database);
+Database.prototype.createDummy = function () {
+  createDummy(this);
+}
 
 var identifiers = {
   User: 'id',
