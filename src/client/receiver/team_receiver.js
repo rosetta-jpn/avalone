@@ -4,6 +4,7 @@ var Team = require('../../models/quest')
 var TeamReceiver = module.exports = Base.extend({
   initialize: function (team) {
     this.team = team;
+    this.listen(this.client, 'change:Team.members', this.onChangeMembers.bind(this));
     this.listen(this.client, 'vote:Team', this.onVote.bind(this));
     this.listen(this.client, 'agree:Team', this.onAgree.bind(this));
     this.listen(this.client, 'disagree:Team', this.onDisagree.bind(this));
@@ -15,6 +16,14 @@ var TeamReceiver = module.exports = Base.extend({
 
   onRemoveMember: function () {
     this.team.remove_group(this.team.selector, this.collection.createPlayer(json.player));
+  },
+
+  onChangeMembers: function (json) {
+    var database = this.database;
+    var members = json.members.map(function (player) {
+      return database.createPlayer(player);
+    });
+    this.team.members = members;
   },
 
   onAgree: function () {
