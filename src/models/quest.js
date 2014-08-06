@@ -87,7 +87,7 @@ Quest.prototype.change_mission_list = function(missioner,mission_res){
     throw 'the player isn\'t team member';
 
   this.mission_list[missioner.id] = mission_res;
-  this.emit('voteMission', missioner, mission_res);
+  this.emit('vote:Mission', missioner, mission_res);
   this.emit('update');
 }
 

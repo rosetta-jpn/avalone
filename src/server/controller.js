@@ -92,10 +92,24 @@ utils.extend(Controller.prototype, {
   },
 
   approveTeamCallback: function () {
-    this.game.currentQuest.team.change_voter_map(this.player, true);
+    var team = this.game.currentQuest.team;
+    team.change_voter_map(this.player, true);
+    if (team.isAllVoted()) team.judge();
   },
 
   rejectTeamCallback: function () {
-    this.game.currentQuest.team.change_voter_map(this.player, false);
+    var team = this.game.currentQuest.team;
+    team.change_voter_map(this.player, false);
+    if (team.isAllVoted()) team.judge();
+  },
+
+  successQuestCallback: function () {
+    this.game.currentQuest.change_mission_list(this.player, true);
+    if (this.game.currentQuest.isAllVoted()) this.game.currentQuest.judge_success();
+  },
+
+  failQuestCallback: function () {
+    this.game.currentQuest.change_mission_list(this.player, false);
+    if (this.game.currentQuest.isAllVoted()) this.game.currentQuest.judge_success();
   },
 });

@@ -102,4 +102,46 @@ describe('Controller', function () {
         .calledWith('event', sinon.match.has('type', 'vote:Team'));
     });
   });
+
+  describe('#successQuestCallback', function () {
+    beforeEach(function () {
+      ctx.use('game', function () { return this.room.newGame(ctx.user); });
+      ctx.use('data', function () { return {}; });
+
+      helpers.createRoom(ctx);
+      helpers.spyRoomMembers(ctx);
+      helpers.orgTeam(ctx);
+      helpers.approveTeam(ctx);
+    });
+
+    it('with no error', function () {
+      ctx.user = ctx.game.currentQuest.members[0].user;
+      console.log(ctx.user);
+      ctx.controller.successQuestCallback(ctx.data);
+      expect(ctx.user.socket.emit).to.have.been
+        .calledWith('event', sinon.match.has('type', 'vote:Mission'));
+    });
+
+    context('approve all members', function () {
+      beforeEach(function () {
+        var quest = ctx.game.currentQuest;
+        for (var i = 1; i < quest.members.length; i++) {
+          quest.change_mission_list(quest.members[i], true);
+        }
+        ctx.user = ctx.game.currentQuest.members[0].user;
+      });
+
+      it ('receive successQuest', function () {
+        ctx.controller.successQuestCallback(ctx.data);
+        expect(ctx.user.socket.emit).to.have.been
+          .calledWith('event', sinon.match.has('type', 'successQuest'));
+      });
+
+      it ('create next Quest', function () {
+        ctx.controller.successQuestCallback(ctx.data);
+        expect(ctx.room.game.quests).to.have
+          .length(2);
+      });
+    })
+  });
 });

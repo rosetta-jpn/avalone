@@ -52,6 +52,14 @@ exports.orgTeam = function (ctx) {
   team.go_vote();
 }
 
+exports.approveTeam = function (ctx) {
+  var team = ctx.game.currentQuest.team;
+  for (var i = 0; i < ctx.game.players.length; i++) {
+    team.change_voter_map(ctx.game.players[i], true);
+  }
+  team.judge();
+}
+
 exports.spyRoomMembers = function (ctx) {
   ctx.users.forEach(function (user) {
     user.socket.emit = sinon.spy();

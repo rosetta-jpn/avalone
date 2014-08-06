@@ -1,7 +1,8 @@
 <div id="mission" class="scene">
   <h2 class="page-header">Mission</h2>
-  <div align="center">
-    <a href="#" id="mission_success"><img src="images/Success.jpg" alt="Success" style="margin-right:200px;"></a>
-    <a href="#" id="mission_fail"><img src="images/Fail.jpg" alt="Fail"></a>
+  <button class="btn btn-default debug">Debug</button>
+  <div align="center" class="rv-quest" rv-hshow="quest.team#isMember">
+    <a href="#" rv-on-click="handlers#submitSuccess"><img src="images/Success.jpg" alt="Success" style="margin-right:200px;"></a>
+    <a href="#" rv-on-click="handlers#submitFail"><img src="images/Fail.jpg" alt="Fail"></a>
   </div>
 </div>

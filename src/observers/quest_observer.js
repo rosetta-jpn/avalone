@@ -13,6 +13,7 @@ utils.extend(QuestObserver.prototype, {
     this.quest.on('newTeam', this.onNewTeam.bind(this))
     this.quest.on('success', this.onSuccess.bind(this))
     this.quest.on('failure', this.onFailure.bind(this))
+    this.quest.on('vote:Mission', this.onVoteMission.bind(this))
   },
 
   onNewQuest: function () {
@@ -27,10 +28,22 @@ utils.extend(QuestObserver.prototype, {
   },
 
   onSuccess: function () {
-    this.game.notifyAll('successQuest');
+    this.game.notifyAll('successQuest', {
+      success: this.quest.successVotes(),
+      failure: this.quest.failureVotes(),
+    });
   },
 
   onFailure: function () {
-    this.game.notifyAll('failureQuest');
+    this.game.players.forEach(function (looker) {
+      looker.notify('failureQuest', { quest: quest.toJson(looker) });
+    });
+  },
+
+  onVoteMission: function (player, vote) {
+    player.notify('vote:Mission', {
+      player: player.toJson(),
+      vote: vote,
+    })
   },
 });

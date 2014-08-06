@@ -8,6 +8,8 @@ var QuestReceiver = module.exports = Base.extend({
 
     this.listen(this.client, 'new:Team', this.onNewTeam.bind(this));
     this.listen(this.client, 'vote', this.onVote.bind(this));
+    this.listen(this.client, 'successQuest', this.onQuestResult.bind(this, true));
+    this.listen(this.client, 'failureQuest', this.onQuestResult.bind(this, false));
   },
 
   onNewTeam: function (json) {
@@ -27,6 +29,11 @@ var QuestReceiver = module.exports = Base.extend({
   onVote: function (json) {
     var player = this.database.createPlayer(json.player)
     this.quest.change_voter_map(player, json.isAgree);
+  },
+
+  onQuestResult: function (isSuccess, json) {
+    this.quest.applyResult(json.success, json.failure, isSuccess);
+    this.router.reserveChangeScene('mission', 'mission_result');
   },
 
 });
