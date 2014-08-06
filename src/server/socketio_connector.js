@@ -42,6 +42,8 @@ SocketIOConnector.prototype.callController = function (socket, type, data) {
   try {
     new Controller(type, data, this.avalon, this, socket).dispatch();
   } catch (e) {
+    console.log(e.name);
+    console.log(e.message);
     console.log(e.stack);
     console.log('An Error occurred when running Controller.');
   }
