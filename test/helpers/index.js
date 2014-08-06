@@ -5,11 +5,14 @@ var chai = require('chai')
 chai.use(sinonChai);
 var expect = chai.expect;
 
-require('../src/utils/extensions');
+require('../../src/utils/extensions');
 
-var Avalon = require('../src/models/avalon')
-  , User = require('../src/models/user')
-  , RoomObserver = require('../src/observers/room_observer');
+var Avalon = require('../../src/models/avalon')
+  , User = require('../../src/models/user')
+  , RoomObserver = require('../../src/observers/room_observer')
+  , Context = require('./context');
+
+exports.Context = Context;
 
 exports.createConnectorDummy = function (ctx) {
   function notice (type, data) {
@@ -24,8 +27,6 @@ exports.createConnectorDummy = function (ctx) {
 }
 
 exports.createRoom = function (ctx) {
-  ctx.avalon = ctx.avalon || new Avalon();
-
   var sockets = ['hoge', 'fuga', 'java', 'gava', 'yaba'].map(function (name) {
     return { id: name, emit: function () {} };
   });
@@ -41,6 +42,14 @@ exports.createRoom = function (ctx) {
   new RoomObserver(ctx.room, ctx.avalon);
 
   for (var i = 1; i < users.length; i++) ctx.room.enter(users[i]);
+}
+
+exports.orgTeam = function (ctx) {
+  var team = ctx.game.currentQuest.team;
+  for (var i = 0; i < team.group_sz; i++) {
+    team.add_group(ctx.game.currentSelector, ctx.game.players[i]);
+  }
+  team.go_vote();
 }
 
 exports.spyRoomMembers = function (ctx) {

@@ -1,4 +1,4 @@
-var helper = require('../helper')
+var helpers = require('../helpers')
   , chai = require('chai')
   , sinon = require('sinon')
   , sinonChai = require('sinon-chai')
@@ -9,53 +9,54 @@ var helper = require('../helper')
   , Controller = require('../../src/server/controller');
 
 chai.use(sinonChai);
-var expect = chai.expect;
+var expect = chai.expect
+  , Context = helpers.Context;
 
 describe('Controller', function () {
-  var controller;
-  var avalon;
-  var ctx = {};
-
-  afterEach(function () {
-    ctx = {};
-  });
+  var ctx;
+  beforeEach(function () { ctx = new Context(); });
 
   beforeEach(function () {
-    var socket = ctx.user ? ctx.user.socket : {}
-    controller = new Controller(ctx.type, ctx.avalon, {}, ctx.socket || socket);
+    ctx.use('avalon', function () { return new Avalon(); });
+    ctx.use('socket', function () { return this.user.socket; });
+    ctx.use('controller', function () {
+      return new Controller(this.type, this.avalon, {}, this.socket);
+    });
   });
 
   describe('#connectionCallback', function () {
-    before(function () {
+    beforeEach(function () {
       ctx.spy = sinon.spy();
-      ctx.avalon = ctx.avalon || new Avalon();
-      helper.createConnectorDummy(ctx)
-      new AvalonObserver(ctx.avalon, ctx.connectorCreate);
-      ctx.socket = { id: 'hoge', emit: ctx.spy };
+      ctx.use('avalonObserver', function () {
+        return new AvalonObserver(this.avalon, this.connectorCreate);
+      });
+      ctx.use('socket', function () { return { id: 'hoge', emit: this.spy }; });
+
+      helpers.createConnectorDummy(ctx)
     });
 
     it('emit', function () {
-      controller.connectionCallback(ctx.data);
+      ctx.controller.connectionCallback(ctx.data);
       expect(ctx.spy).to.have.been.calledWith('go:start');
     });
   });
 
   describe('#gameStartCallback', function () {
-    before(function () {
-      helper.createRoom(ctx);
-      helper.spyRoomMembers(ctx);
+    beforeEach(function () {
+      helpers.createRoom(ctx);
+      helpers.spyRoomMembers(ctx);
     });
 
     it('notify go:jobs', function () {
-      controller.gameStartCallback(ctx.data);
+      ctx.controller.gameStartCallback(ctx.data);
       expect(ctx.room.owner.socket.emit).to.have.been.calledWith('go:jobs');
     });
   });
 
   describe('#gameStartCallback', function () {
-    before(function () {
-      helper.createRoom(ctx);
-      helper.spyRoomMembers(ctx);
+    beforeEach(function () {
+      helpers.createRoom(ctx);
+      helpers.spyRoomMembers(ctx);
     });
 
     context('create quest', function () {
@@ -67,38 +68,39 @@ describe('Controller', function () {
   });
 
   describe('#orgTeamCallback', function () {
-    before(function () {
-      var players = [];
-      helper.createRoom(ctx);
-      helper.spyRoomMembers(ctx);
-      ctx.game = ctx.room.newGame(ctx.user);
+    beforeEach(function () {
+      ctx.use('game', function () { return this.room.newGame(ctx.user); });
+      ctx.use('user', function () { return this.game.currentSelector.user; });
+      ctx.use('data', function () { return { players: this.players }; });
+      ctx.use('players', function () {
+        var players = [];
+        for (var i = 0; i < this.game.quests[0].team.group_sz; i++) {
+          players.push({ id: this.game.players[i].id });
+        }
+        return players;
+      });
 
-      ctx.user = ctx.game.currentSelector.user;
-      ctx.data = { players: players };
-      for (var i = 0; i < ctx.game.quests[0].team.group_sz; i++) {
-        players.push({ id: ctx.game.players[i].id });
-      }
+      helpers.createRoom(ctx);
+      helpers.spyRoomMembers(ctx);
     });
 
     it('with no error', function () {
-      controller.orgTeamCallback(ctx.data);
+      ctx.controller.orgTeamCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been.calledWith('go:vote');
     });
   });
 
-  describe('#voteApproveCallback', function () {
-    before(function () {
-      helper.createRoom(ctx);
-      helper.spyRoomMembers(ctx);
-      ctx.game = ctx.room.newGame(ctx.user);
+  describe('#approveTeamCallback', function () {
+    beforeEach(function () {
+      ctx.use('game', function () { return this.room.newGame(ctx.user); });
 
-      for (var i = 0; i < ctx.game.quests[0].team.group_sz; i++) {
-        ctx.game.quests[0].team.add_group(ctx.game.currentSelector, ctx.game.players[i]);
-      }
+      helpers.createRoom(ctx);
+      helpers.spyRoomMembers(ctx);
+      helpers.orgTeam(ctx);
     });
 
     it('with no error', function () {
-      controller.voteApproveCallback(ctx.data);
+      ctx.controller.approveTeamCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been.calledWith('vote');
     });
   });
