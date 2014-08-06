@@ -2,6 +2,7 @@ var utils = require('../utils');
 
 var AbstractScene = module.exports = function (router) {
   this.router = router;
+  if (this.bind) this.bind();
 }
 
 AbstractScene.extend = function () {
@@ -13,7 +14,6 @@ AbstractScene.extend = function () {
 AbstractScene.prototype.show = function() {
   $('.scene').hide();
   this.$el.fadeIn();
-  if (this.bind) this.bind();
 }
 
 Object.defineProperty(AbstractScene.prototype, 'client', {
