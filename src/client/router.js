@@ -3,6 +3,7 @@ var Client = require('./client');
 
 var Router = module.exports = function Router(client) {
   this.client = client;
+  this.reservation = {};
   this.standbyScenes();
 
   this.client.on('go:start', this.returnStart.bind(this));
@@ -32,6 +33,22 @@ Router.prototype.changeScene = function (sceneId) {
   location.hash = sceneId;
   if (nextScene && nextScene.onShow) nextScene.onShow();
   this.currentScene = nextScene;
+  this.checkReservation();
+}
+
+Router.prototype.reserveChangeScene = function (fromId, toId) {
+  this.reservation[fromId] = toId;
+  this.checkReservation();
+}
+
+Router.prototype.checkReservation = function () {
+  for (var fromId in this.reservation) {
+    if (this.isCurrentScene(this.scenes[fromId])) {
+      var toId = this.reservation[fromId];
+      delete this.reservation[fromId];
+      return this.changeScene(toId);
+    }
+  }
 }
 
 Router.prototype.isCurrentScene = function (scene) {

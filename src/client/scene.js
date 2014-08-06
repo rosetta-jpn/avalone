@@ -50,9 +50,7 @@ Scene.JobsScene = AbstractScene.extend({
   },
 
   goTeam: function () {
-    if(this.router.isCurrentScene(this)){
-      this.router.changeScene('team');
-    }
+    this.router.reserveChangeScene('jobs', 'team');
   },
 });
 
@@ -61,7 +59,7 @@ Scene.TeamScene = AbstractScene.extend({
 
   bind: function() {
     this.$el.find('#go_vote').on('submit',this.onGoVote.bind(this));
-    this.client.on('go:vote',this.goVote.bind(this));
+    this.client.on('go:vote', this.goVote.bind(this));
   },
 
   onGoVote: function (e) {
@@ -70,9 +68,7 @@ Scene.TeamScene = AbstractScene.extend({
   },
 
   goVote: function () {
-    if(this.router.isCurrentScene(this)){
-      this.router.changeScene('vote');
-    }
+    this.router.reserveChangeScene('team', 'vote');
   },
 });
 
@@ -84,9 +80,7 @@ Scene.VoteScene = AbstractScene.extend({
   },
 
   goVoteResult: function (){
-    if(this.router.isCurrentScene(this)){
-      this.router.changeScene('vote_result');
-    }
+    this.router.reserveChangeScene('vote', 'vote_result');
   },
 });
 
