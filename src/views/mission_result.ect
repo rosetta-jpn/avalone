@@ -5,18 +5,18 @@
   <br>
   <br>
   <br>
-  <div class="col-lg-6" align="center">
-    <div v-show="game#isQuest">
+  <div class="col-lg-6 rv-game" align="center">
+    <div rv-show="game#isQuest">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="go_next_team">Go Next Team</a>
       </p>
     </div>
-    <div v-show="game#isAssassin">
+    <div rv-show="game#isAssassin">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="assassinate">Assassinate</a>
       </p>
     </div>
-    <div v-show="game#isEvilWin">
+    <div rv-show="game#isEvilWin">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="go_game_result">Go Game Result</a>
       </p>
