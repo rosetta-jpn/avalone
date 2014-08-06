@@ -43,8 +43,6 @@ var Game = module.exports = function Game(players){
   this.success_condition = SuccessCondition[players.length.toString()];
   this.team_sz = TeamSize[players.length.toString()];
   this.quests = [];
-  this.quest_success_count = 0;
-  this.quest_failure_count = 0;
   this.state = "quest"
 }
 
@@ -70,6 +68,30 @@ utils.extend(Game.classMethods, {
   },
 
 });
+
+Game.prototype.succeededQuestsCount = function () {
+  var count = 0;
+  for (var i = 0; i < this.quests.length; i++) {
+    if (this.quests[i].isSuccess()) count++;
+  }
+  return count;
+}
+
+Game.prototype.failedQuestsCount = function () {
+  var count = 0;
+  for (var i = 0; i < this.quests.length; i++) {
+    if (this.quests[i].isFailure()) count++;
+  }
+  return count;
+}
+
+Game.prototype.findAssassin = function () {
+  for(var i = 0; i < players.length;i++){
+    if(players[i].isAssassin){
+      return players[i];
+    }
+  }
+}
 
 Game.prototype.start = function () {
   this.create_Quest();
@@ -112,25 +134,20 @@ Game.prototype.Assassinate_success = function(merlin_candidate){
 }
 
 Game.prototype.onSuccess = function(){
-  this.quest_success_count += 1;
-  if(this.quest_success_count >= 3){
-    var assassin_index = 0;
-    for(var i = 0; i < players.length;i++){
-      if(players[i].isAssassin){
-        assassin_index = i;
-      }
-    }
+  if (this.succeededQuestsCount() >= 3) {
     this.state = "assassin";
-    this.emit("assassinPhase",players[assassin_index]);
-    this.Assassinate_success();
+    this.emit("assassinPhase", this.findAssassin());
+  } else {
+    this.create_Quest();
   }
 }
 
 Game.prototype.onFailure = function(){
-  this.quest_failure_count += 1;
-  if(this.quest_failure_count >= 3){
+  if(this.failedQuestsCount() >= 3){
     this.state = "evilWin";
     this.emit("evilWin");
+  } else {
+    this.create_Quest();
   }
 }
 
@@ -158,10 +175,10 @@ Game.prototype.isEvilWin = function(){
 }
 
 Game.prototype.isAssassin = function(){
-  return this.state = "assassin";
+  return this.state == "assassin";
 }
 
 Game.prototype.isJusticeWin = function(){
-  return this.state = "justiceWin";
+  return this.state == "justiceWin";
 }
 
