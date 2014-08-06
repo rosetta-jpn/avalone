@@ -12,9 +12,10 @@ Base.extend = function () {
   return utils.inherit.apply(this, args);
 }
 
-Base.classMethods.setting = function (client, database) {
+Base.classMethods.setting = function (client, database, router) {
   this.client = client;
   this.database = database;
+  this.router = router;
 }
 
 utils.extend(Base.prototype, {
@@ -38,5 +39,9 @@ utils.property(Base.prototype, {
 
   database: {
     get: function () { return this.classMethods.database; },
+  },
+
+  router: {
+    get: function () { return this.classMethods.router; },
   },
 });

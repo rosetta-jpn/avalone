@@ -10,14 +10,15 @@ var ReceiverBase = require('./receiver/base')
 var ProfileReceiver = require('./receiver/profile_receiver')
 var RoomReceiver = require('./receiver/room_receiver')
 
-client.start();
-
-ReceiverBase.classMethods.setting(client, database);
-new RoomReceiver();
-new ProfileReceiver();
-
 $(function() {
+  var router = window.router = new Router(client);
+  ReceiverBase.classMethods.setting(client, database, router);
+
   window.database = database;
   window.presenters = Presenter();
-  window.router = new Router(client);
+
+  client.start();
+
+  new RoomReceiver();
+  new ProfileReceiver();
 });
