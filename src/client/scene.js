@@ -90,28 +90,21 @@ Scene.VoteResultScene = AbstractScene.extend({
   bind: function (){
     this.$el.find('#go_mission').on('click',this.onGoMission.bind(this));
     this.$el.find('#next_team').on('click',this.onNextTeam.bind(this));
-    this.client.on('go:mission',this.goMission.bind(this));
-    this.client.on('go:team',this.goNextTeam.bind(this));
   },
 
   onGoMission: function(e){
     e.preventDefault();
-    this.client.submit('go_mission');
-  },
-  onNextTeam: function(e){
-    e.preventDefault();
-    this.client.submit('next_team');
-  },
-  goMission: function(){
     if(this.router.isCurrentScene(this)){
       this.router.changeScene('mission');
     }
   },
-  goNextTeam: function(){
+
+  onNextTeam: function(e){
+    e.preventDefault();
     if(this.router.isCurrentScene(this)){
       this.router.changeScene('team');
     }
-  }
+  },
 });
 
 Scene.MissionScene = AbstractScene.extend({
@@ -147,45 +140,29 @@ Scene.MissionResultScene = AbstractScene.extend({
     this.$el.find('#go_next_team').on('click',this.onGoNextTeam.bind(this));
     this.$el.find('#assassinate').on('click',this.onAssassinate.bind(this));
     this.$el.find('#go_game_result').on('click',this.onGoGameResult.bind(this));
-    this.client.on('go:team',this.goGoNextTeam.bind(this));
-    this.client.on('go:assassinate',this.goAssassinate.bind(this));
-    this.client.on('go:game_result',this.goGameResult.bind(this));
   },
 
   onGoNextTeam: function(e){
     e.preventDefault();
-    this.client.submit('go_team');
-  },
-
-  onAssassinate: function(e){
-    e.preventDefault();
-    this.client.submit('go_assassinate');
-  },
-
-  onGoGameResult: function(e){
-    e.preventDefault();
-    this.client.submit('go_game_result');
-  },
-
-  goGoNextTeam: function(){
     if(this.router.isCurrentScene(this)){
       this.router.changeScene('team');
     }
   },
 
-  goAssassinate: function(){
+  onAssassinate: function(e){
+    e.preventDefault();
     if(this.router.isCurrentScene(this)){
       this.router.changeScene('assassin_phase');
     }
   },
 
-  goGameResult: function(){
+  onGoGameResult: function(e){
+    e.preventDefault();
     if(this.router.isCurrentScene(this)){
       this.router.changeScene('game_result');
     }
   },
 });
-
 
 Scene.AssassinPhaseScene = AbstractScene.extend({
   selector: '#assassin_phase',
