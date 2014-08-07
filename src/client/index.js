@@ -15,8 +15,6 @@ $(function() {
   ReceiverBase.classMethods.setting(client, database, router);
 
   window.database = database;
-  window.presenters = Presenter();
-
   client.start();
 
   new RoomReceiver();

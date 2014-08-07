@@ -7,17 +7,25 @@ TeamPresenter = module.exports = function (range) {
   });
   this.bind(range);
 
-  this.database.on('new:Team', this.changeTeam.bind(this));
+  this.database.on('new:Team', this.onChangeCurrentTeam.bind(this));
+  this.lock('changeTeam');
 }
 
 utils.inherit(BasePresenter, TeamPresenter);
 
 TeamPresenter.prototype.selector = '.rv-team'
-
+TeamPresenter.prototype.onChangeCurrentTeam = function () {
+  this.changeTeam.apply(this, arguments);
+}
 TeamPresenter.prototype.changeTeam = function (team) {
   this.model.team = team;
   this.update();
   console.log('Update:Team', this.model);
+}
+
+TeamPresenter.prototype.updateCurrentTeam = function () {
+  this.unlock('changeTeam');
+  this.lock('changeTeam');
 }
 
 TeamPresenter.prototype.formatters = {

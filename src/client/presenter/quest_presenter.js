@@ -7,12 +7,16 @@ QuestPresenter = module.exports = function (range) {
   });
   this.bind(range);
 
-  this.database.on('new:Quest', this.changeQuest.bind(this));
+  this.database.on('change:currentQuest', this.onChangeCurrentQuest.bind(this));
+  this.lock('changeQuest');
 }
 
 utils.inherit(BasePresenter, QuestPresenter);
 
 QuestPresenter.prototype.selector = '.rv-quest'
+QuestPresenter.prototype.onChangeCurrentQuest = function () {
+  this.changeQuest.apply(this, arguments);
+}
 
 QuestPresenter.prototype.changeQuest = function (quest) {
   this.model.quest = quest;
@@ -20,9 +24,15 @@ QuestPresenter.prototype.changeQuest = function (quest) {
   console.log('Update:Quest', this.model);
 }
 
+QuestPresenter.prototype.updateCurrentQuest = function () {
+  this.unlock('changeQuest');
+  this.lock('changeQuest');
+}
+
 QuestPresenter.prototype.formatters = {
   toClassName: function (name) { return 'quest-' + name; },
   imagePath: function (name) { return 'images/' + name + '.jpg'; },
+  showIsSuccess: function (isSuccess) { return isSuccess ? 'Success' : 'Failure'; },
 }
 
 QuestPresenter.prototype.eventHandlers = {

@@ -69,6 +69,11 @@ Scene.TeamScene = AbstractScene.extend({
     this.$el.find('button.debug').on('click', this.onDebug.bind(this));
   },
 
+  onShow: function () {
+    this.router.presenters.TeamPresenter.updateCurrentTeam();
+    this.router.presenters.QuestPresenter.updateCurrentQuest();
+  },
+
   onGoVote: function (e) {
     e.preventDefault();
     this.client.submit('orgTeam', $(e.target).formData());

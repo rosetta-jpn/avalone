@@ -1,5 +1,6 @@
-var Scene = require('./scene');
-var Client = require('./client');
+var Scene = require('./scene')
+  , Client = require('./client')
+  , Presenter = require('./presenter');
 
 var Router = module.exports = function Router(client) {
   this.client = client;
@@ -8,6 +9,7 @@ var Router = module.exports = function Router(client) {
 
   this.client.on('go:start', this.returnStart.bind(this));
   this.changeScene('start');
+  this.presenters = Presenter();
 }
 
 Router.prototype.standbyScenes = function () {
