@@ -32,7 +32,7 @@ var QuestReceiver = module.exports = Base.extend({
   },
 
   onQuestResult: function (isSuccess, json) {
-    this.quest.applyResult(json.success, json.failure, isSuccess);
+    this.quest.applyResult(isSuccess, json.success, json.failure);
     this.router.reserveChangeScene('mission', 'mission_result');
   },
 

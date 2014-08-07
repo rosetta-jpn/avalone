@@ -2,8 +2,6 @@ var Team = require("./team")
   , utils = require("../utils")
   , events = require("events");
 
-var States = ["NOW","SUCCESS","FAILURE"]
-
 var Quest = function Quest(Game,success_number,team_sz, id){
   this.id = id ? id : utils.randomId();
   this.game = Game;
@@ -16,17 +14,18 @@ var Quest = function Quest(Game,success_number,team_sz, id){
 }
 
 utils.inherit(events.EventEmitter, Quest);
+Quest.classMethods.States = { Now: 'Now', Success: 'Success', Failure: 'Failure' }
 
 Quest.prototype.isAllVoted = function () {
   return Object.keys(this.mission_list).length >= this.team_sz;
 }
 
 Quest.prototype.isSuccess = function () {
-  return this.state === States[1];
+  return this.state === this.classMethods.States.Success;
 }
 
 Quest.prototype.isFailure = function () {
-  return this.state === States[2];
+  return this.state === this.classMethods.States.Failure;
 }
 
 Quest.prototype.successVotes = function () {
@@ -75,10 +74,10 @@ Quest.prototype.judge_success = function(){
     throw 'Some players haven\'t vote yet.'
 
   if(this.successVotes() >= this.success_number){
-    this.state = "SUCCESS";
+    this.state = this.classMethods.States.Success;
     this.emit("success");
   }else{
-    this.state = "FAILURE"
+    this.state = this.classMethods.States.Failure;
     this.emit("failure");
   }
 }
