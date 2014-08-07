@@ -4,7 +4,8 @@ var Team = require("./team")
 
 var States = ["NOW","SUCCESS","FAILURE"]
 
-var Quest = function Quest(Game,success_number,team_sz){
+var Quest = function Quest(Game,success_number,team_sz, id){
+  this.id = id ? id : utils.randomId();
   this.game = Game;
   this.success_number = success_number;
   this.team_sz = team_sz;
@@ -105,6 +106,7 @@ Quest.prototype.onDisAgree = function(){
 Quest.prototype.toJson = function (user) {
   var toJson = function (obj) { return obj.toJson(user); }
   return {
+    id: this.id,
     success_number: this.success_number,
     team_sz: this.team_sz,
     team: this.team ? toJson(this.team) : null,

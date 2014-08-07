@@ -37,7 +37,8 @@ var TeamSize = {5:[2,3,2,3,3],
 var States = ["quest","evilWin","justiceWin","assassin"];
 
 
-var Game = module.exports = function Game(players){
+var Game = module.exports = function Game(players, id){
+  this.id = id ? id : utils.randomId();
   this.players = players;
   this.buildPlayerMap();
   this.success_condition = SuccessCondition[players.length.toString()];
@@ -160,6 +161,7 @@ Game.prototype.notifyAll = function (type, data) {
 Game.prototype.toJson = function (user) {
   var toJson = function (obj) { return obj.toJson(user); }
   return {
+    id: this.id,
     players: this.players.map(toJson),
     quests: this.quests.map(toJson),
     selectorIdx: (this.selectorIdx || 0),

@@ -50,3 +50,19 @@ var property = exports.property = function (obj, defs) {
   }
 }
 
+var charTable = (function () {
+  var nums = [];
+  for (var i = 48; i < 58; i++) nums.push(i); // 0-9
+  for (var i = 65; i < 91; i++) nums.push(i); // A-Z
+  for (var i = 97; i < 123; i++) nums.push(i); // a-z
+  return String.fromCharCode.apply(String, nums);
+}());
+
+var randomId = exports.randomId = function (idLength) {
+  idLength = idLength || 8;
+  var id = "";
+  for (var i = 0; i < idLength; i++)
+    id += charTable.charAt(Math.floor(charTable.length * Math.random()));
+  return id;
+}
+

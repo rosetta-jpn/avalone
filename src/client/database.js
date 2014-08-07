@@ -3,9 +3,11 @@ var Model = require('../models')
   , events = require('events')
   , createDummy = require('./dummy_data')
 
+var ModelNames = Object.keys(Model);
+
 var Database = function () {
-  for (var key in identifiers) {
-    this[key] = {};
+  for (var i = 0; i < ModelNames.length; i++) {
+    this[ModelNames[i]] = {};
   }
 }
 
@@ -15,8 +17,6 @@ Database.prototype.createDummy = function () {
 }
 
 var identifiers = {
-  User: 'id',
-  Player: 'id',
   Room: 'name',
 }
 
@@ -34,8 +34,8 @@ utils.property(Database.prototype, {
   },
 });
 
-Object.keys(Model).forEach(function (key) {
-  var identifier = identifiers[key];
+ModelNames.forEach(function (key) {
+  var identifier = identifiers[key] || 'id';
 
   var createMethodName = 'create' + key;
   Database.prototype[createMethodName] = function (json) {
@@ -65,10 +65,12 @@ Object.keys(Model).forEach(function (key) {
     this.notify('new:' + key, obj);
     if (identifier) {
       var id = obj[identifier];
-      return this[key][id] = obj;
+      this[key][id] = obj;
     } else {
-      return this[key] = obj;
+      this[key] = obj;
     }
+    this[currentPropName] = obj;
+    return obj;
   }
 
   Database.prototype['update' + key] = function (json) {
@@ -93,8 +95,9 @@ Object.keys(Model).forEach(function (key) {
     }
   }
 
+  var currentPropName = 'current' + key;
   var property = {};
-  property['current' + key] = {
+  property[currentPropName] = {
     get: function () {
       return this['_current' + key];
     },
@@ -113,21 +116,21 @@ Object.keys(Model).forEach(function (key) {
 Database.prototype.readGame = function (json, save) {
   var self = this;
   players = json.players.map(function (obj) { return self.parsePlayer(obj, save); });
-  var game = new Model.Game(players);
+  var game = new Model.Game(players, json.id);
   game.quests = (json.quests || []).map(function (obj) { return self.parseQuest(obj, save); });
   game.selectorIdx = json.selectorIdx;
   return game;
 }
 
 Database.prototype.readQuest = function (json, save) {
-  var quest = new Model.Quest(this.findGame(), json.success_number, json.team_sz);
+  var quest = new Model.Quest(this.currentGame, json.success_number, json.team_sz, json.id);
   if (json.team) quest.team = this.parseTeam(json.team, save);
   return quest;
 }
 
 Database.prototype.readTeam = function (json, save) {
   var selector = this.parsePlayer(json.selector, save);
-  var team = new Model.Team(this.findGame(), selector, json.group_sz, json.voter_sz);
+  var team = new Model.Team(this.currentGame, selector, json.group_sz, json.voter_sz, json.id);
   team.group = json.group;
   team.voter_map = json.voter_map;
   return team;

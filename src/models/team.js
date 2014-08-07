@@ -3,7 +3,8 @@ var utils = require("../utils")
 
 States = ["select_member", "vote", "agree","disagree"]
 
-var Team = function Team(game, selector,group_sz,voter_sz){
+var Team = function Team(game, selector,group_sz,voter_sz, id){
+  this.id = id ? id : utils.randomId();
   this.game = game;
   this.selector = selector;
   this.group = {};// User Array
@@ -114,6 +115,7 @@ Team.prototype.isApprove = function(){
 Team.prototype.toJson = function (user) {
   var toJson = function (obj) { return obj.toJson(user); }
   return {
+    id: this.id,
     selector: toJson(this.selector),
     group: Object.values(this.group).map(toJson),
     group_sz: this.group_sz,
