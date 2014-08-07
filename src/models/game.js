@@ -87,9 +87,9 @@ Game.prototype.failedQuestsCount = function () {
 }
 
 Game.prototype.findAssassin = function () {
-  for(var i = 0; i < players.length;i++){
-    if(players[i].isAssassin){
-      return players[i];
+  for(var i = 0; i < this.players.length;i++){
+    if(this.players[i].isAssassin){
+      return this.players[i];
     }
   }
 }
