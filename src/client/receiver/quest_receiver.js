@@ -16,14 +16,12 @@ var QuestReceiver = module.exports = Base.extend({
     // switching listener
     var team = this.database.createTeam(json.team);
     this.quest.team = team;
-
-    this.database.currentTeam = team;
-    var teamReceiver = new TeamReceiver(team);
+    this.teamReceiver = new TeamReceiver(team);
 
     this.quest.emit('new:Quest.team')
-    this.quest.once('new:Quest.team', function () {
-      teamReceiver.stopListening();
-    })
+    this.quest.once('new:Quest.team', (function () {
+      this.teamReceiver.stopListening();
+    }).bind(this));
   },
 
   onVote: function (json) {
@@ -36,4 +34,7 @@ var QuestReceiver = module.exports = Base.extend({
     this.router.reserveChangeScene('mission', 'mission_result');
   },
 
+  onStopListening: function () {
+    this.teamReceiver.stopListening();
+  },
 });

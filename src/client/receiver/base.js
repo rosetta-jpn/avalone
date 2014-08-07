@@ -29,6 +29,7 @@ utils.extend(Base.prototype, {
       listen.target.removeListener(listen.event, listen.callback);
     });
     this.listens = [];
+    if (this.onStopListening) this.onStopListening();
   },
 });
 
