@@ -42,10 +42,12 @@ utils.extend(GameObserver.prototype, {
   },
 
   onJusticeWin: function () {
-    this.room.users[id].notify('go:game_result', { justiceWin: true, evilWin: false });
+    this.room.notifyAll('justiceWin');
+    this.room.notifyAll('go:game_result');
   },
 
   onEvilWin: function () {
-    this.room.users[id].notify('go:game_result', { justiceWin: true, evilWin: false });
+    this.room.notifyAll('evilWin');
+    this.room.notifyAll('go:game_result');
   },
 });

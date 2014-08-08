@@ -16,6 +16,7 @@ utils.extend(Quest.prototype, {
   // overwrite original create_Team method for client.
   create_Team: function () {
   },
+
   pastTeamLogs: function(){
     var pastTeams = [];
     for(var i = 0;i < this.teams.length;i++){

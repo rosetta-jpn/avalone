@@ -169,6 +169,25 @@ describe('Controller', function () {
         expect(assassin.user.socket.emit).to.have.been
           .calledWith('event', sinon.match.has('type', 'go:AssassinVote'));
       });
+
+      context('assassinate', function () {
+        it ('evilwin', function () {
+          var assassin = ctx.room.game.findAssassin();
+          var merlin = (function () {
+            var players = ctx.room.game.players;
+            for (var i = 0; i < players.length; i++) {
+              if (players[i].isMerlin) return players[i];
+            }
+          })();
+
+          ctx.user = assassin.user;
+          ctx.controller.assassinateCallback(merlin.toJson());
+          expect(ctx.user.socket.emit).to.have.been
+            .calledWith('event', sinon.match.has('type', 'go:game_result'));
+          expect(ctx.user.socket.emit).to.have.been
+            .calledWith('event', sinon.match.has('type', 'evilWin'));
+        });
+      });
     });
   });
 });

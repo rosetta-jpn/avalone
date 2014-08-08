@@ -136,4 +136,9 @@ utils.extend(Controller.prototype, {
     this.game.currentQuest.change_mission_list(this.player, false);
     if (this.game.currentQuest.isAllVoted()) this.game.currentQuest.judge_success();
   },
+
+  assassinateCallback: function (data) {
+    var target = this.game.playerMap[data.id];
+    this.game.assassinate(this.player, target);
+  },
 });

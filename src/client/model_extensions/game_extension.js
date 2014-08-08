@@ -42,5 +42,10 @@ utils.extend(Game.prototype, {
     }
     return pastQuests;
   },
+
+  canAssassinate: function () {
+    var assassin = this.findAssassin();
+    return assassin && assassin.id === database.id;
+  },
 });
 

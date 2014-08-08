@@ -1,6 +1,6 @@
 <div id="assassin_phase" class="scene">
   <h2 class="page-header">Assassin Phase</h2>
-  <form class="rv-game">
+  <form class="rv-game" rv-hshow="game#canAssassinate">
     <font size="5">
       <div class="radio" style="width:25px;height:25px"
         rv-each-selection="game#playerSelections"
@@ -16,7 +16,7 @@
       </div>
     </font>
     <br>
-    <input type="submit" class="btn btn-primary btn-lg" role="button" id="assassin_assassinate" value="Assasinate">
+    <input type="submit" class="btn btn-primary btn-lg" role="button" rv-on-click="handlers#submitAssassinate">
     <br>
     <br>
   </form>

@@ -131,8 +131,12 @@ Game.prototype.startCurrentQuest = function (quest) {
   quest.start();
 }
 
-Game.prototype.Assassinate_success = function(merlin_candidate){
-  if(merlin_candidate.is_Merlin()){
+Game.prototype.assassinate = function(assassinPlayer, merlin_candidate){
+  if (!this.isAssassin())
+    throw 'the game state isn\'t Assassin';
+  if (this.findAssassin() !== assassinPlayer)
+    throw 'the player isn\'t Assassin';
+  if(merlin_candidate.isMerlin){
     this.state = this.classMethods.States.EvilWin;
     this.emit("evilWin");
   }else{
@@ -189,6 +193,6 @@ Game.prototype.isAssassin = function(){
 }
 
 Game.prototype.isJusticeWin = function(){
-  return this.state === this.classMethods.States.Justice;
+  return this.state === this.classMethods.States.JusticeWin;
 }
 
