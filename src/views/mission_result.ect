@@ -1,10 +1,12 @@
 <div id="mission_result" class="scene">
   <div class="rv-quest" align="center">
     <img rv-src="quest#isSuccess | showIsSuccess | imagePath" height="400" width="300">
+    <br>
+    <br>
+    <br>
+    <h2>Success : {{quest.successCount}}</h2>
+    <h2>Failure : {{quest.failureCount}}</h2>
   </div>
-  <br>
-  <br>
-  <br>
   <div class="col-lg-6 rv-game" align="center">
     <div rv-show="game#isQuest">
       <p>

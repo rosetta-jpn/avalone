@@ -27,5 +27,6 @@ GamePresenter.prototype.formatters = {
   toClassName: function (name) { return 'game-' + name; },
   imagePath: function (name) { return 'images/' + name + '.jpg'; },
   stateImagePath : function (name) {return 'images/quest' + name +'.jpg';},
+  showIsApprove: function (isApprove) { return isApprove ? 'Approve' : 'Reject'; },
 }
 

@@ -15,7 +15,8 @@ var QuestReceiver = module.exports = Base.extend({
   onNewTeam: function (json) {
     // switching listener
     var team = this.database.createTeam(json.team);
-    this.quest.team = team;
+    this.quest.teams.push(team);
+    this.quest.emit("update");
     var teamReceiver = this.teamReceiver = new TeamReceiver(team);
 
     this.quest.emit('new:Quest.team')

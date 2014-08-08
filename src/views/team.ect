@@ -4,7 +4,7 @@
   <div class="row placeholders rv-game">
     <div class="col-xs-6 placeholder" rv-each-quest="game.quests">
       <img class="img-responsive"  width="100" height="30" rv-src="quest.state | stateImagePath" rv-alt="quest.state">
-      <h4>{{ quest.state }} ({{ quest.team.selector.name }}, {{ quest.team_sz }})</h4>
+      <h4>{{ quest.state }} ({{ quest#team.selector.name }}, {{ quest.team_sz }})</h4>
       <span class="text-muted">
         <span rv-each-player="quest#members">
           {{ player.name }}
@@ -33,34 +33,42 @@
   <button class="btn btn-default debug">Debug</button>
   <br>
   <h2 class="page-header">Detail Data</h2>
-  
-  <h3>1</h3>
-  <h4>1-1</h4>
-  <font size="+1">
-  selector : atetubou <br>
-  team : atetubou,atetubou1 <br>
-  result : <b>reject</b> <br>
-  </font>
-  <table class="table">
-    <thead>
-      <tr>
-        <th width="50">Player</th>
-        <th width="50">Vote</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td width="50">atetubou</td>
-        <td width="50">Reject</td>
-      </tr>
-      <tr>
-        <td width="50">atetubou1</td>
-        <td width="50">Reject</td>
-      </tr>
-      <tr>
-        <td width="50">atetubou2</td>
-        <td width="50">Reject</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="rv-game">
+    <div rv-each-quest="game.quests">
+      <h2>1</h2>
+      <div rv-each-team="quest.teams">
+        <h4>1-1</h4>
+        <font size="+1">
+          <dl>
+            <dt> selector </dt>
+              <dd>{{ team.selector.name }}</dd>
+            <dt> team </dt>
+              <dd>
+                <span rv-each-member="team#members"> {{member.name }} </span>
+              </dd>
+            <dt> result</dt>
+            <dd> {{team#isApprove | showIsApprove}} </dd>
+          </dl>
+        </font>
+        <table class="table">
+          <thead>
+            <tr>
+              <th >Player</th>
+              <th >Vote</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr rv-each-vote="team#votes">
+              <td>
+                <div rv-class-vote_approve="vote.isApprove">
+                  <span>{{ vote.player.name }}</span>
+                </div>
+              </td>
+              <td>{{ vote#isApprove | showIsApprove }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
