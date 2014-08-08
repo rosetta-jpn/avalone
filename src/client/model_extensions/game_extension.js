@@ -32,6 +32,16 @@ utils.extend(Game.prototype, {
   addNewQuest: function (quest) {
     this.quests.push(quest);
     this.startCurrentQuest(quest);
-  }
+  },
+  pastQuestLogs: function(){
+    var pastQuests = [];
+    for(var i = 0; i < this.quests.length;i++){
+      var pastTeamsOfQuest = this.quests[i].pastTeamLogs();
+      if(pastTeamsOfQuest.length > 0){
+        pastQuests.push({quest: this.quests[i],index:i+1});
+      }
+    }
+    return pastQuests;
+  },
 });
 

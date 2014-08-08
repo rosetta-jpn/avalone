@@ -109,8 +109,13 @@ Team.prototype.judge = function(){
 }
 
 Team.prototype.isApprove = function(){
-  return this.state == States[2];// Approve
+  return this.state === States[2];// Approve
 }
+
+Team.prototype.isReject = function(){
+  return this.state === States[3];// Reject
+}
+
 
 Team.prototype.toJson = function (user) {
   var toJson = function (obj) { return obj.toJson(user); }
