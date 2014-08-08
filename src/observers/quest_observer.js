@@ -28,15 +28,16 @@ utils.extend(QuestObserver.prototype, {
   },
 
   onSuccess: function () {
-    this.game.notifyAll('successQuest', {
+    this.game.notifyAll('succeededQuest', {
       success: this.quest.successVotes(),
       failure: this.quest.failureVotes(),
     });
   },
 
   onFailure: function () {
-    this.game.players.forEach(function (looker) {
-      looker.notify('failureQuest', { quest: quest.toJson(looker) });
+    this.game.notifyAll('failedQuest', {
+      success: this.quest.successVotes(),
+      failure: this.quest.failureVotes(),
     });
   },
 

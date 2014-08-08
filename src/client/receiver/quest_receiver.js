@@ -8,8 +8,8 @@ var QuestReceiver = module.exports = Base.extend({
 
     this.listen(this.client, 'new:Team', this.onNewTeam.bind(this));
     this.listen(this.client, 'vote', this.onVote.bind(this));
-    this.listen(this.client, 'successQuest', this.onQuestResult.bind(this, true));
-    this.listen(this.client, 'failureQuest', this.onQuestResult.bind(this, false));
+    this.listen(this.client, 'succeededQuest', this.onQuestResult.bind(this, true));
+    this.listen(this.client, 'failedQuest', this.onQuestResult.bind(this, false));
   },
 
   onNewTeam: function (json) {
