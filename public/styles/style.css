@@ -13,10 +13,13 @@ form {
 }
 
 
-#team form{
-    float:left;
+form.left{
+    margin-left : 0;
     width: 300px;
 }
+
+
+
 
 .vote_approve {
     background-color: #ffff00;

@@ -4,29 +4,31 @@
     <div align="center">
       <img rv-src="team#isApprove | showIsApprove | imagePath" height="400" width="300">
     </div>
-    <h2 class="page-header">Vote Detail</h2>
-    <div class="col-md-6">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Vote</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr rv-each-vote="team#votes">
-            <td>
-              <div rv-class-vote_approve="vote.isApprove">
-                <span>{{ vote.player.name }}</span>
-              </div>
-            </td>
-            <td>{{ vote#isApprove | showIsApprove }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
+  <h2 class="page-header">Vote Detail</h2>
+  <div class="rv-team">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Vote</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr rv-each-vote="team#votes">
+          <td>
+            <div rv-class-vote_approve="vote.isApprove">
+              <span>{{ vote.player.name }}</span>
+            </div>
+          </td>
+          <td>{{ vote#isApprove | showIsApprove }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <% include "team_member" %>
+  
   <div class="col-lg-6 rv-team" align="center">
     <div rv-show="team#isApprove">
       <p>
