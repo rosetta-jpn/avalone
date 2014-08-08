@@ -66,10 +66,10 @@ utils.extend(Controller.prototype, {
     team.go_vote();
   },
 
-  debugVoteCallback: function () {
+  debugVoteCallback: function (isApprove) {
     var team = this.game.currentQuest.team;
     for (var i = 0; i < this.game.players.length; i++) {
-       team.change_voter_map(this.game.players[i], true);
+       team.change_voter_map(this.game.players[i], isApprove);
     }
     team.judge();
   },
