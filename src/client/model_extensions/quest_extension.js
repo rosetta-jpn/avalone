@@ -11,6 +11,10 @@ utils.extend(Quest.prototype, {
 
     if (this.isSuccess) this.emit("success");
     else this.emit("failure");
-  }
+  },
+
+  // overwrite original create_Team method for client.
+  create_Team: function () {
+  },
 });
 
