@@ -22,7 +22,7 @@ Team.prototype.isContainMember = function (player) {
 
 Team.prototype.isFullMember = function () {
   var group = Object.values(this.group)
-  return group.length >= this.group_sz;
+  return group.length === this.group_sz;
 }
 
 Team.prototype.isApprovedBy = function (player) {
@@ -37,7 +37,6 @@ Team.prototype.add_group = function(pusher,add_man) {
   // console.log(this.selector.toString(), pusher.toString());
   // if (this.selector !== pusher)
   //   throw new Error('Only the selected player can add player to team');
-  if(this.isFullMember()) throw new Error('the team is full');
 
   this.group[add_man.id] = add_man;
   this._members = null;
@@ -48,11 +47,26 @@ Team.prototype.remove_group = function(remover,remove_man){
   if (this.selector !== remover)
     throw new Error('Only the selected player can remove player from team');
   var group = Object.values(this.group)
-  if(group.length <= 0)
-    throw new Error('the team is empty');
   delete this.group[remove_man.id];
   this._members = null;
   this.emit('remove', remove_man);
+}
+
+Team.prototype.changeMembers = function (selector, members) {
+  var self = this, memberMap = {};
+  members.forEach(function (member) {
+    memberMap[member.id] = member;
+  });
+  var removes = [];
+  for (var id in this.group) {
+    if (!memberMap[id]) removes.push(this.group[id]);
+  }
+  var adds = [];
+  for (var id in memberMap) {
+    if (!this.group[id]) adds.push(memberMap[id]);
+  }
+  removes.forEach(function (member) { self.remove_group(selector, member) });
+  adds.forEach(function (member) { self.add_group(selector, member) });
 }
 
 Team.prototype.is_vote_success = function(){
@@ -75,15 +89,14 @@ Team.prototype.is_vote_success = function(){
 Team.prototype.change_voter_map = function(voter,vote_res){
   this.voter_map[voter.id] = vote_res;
   this.emit('vote', voter, vote_res);
-  console.log('Update:', this, this.voter_map);
   this.emit('update')
 }
 
 Team.prototype.go_vote = function(){
   if (this.state !== States[0])
     throw 'The current state isn\'t `select member`.'
-  if (Object.values(this.group).length < this.group_sz)
-    throw 'Team members are too few.'
+  if (!this.isFullMember())
+    throw 'Team members are too few or too many.'
 
   this.state = States[1];
   this.emit('go:vote');

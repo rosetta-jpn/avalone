@@ -8,6 +8,7 @@ var TeamReceiver = module.exports = Base.extend({
     this.listen(this.client, 'vote:Team', this.onVote.bind(this));
     this.listen(this.client, 'agree:Team', this.onAgree.bind(this));
     this.listen(this.client, 'disagree:Team', this.onDisagree.bind(this));
+    this.listen(this.team, 'change:Team.playerSelections', this.onChangeSelections.bind(this));
   },
 
   onAddMember: function (json) {
@@ -37,5 +38,10 @@ var TeamReceiver = module.exports = Base.extend({
   onVote: function (json) {
     var player = this.database.createPlayer(json.player);
     this.team.change_voter_map(player, json.isAgree);
+  },
+
+  onChangeSelections: function () {
+    if (!this.team.isTeamSelector()) return;
+    this.client.submit('teamMemberChange', this.team.toJson());
   },
 });

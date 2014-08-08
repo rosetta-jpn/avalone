@@ -106,13 +106,17 @@ utils.extend(Controller.prototype, {
     this.user.room.newGame(this.user);
   },
 
+  teamMemberChangeCallback: function (data) {
+    var self = this;
+    var members = data.group.map(function (playerData) {
+      return self.game.playerMap[playerData.id];
+    });
+    this.game.currentQuest.team.changeMembers(this.player, members);
+  },
+
   orgTeamCallback: function (data) {
-    var selector = this.player, self = this;
-    data.group.forEach(function (playerData) {
-      var player =  self.game.playerMap[playerData.id];
-      self.game.currentQuest.team.add_group(selector, player);
-    })
-    self.game.currentQuest.team.go_vote();
+    this.teamMemberChangeCallback(data);
+    this.game.currentQuest.team.go_vote();
   },
 
   approveTeamCallback: function () {

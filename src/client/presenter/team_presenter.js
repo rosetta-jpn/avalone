@@ -30,7 +30,7 @@ TeamPresenter.prototype.updateCurrentTeam = function () {
 
 TeamPresenter.prototype.formatters = {
   toClassName: function (name) { return 'team-' + name; },
-  imagePath: function (name) { return 'images/' +name + '.jpg'; },
+  imagePath: function (name) { return 'images/' + name + '.jpg'; },
   showIsApprove: function (isApprove) { return isApprove ? 'Approve' : 'Reject'; },
 }
 

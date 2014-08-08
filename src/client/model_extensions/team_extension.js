@@ -14,6 +14,7 @@ Team.prototype.playerSelections = function () {
             self.add_group(self.selector, player);
           else
             self.remove_group(self.selector, player);
+          self.emit('change:Team.playerSelections');
         }
       },
 

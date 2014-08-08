@@ -43,15 +43,13 @@ utils.extend(TeamObserver.prototype, {
   },
 
   onChangeMember: function () {
-    if (this.team.isFullMember()) {
-      var team = this.team;
-      this.game.players.forEach(function (player) {
-        members = team.toJson(player).group;
-        player.notify('change:Team.members', {
-          members: members,
-        });
+    var team = this.team;
+    this.game.players.forEach(function (player) {
+      members = team.toJson(player).group;
+      player.notify('change:Team.members', {
+        members: members,
       });
-    }
+    });
   },
 
   onAgree: function () {

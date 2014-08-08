@@ -70,7 +70,7 @@ describe('Controller', function () {
       ctx.use('data', function () { return { group: this.players }; });
       ctx.use('players', function () {
         var players = [];
-        for (var i = 0; i < this.game.quests[0].team.group_sz; i++) {
+        for (var i = 0; i < this.game.currentQuest.team.group_sz; i++) {
           players.push({ id: this.game.players[i].id });
         }
         return players;
