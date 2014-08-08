@@ -137,7 +137,8 @@ Scene.MissionScene = AbstractScene.extend({
   bind: function(){
     this.$el.find('#mission_success').on('click',this.onMissionSuccess.bind(this));
     this.$el.find('#mission_fail').on('click',this.onMissionFail.bind(this));
-    this.$el.find('button.debug').on('click', this.onDebug.bind(this));
+    this.$el.find('button.debug-success').on('click', this.onDebug.bind(this, true));
+    this.$el.find('button.debug-failure').on('click', this.onDebug.bind(this, false));
     this.client.on('go:mission_result',this.goMissionResult.bind(this));
   },
 
@@ -151,9 +152,9 @@ Scene.MissionScene = AbstractScene.extend({
     this.client.submit('mission_fail');
   },
 
-  onDebug: function (e) {
+  onDebug: function (isSuccess, e) {
     e.preventDefault();
-    this.client.submit('debugMission');
+    this.client.submit('debugMission', isSuccess);
   },
 
   goMissionResult: function(){

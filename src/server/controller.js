@@ -74,10 +74,10 @@ utils.extend(Controller.prototype, {
     team.judge();
   },
 
-  debugMissionCallback: function () {
+  debugMissionCallback: function (isSuccess) {
     var quest = this.game.currentQuest;
     for (var i = 0; i < quest.members.length; i++) {
-       quest.change_mission_list(quest.members[i], true);
+       quest.change_mission_list(quest.members[i], isSuccess);
     }
     quest.judge_success();
   },
