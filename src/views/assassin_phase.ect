@@ -10,11 +10,12 @@
           rv-class-alert-success="selection#isSelected"
           role="alert">
           <label>
-            <input type="radio" name="target" align="left" rv-checked="selection#isSelected" class="username"> {{ selection.player.name }}
+            <input type="radio" name="target" align="left" rv-checked="selection#isSelected"> {{ selection.player.name }}
           </label>
         </div>
       </div>
     </font>
+    <% include "players_jobs" %>
     <br>
     <input type="submit" class="btn btn-primary btn-lg" role="button" id="assassin_assassinate" value="Assasinate">
     <br>
