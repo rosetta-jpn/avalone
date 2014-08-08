@@ -155,7 +155,6 @@ describe('Controller', function () {
       });
 
       it ('go to assassin phase', function () {
-        expect(ctx.room.game.state).to.be.equal(ctx.room.game.classMethods.Assassin);
         var assassin = ctx.room.game.findAssassin();
         var noAssasinPlayer = (function () {
           var players = ctx.room.game.players;
@@ -164,6 +163,7 @@ describe('Controller', function () {
           }
         })();
 
+        expect(ctx.room.game.isAssassin()).to.be.true;
         expect(noAssasinPlayer.user.socket.emit).to.have.been
           .calledWith('event', sinon.match.has('type', 'go:AssassinPhase'));
         expect(assassin.user.socket.emit).to.have.been
