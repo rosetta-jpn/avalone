@@ -1,10 +1,10 @@
 rivets.adapters['#'] = {
   subscribe: function(obj, keypath, callback) {
-    console.log('subscrbe:', obj, keypath);
+    // console.log('subscrbe:', obj, keypath);
     if (obj.on) obj.on('update', callback);
   },
   unsubscribe: function(obj, keypath, callback) {
-    console.log('unsubscrbe:', obj, keypath);
+    // console.log('unsubscrbe:', obj, keypath);
     if (obj.removeListener)
       obj.removeListener('update', callback);
   },
