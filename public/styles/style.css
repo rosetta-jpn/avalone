@@ -18,7 +18,9 @@ form.left{
     width: 300px;
 }
 
-
+.username{
+    white-space : nowrap;
+}
 
 
 .vote_approve {

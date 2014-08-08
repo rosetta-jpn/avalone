@@ -32,43 +32,5 @@
 
   <button class="btn btn-default debug">Debug</button>
   <br>
-  <h2 class="page-header">Detail Data</h2>
-  <div class="rv-game">
-    <div rv-each-questlog="game#pastQuestLogs">
-      <h2 rv-show="questlog.quest#pastTeamLogs#length">{{questlog.index}}</h2>
-      <div rv-each-teamlog="questlog.quest#pastTeamLogs">
-        <h4>{{questlog.index}}-{{teamlog.index}}</h4>
-        <font size="+1">
-          <dl>
-            <dt> selector </dt>
-              <dd>{{ teamlog.team.selector.name }}</dd>
-            <dt> team </dt>
-              <dd>
-                <span rv-each-member="teamlog.team#members"> {{member.name }} </span>
-              </dd>
-            <dt> result</dt>
-            <dd> {{teamlog.team#isApprove | showIsApprove}} </dd>
-          </dl>
-        </font>
-        <table class="table">
-          <thead>
-            <tr>
-              <th >Player</th>
-              <th >Vote</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr rv-each-vote="teamlog.team#votes">
-              <td>
-                <div rv-class-vote_approve="vote.isApprove">
-                  <span>{{ vote.player.name }}</span>
-                </div>
-              </td>
-              <td>{{ vote#isApprove | showIsApprove }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  <% include "detail_data" %>
 </div>
