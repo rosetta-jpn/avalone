@@ -35,7 +35,7 @@
   <h2 class="page-header">Detail Data</h2>
   <div class="rv-game">
     <div rv-each-questlog="game#pastQuestLogs">
-      <h2>{{questlog.index}}</h2>
+      <h2 rv-show="questlog.quest#pastTeamLogs#length">{{questlog.index}}</h2>
       <div rv-each-teamlog="questlog.quest#pastTeamLogs">
         <h4>{{questlog.index}}-{{teamlog.index}}</h4>
         <font size="+1">

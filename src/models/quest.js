@@ -93,12 +93,10 @@ Quest.prototype.change_mission_list = function(missioner,mission_res){
 }
 
 Quest.prototype.onAgree = function(team){
-  this.game.emit('update');
   this.members = team.members;
 }
 
 Quest.prototype.onDisAgree = function(team){
-  this.game.emit('update');
   if (this.teams.length == 5){
     return this.onAgree(team);
   }
