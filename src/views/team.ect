@@ -13,7 +13,7 @@
     </div>
   </div>
   <h2 class="page-header">Member Select</h2>
-  <form  id="team_candidate" class="left rv-team" rv-hshow="team.isTeamSelector" rv-on-submit="handlers#submitTeam">
+  <form  id="team_candidate" class="left rv-team" rv-show="team#isTeamSelector" rv-on-submit="handlers#submitTeam">
     <div class="checkbox" rv-each-selection="team#playerSelections">
       <div
          rv-class-alert="selection#isTeamMember"

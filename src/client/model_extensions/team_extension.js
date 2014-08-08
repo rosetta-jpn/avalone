@@ -39,3 +39,7 @@ Team.prototype.isMember = function () {
   return this.isContainMember(database.playerProfile);
 }
 
+Team.prototype.isTeamSelector = function () {
+  return this.selector.id === database.playerProfile.id;
+}
+
