@@ -93,13 +93,14 @@ Scene.VoteScene = AbstractScene.extend({
   selector: '#vote',
 
   bind: function() {
-    this.$el.find('button.debug').on('click', this.onDebug.bind(this));
+    this.$el.find('button.debugApprove').on('click', this.onDebug.bind(this, true));
+    this.$el.find('button.debugReject').on('click', this.onDebug.bind(this, false));
     this.client.on('go:vote_result',this.goVoteResult.bind(this));
   },
 
-  onDebug: function (e) {
+  onDebug: function (isApprove, e) {
     e.preventDefault();
-    this.client.submit('debugVote');
+    this.client.submit('debugVote', isApprove);
   },
 
   goVoteResult: function (){

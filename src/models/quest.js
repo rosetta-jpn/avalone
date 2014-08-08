@@ -96,7 +96,7 @@ Quest.prototype.onAgree = function(){
 }
 
 Quest.prototype.onDisAgree = function(){
-  if(vote_count == 5){
+  if (this.vote_count == 5){
     return this.onAgree();
   }
   this.create_Team();
