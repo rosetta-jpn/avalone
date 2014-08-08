@@ -6,9 +6,9 @@ var Quest = function Quest(Game,success_number,team_sz, id){
   this.id = id ? id : utils.randomId();
   this.game = Game;
   this.success_number = success_number;
+  this.teams = [];
   this.team_sz = team_sz;
   this.state = this.classMethods.States.Now;
-  this.vote_count = 0;
   this.members = [];//User Array
   this.mission_list = {};//User.id -> Success/Failure(True/False) Hash
 }
@@ -61,12 +61,13 @@ Quest.prototype.start = function () {
 
 Quest.prototype.create_Team = function(){
   var selector = this.game.nextSelector();
-  this.team = new Team(this.game, selector, this.team_sz, this.game.players.length);
+  var team = new Team(this.game, selector, this.team_sz, this.game.players.length);
+  this.teams.push(team);
   this.vote_count += 1;
-  this.emit('newTeam', this.team);
-  this.team.on("agree",this.onAgree.bind(this));
-  this.team.on("disAgree",this.onDisAgree.bind(this));
-  return this.team;
+  this.emit('newTeam', team);
+  team.on("agree",this.onAgree.bind(this,team));
+  team.on("disAgree",this.onDisAgree.bind(this,team));
+  return team;
 }
 
 Quest.prototype.judge_success = function(){
@@ -91,13 +92,13 @@ Quest.prototype.change_mission_list = function(missioner,mission_res){
   this.emit('update');
 }
 
-Quest.prototype.onAgree = function(){
-  this.members = this.team.members;
+Quest.prototype.onAgree = function(team){
+  this.members = team.members;
 }
 
-Quest.prototype.onDisAgree = function(){
-  if (this.vote_count == 5){
-    return this.onAgree();
+Quest.prototype.onDisAgree = function(team){
+  if (this.teams.length == 5){
+    return this.onAgree(team);
   }
   this.create_Team();
 }
@@ -108,8 +109,19 @@ Quest.prototype.toJson = function (user) {
     id: this.id,
     success_number: this.success_number,
     team_sz: this.team_sz,
-    team: this.team ? toJson(this.team) : null,
+    teams: this.teams.map(toJson),
   };
 }
+
+utils.property(Quest.prototype, {
+  team: {
+    get: function () { return this.teams[this.teams.length - 1]; },
+    set: function (team) {
+      this.teams.push(team);
+      this.emit("update");
+      return team;
+    }
+  },
+});
 
 module.exports = Quest;

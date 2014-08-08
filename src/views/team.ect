@@ -13,12 +13,12 @@
     </div>
   </div>
   <h2 class="page-header">Member Select</h2>
-  <form id="team_candidate" class="rv-team" rv-hshow="team.isTeamSelector" rv-on-submit="handlers#submitTeam">
-    <div class="checkbox" style="width:25px,height:25px" rv-each-selection="team#playerSelections">
+  <form  id="team_candidate" class="left rv-team" rv-hshow="team.isTeamSelector" rv-on-submit="handlers#submitTeam">
+    <div class="checkbox" rv-each-selection="team#playerSelections">
       <div
-        rv-class-alert="selection#isTeamMember"
-        rv-class-alert-success="selection#isTeamMember"
-        role="alert">
+         rv-class-alert="selection#isTeamMember"
+         rv-class-alert-success="selection#isTeamMember"
+         role="alert">
         <label>
           <input type="checkbox" align="left" rv-checked="selection#isTeamMember"> {{ selection.player.name }}
         </label>
@@ -28,5 +28,39 @@
     <input type="submit" class="btn btn-primary btn-lg" role="button" value="Vote »">
     <br>
   </form>
+
+
   <button class="btn btn-default debug">Debug</button>
+  <br>
+  <h2 class="page-header">Detail Data</h2>
+  
+  <h3>1</h3>
+  <h4>1-1</h4>
+  <font size="+1">
+  selector : atetubou <br>
+  team : atetubou,atetubou1 <br>
+  result : <b>reject</b> <br>
+  </font>
+  <table class="table">
+    <thead>
+      <tr>
+        <th width="50">Player</th>
+        <th width="50">Vote</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td width="50">atetubou</td>
+        <td width="50">Reject</td>
+      </tr>
+      <tr>
+        <td width="50">atetubou1</td>
+        <td width="50">Reject</td>
+      </tr>
+      <tr>
+        <td width="50">atetubou2</td>
+        <td width="50">Reject</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
