@@ -142,6 +142,33 @@ describe('Controller', function () {
         expect(ctx.room.game.quests).to.have
           .length(2);
       });
-    })
+    });
+
+    context('approve Three times', function () {
+      beforeEach(function () {
+        helpers.successMission(ctx);
+        for (var i = 0; i < 2; i++) {
+          helpers.orgTeam(ctx);
+          helpers.approveTeam(ctx);
+          helpers.successMission(ctx);
+        }
+      });
+
+      it ('go to assassin phase', function () {
+        expect(ctx.room.game.state).to.be.equal(ctx.room.game.classMethods.Assassin);
+        var assassin = ctx.room.game.findAssassin();
+        var noAssasinPlayer = (function () {
+          var players = ctx.room.game.players;
+          for (var i = 0; i < players.length; i++) {
+            if (players[i] !== assassin) return players[i];
+          }
+        })();
+
+        expect(noAssasinPlayer.user.socket.emit).to.have.been
+          .calledWith('event', sinon.match.has('type', 'go:AssassinPhase'));
+        expect(assassin.user.socket.emit).to.have.been
+          .calledWith('event', sinon.match.has('type', 'go:AssassinVote'));
+      });
+    });
   });
 });

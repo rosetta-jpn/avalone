@@ -34,9 +34,6 @@ var TeamSize = {5:[2,3,2,3,3],
                 9:[3,4,4,5,5],
                 10:[3,4,4,5,5]};
 
-var States = ["quest","evilWin","justiceWin","assassin"];
-
-
 var Game = module.exports = function Game(players, id){
   this.id = id ? id : utils.randomId();
   this.players = players;
@@ -44,10 +41,16 @@ var Game = module.exports = function Game(players, id){
   this.success_condition = SuccessCondition[players.length.toString()];
   this.team_sz = TeamSize[players.length.toString()];
   this.quests = [];
-  this.state = "quest"
+  this.state = this.classMethods.States.Quest;
 }
 
 utils.inherit(events.EventEmitter,Game);
+Game.classMethods.States = {
+  Quest: "Quest",
+  EvilWin: "EvilWin",
+  JusticeWin: "JusticeWin",
+  Assassin: "Assassin",
+};
 
 utils.extend(Game.classMethods, {
   assignJobs: function(users){
@@ -130,18 +133,19 @@ Game.prototype.startCurrentQuest = function (quest) {
 
 Game.prototype.Assassinate_success = function(merlin_candidate){
   if(merlin_candidate.is_Merlin()){
-    this.state = "evilWin";
+    this.state = this.classMethods.States.EvilWin;
     this.emit("evilWin");
   }else{
-    this.state = "justiceWin";
+    this.state = this.classMethods.States.JusticeWin;
     this.emit("justiceWin");
   }
 }
 
 Game.prototype.onSuccess = function(){
   if (this.succeededQuestsCount() >= 3) {
-    this.state = "assassin";
+    this.state = this.classMethods.States.Assassin;
     this.emit("assassinPhase", this.findAssassin());
+    this.emit('update');
   } else {
     this.create_Quest();
   }
@@ -149,7 +153,7 @@ Game.prototype.onSuccess = function(){
 
 Game.prototype.onFailure = function(){
   if(this.failedQuestsCount() >= 3){
-    this.state = "evilWin";
+    this.state = this.classMethods.States.EvilWin;
     this.emit("evilWin");
   } else {
     this.create_Quest();
@@ -173,18 +177,18 @@ Game.prototype.toJson = function (user) {
 }
 
 Game.prototype.isQuest = function(){
-  return this.state == "quest";
+  return this.state === this.classMethods.States.Quest;
 }
 
 Game.prototype.isEvilWin = function(){
-  return this.state == "evilWin";
+  return this.state === this.classMethods.States.EvilWin;
 }
 
 Game.prototype.isAssassin = function(){
-  return this.state == "assassin";
+  return this.state === this.classMethods.States.Assassin;
 }
 
 Game.prototype.isJusticeWin = function(){
-  return this.state == "justiceWin";
+  return this.state === this.classMethods.States.Justice;
 }
 

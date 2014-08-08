@@ -12,6 +12,7 @@ var GameObserver = module.exports = function GameObserver(game, room) {
 utils.extend(GameObserver.prototype, {
   bind: function () {
     this.game.on('newQuest', this.onNewQuest.bind(this))
+    this.game.on('assassinPhase', this.onAssassinPhase.bind(this))
     this.game.on('evilWin', this.onEvilWin.bind(this))
     this.game.on('justiceWin', this.onJusticeWin.bind(this))
   },
@@ -28,16 +29,16 @@ utils.extend(GameObserver.prototype, {
     new QuestObserver(quest, this.game);
   },
 
-  onAssassinPhase: function (player) {
-    for (var id in this.room.users) {
-      if (id === player.id) {
+  onAssassinPhase: function (assassin) {
+    this.game.players.forEach(function (player) {
+      if (player.id === assassin.id) {
         // Assassin (select who is merlin)
-        this.room.users[id].notify('go:AssassinVote');
+        player.notify('go:AssassinVote');
       } else {
         // wait until Assassin selects
-        this.room.users[id].notify('go:AssassinPhase');
+        player.notify('go:AssassinPhase');
       }
-    }
+    });
   },
 
   onJusticeWin: function () {

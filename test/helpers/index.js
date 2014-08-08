@@ -60,6 +60,14 @@ exports.approveTeam = function (ctx) {
   team.judge();
 }
 
+exports.successMission = function (ctx) {
+  var quest = ctx.game.currentQuest;
+  for (var i = 0; i < quest.members.length; i++) {
+    quest.change_mission_list(quest.members[i], true);
+  }
+  quest.judge_success();
+}
+
 exports.spyRoomMembers = function (ctx) {
   ctx.users.forEach(function (user) {
     user.socket.emit = sinon.spy();
