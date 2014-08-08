@@ -16,11 +16,11 @@ var QuestReceiver = module.exports = Base.extend({
     // switching listener
     var team = this.database.createTeam(json.team);
     this.quest.team = team;
-    this.teamReceiver = new TeamReceiver(team);
+    var teamReceiver = this.teamReceiver = new TeamReceiver(team);
 
     this.quest.emit('new:Quest.team')
     this.quest.once('new:Quest.team', (function () {
-      this.teamReceiver.stopListening();
+      teamReceiver.stopListening();
     }).bind(this));
   },
 
