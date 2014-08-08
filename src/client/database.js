@@ -141,9 +141,8 @@ Database.prototype.readUser = function (json, save) {
 }
 
 Database.prototype.readPlayer = function (json, save) {
-  var klass = Model.PlayerModule[json.class];
+  var klass = Model.PlayerModule.readClass(json.class);
   var user = this.parseUser(json, save);
-  if (!klass) klass = Model.Player;
   return new klass(user);
 }
 

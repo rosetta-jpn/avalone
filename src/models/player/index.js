@@ -1,4 +1,4 @@
-var PlayerModule = module.exorts = {};
+var PlayerModule = module.exports = {};
 var User = require('../user');
 
 PlayerModule.Player = require('./player');
@@ -11,3 +11,8 @@ PlayerModule.Oberon = require('./oberon');
 PlayerModule.Percival = require('./percival');
 PlayerModule.Assassin = require('./assassin');
 
+PlayerModule.readClass = function (className) {
+  var klass = this[className]
+  if (!klass) klass = this.Player;
+  return klass
+}

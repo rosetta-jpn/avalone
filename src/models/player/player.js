@@ -60,6 +60,14 @@ Player.prototype.toJson = function (looker) {
   };
 }
 
+utils.property(Player.prototype, {
+  className: {
+    get: function () {
+      return this.classMethods.className;
+    }
+  },
+});
+
 Player.prototype.isEvil = false;
 Player.prototype.isJustice = false;
 Player.prototype.isAssassin = false;
