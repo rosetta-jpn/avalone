@@ -196,3 +196,7 @@ Game.prototype.isJusticeWin = function(){
   return this.state === this.classMethods.States.JusticeWin;
 }
 
+Game.prototype.isAnySideWin = function(){
+  return this.isJusticeWin() || this.isEvilWin();
+}
+
