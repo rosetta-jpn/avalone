@@ -144,7 +144,9 @@ Database.prototype.readUser = function (json, save) {
 Database.prototype.readPlayer = function (json, save) {
   var klass = Model.PlayerModule.readClass(json.class);
   var user = this.parseUser(json, save);
-  return new klass(user);
+  var player = new Model.PlayerModule.Unknown(user);
+  player.changePersona(klass);
+  return player;
 }
 
 Database.prototype.readRoom = function (json, save) {
@@ -167,6 +169,15 @@ Database.prototype.log = function () {
 Database.prototype.notify = function (type, obj) {
   this.log(type, obj);
   return this.emit(type, obj);
+}
+
+Database.prototype.updatePersona = function (json) {
+  var persona = Model.PlayerModule.readClass(json.class);
+  var player = this.findPlayer(json.id);
+  if (player && player.changePersona) {
+    player.changePersona(persona);
+    console.log('ChangePersona:', player.className);
+  }
 }
 
 module.exports = new Database;

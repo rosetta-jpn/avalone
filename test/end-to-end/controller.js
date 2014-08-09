@@ -134,7 +134,7 @@ describe('Controller', function () {
       it ('receive successQuest', function () {
         ctx.controller.successQuestCallback(ctx.data);
         expect(ctx.user.socket.emit).to.have.been
-          .calledWith('event', sinon.match.has('type', 'successQuest'));
+          .calledWith('event', sinon.match.has('type', 'succeededQuest'));
       });
 
       it ('create next Quest', function () {

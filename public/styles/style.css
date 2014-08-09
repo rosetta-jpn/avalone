@@ -1,6 +1,6 @@
 #container {
   margin: 0 auto;  
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .scene {
@@ -8,14 +8,22 @@
 }
 
 form {
-  max-width: 330px;
+  max-width: 800px;
   margin: 0 auto;  
 }
 
+form.login {
+  max-width: 330px;
+}
 
 form.left{
     margin-left : 0;
     width: 300px;
+}
+
+img.mission {
+  width: 166px;
+  height: 258px;
 }
 
 .username{
@@ -23,10 +31,8 @@ form.left{
 }
 
 .debug{
-    /* display :none; */
+    display: none;
 }
-
-
 
 .vote_approve {
     background-color: #ffff00;

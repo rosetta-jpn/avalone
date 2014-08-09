@@ -4,15 +4,19 @@
   <br>
   <div class="rv-team">
     <form role="form" rv-hide="team.isVoted">
-      <label class="radio-inline">
-        <input type="radio" id="approve" name="votes" rv-checked="team.isVoteApprove">
-        <img src="images/Approve.jpg" alt="Approve">
-      </label>
-      <label class="radio-inline">
-        <input type="radio" id="reject" name="votes" rv-unchecked="team.isVoteApprove">
-        <img src="images/Reject.jpg" alt="Reject">
-      </label>
-      <button type="submit" rv-on-click="handlers#submitVote" class="btn btn-primary">Vote!!</button>
+      <div class="text-center">
+        <div class="form-group">
+          <label class="radio-inline">
+            <input type="radio" id="approve" name="votes" rv-checked="team.isVoteApprove">
+            <img src="images/Approve.jpg" alt="Approve">
+          </label>
+          <label class="radio-inline">
+            <input type="radio" id="reject" name="votes" rv-unchecked="team.isVoteApprove">
+            <img src="images/Reject.jpg" alt="Reject">
+          </label>
+        </div>
+        <button type="submit" rv-on-click="handlers#submitVote" class="btn btn-primary">Vote!!</button>
+      </div>
     </form>
     <div rv-show="team.isVoted">
       <div rv-show="team.isVoteApprove">

@@ -175,8 +175,8 @@ Game.prototype.notifyAll = function (type, data) {
   });
 }
 
-Game.prototype.toJson = function (user) {
-  var toJson = function (obj) { return obj.toJson(user); }
+Game.prototype.toJson = function (user, options) {
+  var toJson = function (obj) { return obj.toJson(user, options); }
   return {
     id: this.id,
     players: this.players.map(toJson),
@@ -199,5 +199,9 @@ Game.prototype.isAssassin = function(){
 
 Game.prototype.isJusticeWin = function(){
   return this.state === this.classMethods.States.JusticeWin;
+}
+
+Game.prototype.isAnySideWin = function(){
+  return this.isJusticeWin() || this.isEvilWin();
 }
 

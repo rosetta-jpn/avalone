@@ -46,7 +46,8 @@ var inherit = exports.inherit = function (parent, child) {
 
 var property = exports.property = function (obj, defs) {
   for (var name in defs) {
-    Object.defineProperty(obj, name, defs[name]);
+    prop = merge({ enumerable: true, configure: true }, defs[name]);
+    Object.defineProperty(obj, name, prop);
   }
 }
 

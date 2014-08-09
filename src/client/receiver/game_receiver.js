@@ -8,6 +8,9 @@ var GameReceiver = module.exports = Base.extend({
 
     this.listen(this.client, 'new:Quest', this.onNewQuest.bind(this));
     this.listen(this.client, 'update:Game', this.onUpdateGame.bind(this));
+    this.listen(this.client, 'update:Game', this.onUpdateGame.bind(this));
+    this.listen(this.client, 'revealEvils:Game', this.onRevealPlayers.bind(this));
+    this.listen(this.client, 'revealPlayers:Game', this.onRevealPlayers.bind(this));
     this.listen(this.client, 'justiceWin', this.onJusticeWin.bind(this));
     this.listen(this.client, 'evilWin', this.onEvilWin.bind(this));
   },
@@ -30,6 +33,11 @@ var GameReceiver = module.exports = Base.extend({
   onReceiveTeam: function (json) {
     var team = Team.classMethods.fromCharCode(json.team);
     this.currentQuest.addTeam(team);
+  },
+
+  onRevealPlayers: function (json) {
+    for (var i = 0; i < json.players.length; i++)
+      this.database.updatePersona(json.players[i]);
   },
 
   onJusticeWin: function () {

@@ -30,6 +30,7 @@ utils.extend(GameObserver.prototype, {
   },
 
   onAssassinPhase: function (assassin) {
+    var self = this;
     this.game.players.forEach(function (player) {
       if (player.id === assassin.id) {
         // Assassin (select who is merlin)
@@ -38,16 +39,20 @@ utils.extend(GameObserver.prototype, {
         // wait until Assassin selects
         player.notify('go:AssassinPhase');
       }
+      player.notify('revealEvils:Game',
+                    self.game.toJson(player, { revealEvils: true }));
     });
   },
 
   onJusticeWin: function () {
     this.room.notifyAll('justiceWin');
     this.room.notifyAll('go:game_result');
+    this.room.notifyAll('revealPlayers:Game', this.game.toJson());
   },
 
   onEvilWin: function () {
     this.room.notifyAll('evilWin');
     this.room.notifyAll('go:game_result');
+    this.room.notifyAll('revealPlayers:Game', this.game.toJson());
   },
 });
