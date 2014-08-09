@@ -59,7 +59,7 @@ Game.classMethods.Jobs = {5:[Justice,Justice,Merlin,  Evil,Assassin],
 
 utils.extend(Game.classMethods, {
   assignJobs: function(users){
-    var job_list = this.classMethods.Jobs[users.length.toString()].concat();
+    var job_list = this.Jobs[users.length.toString()].concat();
     // suffle jobs
     job_list.sort(function () { return Math.random() - Math.random(); });
     // assign jobs
