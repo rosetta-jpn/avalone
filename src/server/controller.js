@@ -109,7 +109,7 @@ utils.extend(Controller.prototype, {
     var roomname = data.room.name;
     var room = this.avalon.rooms[roomname];
     if (room) {
-      room.enter(this.user);
+      room.enterOrRelogin(this.user);
     } else {
       this.avalon.createRoom(this.user, data.room.name);
     }

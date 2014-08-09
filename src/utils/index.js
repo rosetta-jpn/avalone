@@ -67,3 +67,20 @@ var randomId = exports.randomId = function (idLength) {
   return id;
 }
 
+var setTimeoutUtil = exports.setTimeout = function (callback, timeout) {
+  var callbackSafe = function () {
+    try {
+      callback();
+    } catch (e) {
+      logError(e);
+      console.log('An Error occurred when running a timeout callback.');
+    }
+  }
+  setTimeout();
+}
+
+var logError = exports.logError = function (error) {
+  console.log(error.name);
+  console.log(error.message);
+  console.log(error.stack);
+}

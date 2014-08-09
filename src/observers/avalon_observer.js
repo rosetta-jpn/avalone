@@ -1,5 +1,6 @@
 var utils = require('../utils')
-  , RoomObserver = require('./room_observer');
+  , RoomObserver = require('./room_observer')
+  , UserObserver = require('./user_observer');
 
 /* Public: AvalonObserver - observe Avalon and notify its events to clients.
  *
@@ -31,6 +32,7 @@ utils.extend(AvalonObserver.prototype, {
   onUserEnter: function (user) {
     user.on('rename', this.onUserRename.bind(this, user));
     this.connector.notice('login', user.toString());
+    new UserObserver(user);
     user.notify('connection', user.id);
     user.notify('go:start');
   },

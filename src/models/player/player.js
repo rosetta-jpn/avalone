@@ -15,9 +15,8 @@ utils.property(Player.prototype, {
   id: { get: function () { return this.user.id; } },
   name: { get: function () { return this.user.name; } },
   socket: { get: function () { return this.user.socket; } },
+  notify: { get: function () { return this.user.notify.bind(this.user); } },
 });
-
-Player.prototype.notify = User.prototype.notify;
 
 Player.prototype.ability = {
   findMerlin: false,

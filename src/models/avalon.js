@@ -11,7 +11,9 @@ var Avalon = module.exports = function Avalon() {
 }
 
 utils.inherit(events.EventEmitter, Avalon);
-utils.extend(Avalon.prototype, roomModule('users'));
+utils.extend(Avalon.prototype, roomModule('users', 'socketId'));
+
+Avalon.classMethods.timeoutMSec = 1000 * 3 * 60;
 
 utils.extend(Avalon.prototype, {
   createRoom: function (owner, name) {
@@ -30,8 +32,20 @@ utils.extend(Avalon.prototype, {
   login: function (socket, id) {
     user = new User(id, id, socket);
     this.enter(user);
-    user.on('destroy', this.leave.bind(this, user));
+    user.on('disconnect', this.onDisconnectUser.bind(this, user, user.socketId))
     return user;
+  },
+
+  onDisconnectUser: function (user, socketId) {
+    var timeoutId =
+      utils.setTimeout(function() { user.destroy(); }, this.classMethods.timeoutMSec);
+    user.once('relogin', function () { clearTimeout(timeoutId) });
+    user.once('relogin', this.onRelogin.bind(this, user));
+    this.leaveByIndetifier(socketId, true);
+  },
+
+  onRelogin: function (user) {
+    this.enter(user, true);
   },
 });
 

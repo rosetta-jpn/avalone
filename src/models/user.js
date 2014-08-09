@@ -1,5 +1,4 @@
 var events = require('events')
-  // , UserLookPolicy = require('./user_look_policy')
   , utils = require('../utils');
 
 var User = module.exports = function User(id, name, socket) {
@@ -15,6 +14,10 @@ utils.property(User.prototype, {
   className: {
     get: function(){ return this.classMethods.className; }
   },
+
+  socketId: {
+    get: function(){ return this.socket ? this.socket.id : null; }
+  }
 });
 
 utils.extend(User.prototype, {
@@ -25,7 +28,20 @@ utils.extend(User.prototype, {
   },
 
   disconnect: function () {
+    if (!this.room || !this.room.game) return this.destroy();
+    this.socket = null;
+    this.emit('disconnect');
+  },
+
+  destroy: function () {
+    this.socket = null;
     this.emit('destroy');
+  },
+
+  relogin: function (user) {
+    this.socket = user.socket;
+    user.destroy();
+    this.emit('relogin');
   },
 
   seePlayer: function (player) {
@@ -37,18 +53,25 @@ utils.extend(User.prototype, {
   },
 
   toJson: function () {
-    return {
+    var json = {
       id: this.id,
       name: this.name,
-    }
+    };
+    if (this.room) json.room = this.room.name
+    return json;
   },
 
   notify: function (type, value) {
     console.log("Notify", "(" + this.toString() + ")", type, value)
+    if (this.isDisconnected()) return;
     this.socket.emit('event', {
       type: type,
       content: value,
     });
-  }
+  },
+
+  isDisconnected: function () {
+    return !this.socket;
+  },
 });
 

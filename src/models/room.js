@@ -13,7 +13,7 @@ var Room = module.exports = function Room(owner, name) {
 }
 
 utils.inherit(events.EventEmitter, Room);
-utils.extend(Room.prototype, roomModule('userList'));
+utils.extend(Room.prototype, roomModule('userList', 'name'));
 
 utils.property(Room.prototype, {
   users: {
@@ -40,6 +40,17 @@ Room.prototype.newGame = function (controller) {
   this.emit('newGame', game);
   game.start();
   return game;
+}
+
+Room.prototype.enterOrRelogin = function (newUser) {
+  var user;
+  if (user = this.userList[newUser.name]) {
+    if (!user.isDisconnected())
+      throw 'User having the same name already exists.';
+    user.relogin(newUser);
+  } else {
+    this.enter(newUser);
+  }
 }
 
 Room.prototype.removeGame = function () {
