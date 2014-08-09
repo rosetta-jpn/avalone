@@ -1,10 +1,15 @@
 var utils = require('../utils')
   , Controller = require('./controller');
 
-var SocketIOConnector = module.exports = function SocketIOConnector (ioserver, avalon) {
+var SocketIOConnector = module.exports = function SocketIOConnector (ioserver, avalon, config) {
   this.ioserver = ioserver;
   this.avalon = avalon;
+  this.parseConfig(config || {});
   this.startListen();
+}
+
+SocketIOConnector.prototype.parseConfig = function (config) {
+  this.config = config;
 }
 
 SocketIOConnector.prototype.startListen = function () {

@@ -32,6 +32,6 @@ server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'))
 });
 
-var connectorConstructor = socketio(server);
+var connectorConstructor = socketio(server, { env: process.env['NODE_ENV']});
 new AvalonObserver(new Avalon(), connectorConstructor);
 

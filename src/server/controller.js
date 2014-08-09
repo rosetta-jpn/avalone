@@ -11,6 +11,7 @@ var Controller = module.exports = function Controller(type, avalon, connector, s
   this.type = type;
   this.avalon = avalon;
   this.connector = connector;
+  this.config = connector.config;
   this.socket = socket;
 }
 
@@ -25,6 +26,14 @@ var Controller = module.exports = function Controller(type, avalon, connector, s
  */
 Controller.prototype.dispatch = function (data) {
   this[this.type + 'Callback'](data);
+}
+
+Controller.prototype.isProduction = function () {
+  return this.config.env === 'production';
+}
+
+Controller.prototype.refuseProduction = function () {
+  if (this.isProduction()) throw 'Development Only';
 }
 
 utils.property(Controller.prototype, {
@@ -48,6 +57,7 @@ utils.property(Controller.prototype, {
 
 utils.extend(Controller.prototype, {
   debugCallback: function () {
+    this.refuseProduction();
     var users = []
     var room = this.avalon.createRoom(this.user, 'debug');
     for (var id in this.avalon.users)
@@ -59,6 +69,7 @@ utils.extend(Controller.prototype, {
   },
 
   debugTeamCallback: function () {
+    this.refuseProduction();
     var team = this.game.currentQuest.team;
     for (var i = 0; i < this.game.currentQuest.team_sz; i++) {
        team.add_group(team.selector, this.game.players[i])
@@ -67,6 +78,7 @@ utils.extend(Controller.prototype, {
   },
 
   debugVoteCallback: function (isApprove) {
+    this.refuseProduction();
     var team = this.game.currentQuest.team;
     for (var i = 0; i < this.game.players.length; i++) {
        team.change_voter_map(this.game.players[i], isApprove);
@@ -75,6 +87,7 @@ utils.extend(Controller.prototype, {
   },
 
   debugMissionCallback: function (isSuccess) {
+    this.refuseProduction();
     var quest = this.game.currentQuest;
     for (var i = 0; i < quest.members.length; i++) {
        quest.change_mission_list(quest.members[i], isSuccess);
