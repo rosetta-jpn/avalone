@@ -47,5 +47,14 @@ utils.extend(Game.prototype, {
     var assassin = this.findAssassin();
     return assassin && assassin.id === database.id;
   },
+  
+  jobList : function(){
+    return this.classMethods.Jobs[this.players.length];
+  }
+
+
 });
+
+
+
 

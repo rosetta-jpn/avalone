@@ -11,14 +11,6 @@ var Team = require("./quest")
   , Percival = require('./player/percival')
   , Assassin = require('./player/assassin');
 
-
-var Jobs = {5:[Justice,Justice,Merlin,  Evil,Assassin],
-            6:[Justice,Justice,Merlin,Percival,   Mordred,Assassin],
-            7:[Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
-            8:[Justice,Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
-            9:[Justice,Justice,Justice,Justice,Merlin,Percival,   Morgana,Mordred,Assassin],
-            10:[Justice,Justice,Justice,Justice,Merlin,Percival,   Evil,Morgana,Mordred,Assassin]};
-
 var SuccessCondition = {5:[2,3,2,3,3],
                         6:[2,3,4,3,4],
                         7:[2,3,3,3,4],
@@ -52,9 +44,22 @@ Game.classMethods.States = {
   Assassin: "Assassin",
 };
 
+
+
+Game.classMethods.Jobs = {5:[Justice,Justice,Merlin,  Evil,Assassin],
+            6:[Justice,Justice,Merlin,Percival,   Mordred,Assassin],
+            7:[Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
+            8:[Justice,Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin],
+            9:[Justice,Justice,Justice,Justice,Merlin,Percival,   Morgana,Mordred,Assassin],
+            10:[Justice,Justice,Justice,Justice,Merlin,Percival,   Evil,Morgana,Mordred,Assassin]};
+
+
+
+
+
 utils.extend(Game.classMethods, {
   assignJobs: function(users){
-    var job_list = Jobs[users.length.toString()].concat();
+    var job_list = this.classMethods.Jobs[users.length.toString()].concat();
     // suffle jobs
     job_list.sort(function () { return Math.random() - Math.random(); });
     // assign jobs
