@@ -26,6 +26,12 @@ img.mission {
   height: 258px;
 }
 
+.jobsfont{
+    font-size : large;
+    font-weight: bold;
+}
+
+
 .username{
     white-space : nowrap;
 }

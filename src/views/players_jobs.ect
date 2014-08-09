@@ -1,9 +1,9 @@
 <div class="row placeholders other-jobs rv-game">
-  <div rc-each-job="game.jobList">
-    {{job.classMethods.className}} &nbsp;
+  <div rv-each-job="game.jobList" class="jobsfont">
+    {{job.classMethods.className}} 
   </div>
   <br><br>
-  <div class="col-xs-6 col-sm-3 placeholder" rv-each-player="game.players">
+  <div class="col-xs-6 col-sm-3 placeholder" rv-each-player="game#players">
     <img rv-src="player#className | imagePath" rv-alt="player#className" height="170px" width="110px">
     <h4 class="username">{{ player.name }}</h4>
   </div>
