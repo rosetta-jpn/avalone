@@ -13,22 +13,35 @@
     </div>
   </div>
   <h2 class="page-header">Member Select</h2>
-  <form  id="team_candidate" class="left rv-team" rv-show="team#isTeamSelector" rv-on-submit="handlers#submitTeam">
-    <div class="checkbox" rv-each-selection="team#playerSelections">
-      <div
-         rv-class-alert="selection#isTeamMember"
-         rv-class-alert-success="selection#isTeamMember"
-         role="alert">
-        <label>
-          <input type="checkbox" align="left" rv-checked="selection#isTeamMember"> {{ selection.player.name }}
-        </label>
+  <div class="rv-team">
+    <form  id="team_candidate" class="left" rv-show="team#isTeamSelector" rv-on-submit="handlers#submitTeam">
+      <div class="checkbox" rv-each-selection="team#playerSelections">
+        <div
+           rv-class-alert="selection#isTeamMember"
+           rv-class-alert-success="selection#isTeamMember"
+           role="alert">
+          <label>
+            <input type="checkbox" align="left" rv-checked="selection#isTeamMember"> {{ selection.player.name }}
+          </label>
+        </div>
       </div>
-    </div>
-    <br>
-    <input type="submit" class="btn btn-primary btn-lg" role="button" value="Vote »">
-    <br>
-  </form>
-
+      <br>
+      <input type="submit" class="btn btn-primary btn-lg" role="button" value="Vote »">
+      <br>
+    </form>
+    <form id="team_candidate_read" class="left" rv-hide="team#isTeamSelector" rv-on-submit="handlers#submitTeam">
+      <div class="checkbox" rv-each-selection="team#playerSelections">
+        <div
+           rv-class-alert="selection#isTeamMember"
+           rv-class-alert-success="selection#isTeamMember"
+           role="alert">
+          <label>
+            <input type="checkbox" align="left" rv-checked="selection#isTeamMember" disabled readonly> {{ selection.player.name }}
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
 
   <button class="btn btn-default debug">Debug</button>
   <br>
