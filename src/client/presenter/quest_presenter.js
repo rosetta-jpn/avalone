@@ -45,5 +45,18 @@ QuestPresenter.prototype.eventHandlers = {
     ev.preventDefault();
     this.client.submit('failQuest', this.model.quest.toJson());
   },
+  
+  submitVote : function (ev){
+    ev.preventDefault();
+    if(this.model.quest.isVoteSuccess){
+      this.client.submit('successQuest', this.model.quest.toJson());
+    }else{
+      this.client.submit('failQuest', this.model.quest.toJson());
+    }
+    this.model.quest.isVoted = true;
+  }
+  
+
+
 }
 

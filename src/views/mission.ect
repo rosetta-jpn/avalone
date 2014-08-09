@@ -2,8 +2,25 @@
   <h2 class="page-header">Mission</h2>
   <button class="btn btn-default debug debug-success">Debug (Success)</button>
   <button class="btn btn-default debug debug-failure">Debug (Failure)</button>
-  <div align="center" class="rv-quest" rv-show="quest.team#isMember">
-    <a href="#" rv-on-click="handlers#submitSuccess"><img src="images/Success.jpg" alt="Success" style="margin-right:200px;"></a>
-    <a href="#" rv-on-click="handlers#submitFail"><img src="images/Failure.jpg" alt="Fail"></a>
+  <div class="rv-quest" rv-show="quest.team#isMember">
+    <form role="form" rv-hide="quest.isVoted">
+      <label class="radio-inline">
+        <input type="radio" name="missions" rv-checked="quest.isVoteSuccess">
+        <img src="images/Success.jpg" alt="Success" width="166" height="258">
+      </label>
+      <label class="radio-inline">
+        <input type="radio" name="missions" rv-unchecked="quest.isVoteSuccess">
+        <img src="images/Failure.jpg" alt="Failure" width="166" height="258">
+      </label>
+      <button type="submit" rv-on-click="handlers#submitVote" class="btn btn-primary">Go Mission Result!!</button>
+    </form>
+    <div rv-show="quest.isVoted" align="center">
+      <div rv-show="quest.isVoteSuccess">
+        <img src="images/Success.jpg" alt="Success" width="166" height="258">
+      </div>
+      <div rv-hide="quest.isVoteSuccess">
+        <img src="images/Failure.jpg" alt="Failure" width="166" height="258">
+      </div>
+    </div>
   </div>
 </div>
