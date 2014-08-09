@@ -22,6 +22,11 @@ form.left{
     white-space : nowrap;
 }
 
+.debug{
+    visibility: hidden;
+}
+
+
 
 .vote_approve {
     background-color: #ffff00;
