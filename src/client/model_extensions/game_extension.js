@@ -24,7 +24,7 @@ utils.extend(Game.prototype, {
     });
   },
 
-  // overwrite original create_Quest method for client.
+  // overwrite the original create_Quest method for client.
   // TODO: Divide model's logic for client and server.
   create_Quest: function () {
   },

@@ -5,6 +5,7 @@ var Model = require('../models')
 
 var ModelNames = Object.keys(Model);
 
+// Public: Database - parse received json objects and store them.
 var Database = function () {
   for (var i = 0; i < ModelNames.length; i++) {
     this[ModelNames[i]] = {};

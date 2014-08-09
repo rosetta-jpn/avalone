@@ -2,6 +2,7 @@ var Scene = require('./scene')
   , Client = require('./client')
   , Presenter = require('./presenter');
 
+// Public: Router - manage scenes and make scenes transit.
 var Router = module.exports = function Router(client) {
   this.client = client;
   this.reservation = {};

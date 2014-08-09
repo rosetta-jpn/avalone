@@ -2,6 +2,7 @@ var client = require('../client')
   , database = require('../database')
   , utils = require('../../utils');
 
+// Public: Presenter - Show models by rivets.js and manage views.
 module.exports = Presenter = function () {}
 
 utils.extend(Presenter.prototype, {

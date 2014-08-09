@@ -1,4 +1,6 @@
 var utils = require('../../utils');
+
+// Public: Receiver - control models according to messages from the server.
 var Base = module.exports = function () {
   this.listens = [];
   if (this.initialize) this.initialize.apply(this, arguments);

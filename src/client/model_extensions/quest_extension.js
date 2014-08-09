@@ -13,7 +13,7 @@ utils.extend(Quest.prototype, {
     else this.emit("failure");
   },
 
-  // overwrite original create_Team method for client.
+  // overwrite the original create_Team method for client.
   create_Team: function () {
   },
 
