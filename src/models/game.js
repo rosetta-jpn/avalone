@@ -170,8 +170,8 @@ Game.prototype.notifyAll = function (type, data) {
   });
 }
 
-Game.prototype.toJson = function (user) {
-  var toJson = function (obj) { return obj.toJson(user); }
+Game.prototype.toJson = function (user, options) {
+  var toJson = function (obj) { return obj.toJson(user, options); }
   return {
     id: this.id,
     players: this.players.map(toJson),

@@ -5,6 +5,7 @@ var events = require('events')
 
 var Player = module.exports = function Player(user) {
   this.user = user;
+  if (this.initialize) this.initialize(user);
 }
 
 utils.inherit(events.EventEmitter, Player);
@@ -42,8 +43,8 @@ Player.prototype.seePlayer = function (player) {
   return Player.name + ": " + this._seePlayerClass(player);
 }
 
-Player.prototype._seePlayerClass = function (player) {
-  return new PlayerLookPolicy(this, player).look;
+Player.prototype._seePlayerClass = function (player, options) {
+  return new PlayerLookPolicy(this, player, options).look;
 }
 
 Player.prototype.toString = function (looker) {
@@ -51,8 +52,8 @@ Player.prototype.toString = function (looker) {
   return json.name + ': ' + json.class;
 }
 
-Player.prototype.toJson = function (looker) {
-  var pclass = looker ? looker._seePlayerClass(this) : this.classMethods.className;
+Player.prototype.toJson = function (looker, options) {
+  var pclass = looker ? looker._seePlayerClass(this, options) : this.classMethods.className;
   return {
     id: this.id,
     name: this.name,

@@ -1,6 +1,7 @@
-var PlayerLookPolicy = module.exports = function(looker, target) {
+var PlayerLookPolicy = module.exports = function(looker, target, options) {
     this.looker = looker;
     this.target = target;
+    this.options = options || {};
     this.look = this._judgeLook();
 }
 
@@ -9,7 +10,10 @@ PlayerLookPolicy.prototype.anonymousClassName = 'Unknown';
 PlayerLookPolicy.prototype._judgeLook = function () {
   imports = lazyLoad();
   if (this.looker === this.target)
-    return this.target.classMethods.className;
+    return this.target.className;
+
+  if (this.options.revealEvils && this.target.look.evil)
+    return this.target.className;
 
   if (this.target.look.mordred && !this.looker.ability.findMordred)
     return this.anonymousClassName;
