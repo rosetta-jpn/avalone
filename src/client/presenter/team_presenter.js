@@ -40,14 +40,14 @@ TeamPresenter.prototype.eventHandlers = {
     this.client.submit('orgTeam', this.model.team.toJson());
   },
 
-  submitApprove: function (ev) {
+  submitVote : function(ev){
     ev.preventDefault();
-    this.client.submit('approveTeam', this.model.team.toJson());
-  },
-
-  submitReject: function (ev) {
-    ev.preventDefault();
-    this.client.submit('rejectTeam', this.model.team.toJson());
+    if(this.model.team.isVoteApprove){
+      this.client.submit('approveTeam', this.model.team.toJson());
+    }else{
+      this.client.submit('rejectTeam', this.model.team.toJson()); 
+    }
+    this.model.team.isVoted = true;
   },
 }
 

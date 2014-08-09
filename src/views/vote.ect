@@ -1,14 +1,29 @@
-<div id="vote" class="scene">
+ <div id="vote" class="scene">
   <% include "team_select_info" %>
   <% include "team_member" %>
   <br>
-  <div align="center" class="rv-team">
-    <a href="#" id="approve"><img src="images/Approve.jpg" alt="Approve" style="margin-right:100px;"
-      rv-on-click="handlers#submitApprove"></a>
-    <a href="#" id="reject"><img src="images/Reject.jpg" alt="Reject"
-      rv-on-click="handlers#submitReject"></a>
+  <div class="rv-team">
+    <form role="form" rv-hide="team.isVoted">
+      <label class="radio-inline">
+        <input type="radio" id="approve" name="votes" rv-checked="team.isVoteApprove">
+        <img src="images/Approve.jpg" alt="Approve">
+      </label>
+      <label class="radio-inline">
+        <input type="radio" id="reject" name="votes" rv-unchecked="team.isVoteApprove">
+        <img src="images/Reject.jpg" alt="Reject">
+      </label>
+      <button type="submit" rv-on-click="handlers#submitVote" class="btn btn-primary">Vote!!</button>
+    </form>
+    <div rv-show="team.isVoted">
+      <div rv-show="team.isVoteApprove">
+        <img src="images/Approve.jpg" alt="Approve">
+      </div>
+      <div rv-hide="team.isVoteApprove">
+        <img src="images/Reject.jpg" alt="Reject">
+      </div>
+    </div>
   </div>
   <br><br>
-  <button class="btn btn-default debugApprove">Debug (Approve)</button>
-  <button class="btn btn-default debugReject">Debug (Reject)</button>
+  <button class="btn btn-default debugApprove debug">Debug (Approve)</button>
+  <button class="btn btn-default debugReject debug">Debug (Reject)</button>
 </div>

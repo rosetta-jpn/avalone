@@ -44,3 +44,8 @@ Team.prototype.isTeamSelector = function () {
   return this.selector.id === database.playerProfile.id;
 }
 
+Team.prototype.votedApprove = function () {
+  
+}
+
+
