@@ -59,6 +59,7 @@ utils.extend(Controller.prototype, {
   debugCallback: function () {
     this.refuseProduction();
     var users = []
+    this.user.rename('owner');
     var room = this.avalon.createRoom(this.user, 'debug');
     for (var id in this.avalon.users)
       if (id !== this.id) {
