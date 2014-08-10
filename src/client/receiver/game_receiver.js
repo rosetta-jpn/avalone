@@ -24,6 +24,7 @@ var GameReceiver = module.exports = Base.extend({
     var quest = this.database.createQuest(json.quest)
     this.listenNewQuest(quest);
     this.game.addNewQuest(quest);
+    this.database.currentQuest = quest;
   },
 
   listenNewQuest: function (quest) {
@@ -64,5 +65,6 @@ var GameReceiver = module.exports = Base.extend({
     } else if (this.game.isAnySideWin()) {
       this.router.changeScene('game_result');
     }
+    this.database.currentQuest = quest;
   },
 });

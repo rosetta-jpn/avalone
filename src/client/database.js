@@ -69,7 +69,6 @@ ModelNames.forEach(function (key) {
     } else {
       this[key] = obj;
     }
-    this[currentPropName] = obj;
     this.notify('new:' + key, obj);
     return obj;
   }

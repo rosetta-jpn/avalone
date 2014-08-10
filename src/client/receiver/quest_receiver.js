@@ -16,6 +16,7 @@ var QuestReceiver = module.exports = Base.extend({
     // switching listener
     var team = this.database.createTeam(json.team);
     this.quest.teams.push(team);
+    this.database.currentTeam = team;
     this.quest.emit("update");
     this.listenNewTeam(team);
   },
@@ -52,5 +53,6 @@ var QuestReceiver = module.exports = Base.extend({
     } else if (this.quest.isSuccess() || this.quest.isFailure()) {
       this.router.changeScene('mission_result');
     }
+    this.database.currentTeam = this.team;
   },
 });

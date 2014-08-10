@@ -15,6 +15,7 @@ var RoomReceiver = module.exports = Base.extend({
 
   onReceiveRoom: function (json) {
     this.room = this.database.createRoom(json.room);
+    this.database.currentRoom = this.room;
     // this.room.emit('update:Room')
   },
 
@@ -31,6 +32,7 @@ var RoomReceiver = module.exports = Base.extend({
 
   onNewGame: function (json) {
     this.room.game = this.database.createGame(json.game);
+    this.database.currentGame = this.room.game;
     new GameReceiver(this.room.game);
     // this.room.emit('update:Room.game')
   },
@@ -44,5 +46,6 @@ var RoomReceiver = module.exports = Base.extend({
     this.room.game = this.database.createGame(json);
     var gameReceiver = new GameReceiver(this.room.game);
     gameReceiver.resumeGame(this.room.game);
+    this.database.currentGame = this.room.game;
   },
 });
