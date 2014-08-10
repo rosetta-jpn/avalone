@@ -39,8 +39,7 @@ utils.extend(GameObserver.prototype, {
         // wait until Assassin selects
         player.notify('go:AssassinPhase');
       }
-      player.notify('revealEvils:Game',
-                    self.game.toJson(player, { revealEvils: true }));
+      player.notify('revealEvils:Game', self.game.toJson(player));
     });
   },
 

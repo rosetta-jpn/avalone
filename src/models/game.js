@@ -176,6 +176,8 @@ Game.prototype.notifyAll = function (type, data) {
 }
 
 Game.prototype.toJson = function (user, options) {
+  if (this.isAssassin()) options = utils.merge({ revealEvils: true }, options)
+  if (this.isAnySideWin()) options = utils.merge({ revealPlayers: true }, options)
   var toJson = function (obj) { return obj.toJson(user, options); }
   return {
     id: this.id,

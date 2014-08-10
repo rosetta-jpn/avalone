@@ -12,6 +12,9 @@ PlayerLookPolicy.prototype._judgeLook = function () {
   if (this.looker === this.target)
     return this.target.className;
 
+  if (this.options.revealPlayers)
+    return this.target.className;
+
   if (this.options.revealEvils && this.target.look.evil)
     return this.target.className;
 
