@@ -15,7 +15,16 @@ utils.extend(UserObserver.prototype, {
   },
 
   onRelogin: function () {
-    this.user.notify('relogin');
+    this.user.notify('relogin', this.user.toJson());
+    this.user.notify('go:start')
+    if (this.user) {
+      this.user.notify('resume:Room', this.user.room.toJson());
+      var game;
+      if (game = this.user.room.game) {
+        var player = game.findPlayer(this.user.id);
+        this.user.notify('resume:Game', game.toJson(player));
+      }
+    }
   },
 });
 

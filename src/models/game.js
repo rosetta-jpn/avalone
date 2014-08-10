@@ -102,6 +102,11 @@ Game.prototype.findAssassin = function () {
   }
 }
 
+Game.prototype.findPlayer = function (id) {
+  if (!this.playerMap) this.playerMap = this.buildPlayerMap();
+  return this.playerMap[id];
+}
+
 Game.prototype.start = function () {
   this.create_Quest();
 }
