@@ -124,7 +124,6 @@ Game.prototype.create_Quest = function(){
   var teamSize =  this.team_sz[this.quests.length];
   var quest = new Quest(this, successCondition, teamSize);
   this.quests.push(quest);
-  this.currentQuest = quest;
   this.emit('newQuest', quest);
   this.startCurrentQuest(quest);
   return quest;
@@ -207,3 +206,8 @@ Game.prototype.isAnySideWin = function(){
   return this.isJusticeWin() || this.isEvilWin();
 }
 
+utils.property(Game.prototype, {
+  currentQuest: {
+    get: function () { return this.quests[this.quests.length - 1]; },
+  }
+});
