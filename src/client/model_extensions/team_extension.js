@@ -1,6 +1,12 @@
 var Team = require('../../models/team')
   , utils = require('../../utils');
 
+utils.extend(Team.classMethods, {
+  registerDatabase: function (database) {
+    this.database = database;
+  },
+})
+
 Team.prototype.playerSelections = function () {
   var self = this;
   return this.game.players.map(function (player) {
@@ -37,11 +43,11 @@ Team.prototype.votes = function () {
 }
 
 Team.prototype.isMember = function () {
-  return this.isContainMember(database.playerProfile);
+  return this.isContainMember(this.classMethods.database.playerProfile);
 }
 
 Team.prototype.isTeamSelector = function () {
-  return this.selector.id === database.playerProfile.id;
+  return this.selector.id === this.classMethods.database.playerProfile.id;
 }
 
 Team.prototype.votedApprove = function () {

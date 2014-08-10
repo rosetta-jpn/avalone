@@ -6,7 +6,7 @@ var Model = require('../models')
 var ModelNames = Object.keys(Model);
 
 // Public: Database - parse received json objects and store them.
-var Database = function () {
+var Database = module.exports = function () {
   for (var i = 0; i < ModelNames.length; i++) {
     this[ModelNames[i]] = {};
   }
@@ -190,5 +190,3 @@ Database.prototype._autoSetGame = function (obj, game_id) {
   if (game) obj.game = game; 
   else this.once('new:Game', this._autoSetGame.bind(this, obj, game_id));
 }
-
-module.exports = new Database;

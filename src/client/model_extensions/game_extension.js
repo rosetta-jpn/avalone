@@ -1,6 +1,12 @@
 var Game = require('../../models/game')
   , utils = require('../../utils');
 
+utils.extend(Game.classMethods, {
+  registerDatabase: function (database) {
+    this.database = database;
+  },
+})
+
 utils.extend(Game.prototype, {
   playerSelections: function () {
     var self = this;
@@ -45,16 +51,11 @@ utils.extend(Game.prototype, {
 
   canAssassinate: function () {
     var assassin = this.findAssassin();
-    return assassin && assassin.id === database.id;
+    return assassin && assassin.id === this.classMethods.database.id;
   },
   
   jobList : function(){
     return this.classMethods.Jobs[this.players.length];
   }
-
-
 });
-
-
-
 

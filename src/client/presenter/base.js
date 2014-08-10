@@ -1,9 +1,12 @@
-var client = require('../client')
-  , database = require('../database')
-  , utils = require('../../utils');
+var utils = require('../../utils');
 
 // Public: Presenter - Show models by rivets.js and manage views.
 module.exports = Presenter = function () {}
+
+utils.useClassMethods(Presenter);
+Presenter.classMethods.setting = function (app) {
+  this.app = app;
+}
 
 utils.extend(Presenter.prototype, {
   bind: function (range) {
@@ -52,7 +55,18 @@ utils.extend(Presenter.prototype, {
       save.original.apply(this, save.queue[i]);
     }
   },
+});
 
-  client: client,
-  database: database,
+utils.property(Presenter.prototype, {
+  client: {
+    get: function () { return this.classMethods.app.client; },
+  },
+
+  database: {
+    get: function () { return this.classMethods.app.database; },
+  },
+
+  router: {
+    get: function () { return this.classMethods.app.router; },
+  },
 });

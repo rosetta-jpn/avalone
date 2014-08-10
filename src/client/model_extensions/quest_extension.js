@@ -1,5 +1,4 @@
 var Quest = require('../../models/quest')
-  , database = require('../database')
   , utils = require('../../utils');
 
 utils.extend(Quest.prototype, {

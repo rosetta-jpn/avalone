@@ -8,7 +8,7 @@ var handleErrors = require('../util/handleErrors');
 gulp.task('browserify', ['clean'], function() {
   function runBundle() {
     bundleLogger.start();
-    return browserify('./src/client/index.js')
+    return browserify('./src/client/boot.js')
       .bundle()
       .on('error', handleErrors)
       .pipe(source('main.js'))

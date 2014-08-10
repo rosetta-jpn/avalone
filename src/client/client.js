@@ -1,7 +1,8 @@
 var utils = require('../utils')
   , events = require('events');
 
-var Client = function Client() {
+var Client = module.exports = function Client(ioBoot) {
+  this.ioBoot = ioBoot;
   this.eventQueue = {};
 }
 
@@ -40,8 +41,9 @@ Client.prototype.start = function () {
   var self = this;
   if (this.socket) return;
 
-  this.socket = io();
+  this.socket = this.ioBoot();
   this.socket.on('event', function (data) {
+    console.log('Received:', data);
     setTimeout(self.onEvent.bind(self), 0, data);
   });
 
@@ -60,6 +62,4 @@ Client.prototype.onEvent = function (event) {
   this.log(type, content);
   this.emit(type, content);
 }
-
-Client.client = module.exports = new Client();
 
