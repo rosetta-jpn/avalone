@@ -44,4 +44,14 @@ var TeamReceiver = module.exports = Base.extend({
     if (!this.team.isTeamSelector()) return;
     this.client.submit('teamMemberChange', this.team.toJson());
   },
+
+  resumeTeam: function () {
+    if (this.team.isSelectMember()) {
+      this.router.changeScene('team');
+    } else if (this.team.isVoting()) {
+      this.router.changeScene('vote');
+    } else if (this.team.isApprove() || this.team.isReject()) {
+      this.router.changeScene('vote_result');
+    }
+  },
 });

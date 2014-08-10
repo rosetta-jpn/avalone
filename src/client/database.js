@@ -63,7 +63,6 @@ ModelNames.forEach(function (key) {
 
   var addMethodName = 'add' + key;
   Database.prototype[addMethodName] = function (obj) {
-    this.notify('new:' + key, obj);
     if (identifier) {
       var id = obj[identifier];
       this[key][id] = obj;
@@ -71,6 +70,7 @@ ModelNames.forEach(function (key) {
       this[key] = obj;
     }
     this[currentPropName] = obj;
+    this.notify('new:' + key, obj);
     return obj;
   }
 
@@ -118,22 +118,29 @@ Database.prototype.readGame = function (json, save) {
   var self = this;
   players = json.players.map(function (obj) { return self.parsePlayer(obj, save); });
   var game = new Model.Game(players, json.id);
+  game.state = json.state;
   game.quests = (json.quests || []).map(function (obj) { return self.parseQuest(obj, save); });
   game.selectorIdx = json.selectorIdx;
   return game;
 }
 
 Database.prototype.readQuest = function (json, save) {
+  var self = this;
   var quest = new Model.Quest(this.currentGame, json.success_number, json.team_sz, json.id);
-  if (json.team) quest.team = this.parseTeam(json.team, save);
+  quest.state = json.state;
+  if (json.teams) quest.teams = json.teams.map(function (team) { return self.parseTeam(team, save); });
   return quest;
 }
 
 Database.prototype.readTeam = function (json, save) {
   var selector = this.parsePlayer(json.selector, save);
   var team = new Model.Team(this.currentGame, selector, json.group_sz, json.voter_sz, json.id);
+  team.state = json.state;
   team.group = json.group;
   team.voter_map = json.voter_map;
+  if (json.game_id) {
+    this._autoSetGame(team, json.game_id)
+  }
   return team;
 }
 
@@ -156,7 +163,6 @@ Database.prototype.readRoom = function (json, save) {
   json.users.forEach(function (obj) {
     room.enter(self.parseUser(obj, save));
   });
-  if (json.game) room.game = this.parseGame(json.game, save);
   return room;
 }
 
@@ -178,6 +184,12 @@ Database.prototype.updatePersona = function (json) {
     player.changePersona(persona);
     console.log('ChangePersona:', player.className);
   }
+}
+
+Database.prototype._autoSetGame = function (obj, game_id) {
+  var game = this.findGame(game_id);
+  if (game) obj.game = game; 
+  else this.once('new:Game', this._autoSetGame.bind(this, obj, game_id));
 }
 
 module.exports = new Database;

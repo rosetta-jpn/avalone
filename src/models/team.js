@@ -121,6 +121,14 @@ Team.prototype.judge = function(){
   }
 }
 
+Team.prototype.isSelectMember = function () {
+  return this.state === States[0];
+}
+
+Team.prototype.isVoting = function () {
+  return this.state === States[1];
+}
+
 Team.prototype.isApprove = function(){
   return this.state === States[2];// Approve
 }
@@ -128,7 +136,6 @@ Team.prototype.isApprove = function(){
 Team.prototype.isReject = function(){
   return this.state === States[3];// Reject
 }
-
 
 Team.prototype.toJson = function (user) {
   var toJson = function (obj) { return obj.toJson(user); }
@@ -139,6 +146,8 @@ Team.prototype.toJson = function (user) {
     group_sz: this.group_sz,
     voter_map: this.voter_map,
     voter_sz: this.voter_sz,
+    state: this.state,
+    game_id: this.game ? this.game.id : null,
   };
 }
 

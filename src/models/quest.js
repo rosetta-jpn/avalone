@@ -14,10 +14,18 @@ var Quest = function Quest(Game,success_number,team_sz, id){
 }
 
 utils.inherit(events.EventEmitter, Quest);
-Quest.classMethods.States = { Now: 'Now', Success: 'Success', Failure: 'Failure' }
+Quest.classMethods.States = { Now: 'Now', Mission: 'Mission', Success: 'Success', Failure: 'Failure' }
 
 Quest.prototype.isAllVoted = function () {
   return Object.keys(this.mission_list).length >= this.team_sz;
+}
+
+Quest.prototype.isOrgTeam = function () {
+  return this.state === this.classMethods.States.Now;
+}
+
+Quest.prototype.isMission = function () {
+  return this.state === this.classMethods.States.Mission;
 }
 
 Quest.prototype.isSuccess = function () {
@@ -94,6 +102,8 @@ Quest.prototype.change_mission_list = function(missioner,mission_res){
 
 Quest.prototype.onAgree = function(team){
   this.members = team.members;
+  this.state = this.classMethods.States.Mission;
+  this.emit('update');
 }
 
 Quest.prototype.onDisAgree = function(team){
@@ -110,6 +120,8 @@ Quest.prototype.toJson = function (user) {
     success_number: this.success_number,
     team_sz: this.team_sz,
     teams: this.teams.map(toJson),
+    state: this.state,
+    game_id: this.game ? this.game.id : null,
   };
 }
 

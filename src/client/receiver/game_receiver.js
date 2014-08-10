@@ -22,12 +22,17 @@ var GameReceiver = module.exports = Base.extend({
 
   onNewQuest: function (json) {
     var quest = this.database.createQuest(json.quest)
-    var questReceiver = new QuestReceiver(quest);
+    this.listenNewQuest(quest);
     this.game.addNewQuest(quest);
-    this.game.emit('new:Team');
-    this.game.once('new:Team', function () {
+  },
+
+  listenNewQuest: function (quest) {
+    var questReceiver = new QuestReceiver(quest);
+    this.game.emit('new:Quest');
+    this.game.once('new:Quest', function () {
       questReceiver.stopListening();
     });
+    return questReceiver;
   },
 
   onReceiveTeam: function (json) {
@@ -48,5 +53,16 @@ var GameReceiver = module.exports = Base.extend({
   onEvilWin: function () {
     this.game.state = this.game.classMethods.States.EvilWin;
     this.game.emit('update')
+  },
+
+  resumeGame: function () {
+    if (this.game.isQuest()) {
+      var questReceiver = this.listenNewQuest(this.game.currentQuest);
+      questReceiver.resumeQuest();
+    } else if (this.game.isAssassin()) {
+      this.router.changeScene('assassin_phase');
+    } else if (this.game.isAnySideWin()) {
+      this.router.changeScene('game_result');
+    }
   },
 });

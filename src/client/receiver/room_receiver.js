@@ -9,6 +9,8 @@ var RoomReceiver = module.exports = Base.extend({
     this.listen(this.client, 'new:User', this.onReceiveUser.bind(this));
     this.listen(this.client, 'leave:User', this.onLeaveUser.bind(this));
     this.listen(this.client, 'new:Game', this.onNewGame.bind(this));
+    this.listen(this.client, 'resume:Room', this.onResumeRoom.bind(this));
+    this.listen(this.client, 'resume:Game', this.onResumeGame.bind(this));
   },
 
   onReceiveRoom: function (json) {
@@ -31,5 +33,16 @@ var RoomReceiver = module.exports = Base.extend({
     this.room.game = this.database.createGame(json.game);
     new GameReceiver(this.room.game);
     // this.room.emit('update:Room.game')
-  }
+  },
+
+  onResumeRoom: function (json) {
+    this.room = this.database.createRoom(json);
+    this.router.changeScene('lobby');
+  },
+
+  onResumeGame: function (json) {
+    this.room.game = this.database.createGame(json);
+    var gameReceiver = new GameReceiver(this.room.game);
+    gameReceiver.resumeGame(this.room.game);
+  },
 });

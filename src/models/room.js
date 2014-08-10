@@ -91,6 +91,6 @@ Room.prototype.toJson = function (user) {
     name: this.name,
     owner: toJson(this.owner),
     users: this.users.map(toJson),
-    game: this.game ? this.game.toJson() : null,
+    game: this.game ? this.game.id : null,
   }
 }

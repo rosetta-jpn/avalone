@@ -187,6 +187,7 @@ Game.prototype.toJson = function (user, options) {
     id: this.id,
     players: this.players.map(toJson),
     quests: this.quests.map(toJson),
+    state: this.state,
     selectorIdx: (this.selectorIdx || 0),
   };
 }
