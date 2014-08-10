@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var paths = {
-  scripts: ['src/client/**/*.js'],
+  scripts: ['src/client/**/*.js', 'test/**/*.js'],
 }
 
 // Rerun the task when a file changes

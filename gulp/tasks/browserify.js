@@ -16,5 +16,16 @@ gulp.task('browserify', ['clean'], function() {
       .on('end', bundleLogger.end);
   }
 
-  return runBundle();
+  function runBundleTest() {
+    bundleLogger.start();
+    return browserify('./test/client/index.js')
+      .bundle({ debug: true })
+      .on('error', handleErrors)
+      .pipe(source('test.js'))
+      .pipe(gulp.dest('dist/js'))
+      .on('end', bundleLogger.end);
+  }
+
+  runBundle()
+  return runBundleTest();
 });

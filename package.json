@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp",
-    "test": "mocha --recursive test -R nyan"
+    "test": "mocha --recursive test/server -R nyan"
   },
   "author": "",
   "license": "MIT",

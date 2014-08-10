@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Avalon tests</title>
+    <link rel="stylesheet" href="/mocha/mocha.css">
+
+    <% include 'scripts', { disableSocketIO: true } %>
+    <script src="/mocha/mocha.js"></script>
+    <script>
+      mocha.setup('bdd');
+    </script>
+    <script src="/test.js"></script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    </div>
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>

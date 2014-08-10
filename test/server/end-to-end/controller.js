@@ -1,12 +1,12 @@
-var helpers = require('../helpers')
+var helpers = require('../../helpers')
   , chai = require('chai')
   , sinon = require('sinon')
   , sinonChai = require('sinon-chai')
-  , Avalon = require('../../src/models/avalon')
-  , User = require('../../src/models/user')
-  , RoomObserver = require('../../src/observers/room_observer')
-  , AvalonObserver = require('../../src/observers/avalon_observer')
-  , Controller = require('../../src/server/controller');
+  , Avalon = require('../../../src/models/avalon')
+  , User = require('../../../src/models/user')
+  , RoomObserver = require('../../../src/observers/room_observer')
+  , AvalonObserver = require('../../../src/observers/avalon_observer')
+  , Controller = require('../../../src/server/controller');
 
 chai.use(sinonChai);
 var expect = chai.expect

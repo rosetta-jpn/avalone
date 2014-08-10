@@ -22,10 +22,15 @@ app.use(express.static(path.join(__dirname, '/../../dist/js')));
 app.use(express.static(path.join(__dirname, '/../client')));
 app.use(express.static(path.join(__dirname, '/../../public')));
 app.use(express.static(path.join(__dirname, '/../../bower_components')));
+app.use('/mocha', express.static(path.join(__dirname, '/../../node_modules/mocha')));
 
 
 app.get('/', function(req, res){
   res.render('index');
+});
+
+app.get('/test', function(req, res){
+  res.render('test');
 });
 
 server.listen(app.get('port'), function() {
