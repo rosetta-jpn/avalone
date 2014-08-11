@@ -28,7 +28,13 @@ exports.createConnectorDummy = function (ctx) {
 
 exports.createRoom = function (ctx) {
   ctx.use('connector', function () {
-    { notifyAll: function (type, data) { ctx.users.notify(type, data); }}
+    var self = this;
+    function notifyAll(type, data) {
+      for (var i = 0; i < self.users.length; i++) {
+        self.users[i].notify(type, data)
+      }
+    }
+    return { notifyAll: notifyAll, };
   });
 
   var sockets = ['hoge', 'fuga', 'java', 'gava', 'yaba'].map(function (name) {
