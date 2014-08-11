@@ -96,11 +96,20 @@ ModelNames.forEach(function (key) {
     }
   }
 
-  Database.prototype['delete' + key] = function (id) {
+  Database.prototype['destroy' + key] = function (id) {
+    var list = this[key];
+    var value = this[findMethodName](id);
     if (identifier) {
-      delete this[key][id];
+      delete list[id];
     } else {
       delete this[key];
+    }
+    if (value) {
+      this.notify('destroy:' + key, value);
+      if (identifier && this[currentPropName])
+        if (this[currentPropName][identifier] == id) {
+          this[currentPropName] = null;
+        }
     }
   }
 
@@ -112,9 +121,12 @@ ModelNames.forEach(function (key) {
     },
 
     set: function (newObj) {
+      var oldObj = this['_current' + key];
       this['_current' + key] = newObj;
-      this.log('change:current' + key, newObj);
-      this.emit('change:current' + key, newObj);
+      if (newObj !== oldObj) {
+        this.log('change:current' + key, newObj);
+        this.notify('change:current' + key, newObj);
+      }
       return newObj;
     },
   }
