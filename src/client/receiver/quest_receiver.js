@@ -45,6 +45,7 @@ var QuestReceiver = module.exports = Base.extend({
   },
 
   resumeQuest: function () {
+    this.database.currentTeam = this.quest.team;
     if (this.quest.isOrgTeam()) {
       var teamReceiver = this.listenNewTeam(this.quest.team);
       teamReceiver.resumeTeam();
@@ -53,6 +54,5 @@ var QuestReceiver = module.exports = Base.extend({
     } else if (this.quest.isSuccess() || this.quest.isFailure()) {
       this.router.changeScene('mission_result');
     }
-    this.database.currentTeam = this.team;
   },
 });

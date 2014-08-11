@@ -24,7 +24,7 @@ utils.extend(UserObserver.prototype, {
         var player = game.findPlayer(this.user.id);
         this.user.notify('resume:Game', {
           game: game.toJson(player),
-          roomId: this.user.room.toJson(),
+          roomName: this.user.room.name,
         });
       }
     }

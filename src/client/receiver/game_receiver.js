@@ -57,6 +57,7 @@ var GameReceiver = module.exports = Base.extend({
   },
 
   resumeGame: function () {
+    this.database.currentQuest = this.game.currentQuest;
     if (this.game.isQuest()) {
       var questReceiver = this.listenNewQuest(this.game.currentQuest);
       questReceiver.resumeQuest();
@@ -65,6 +66,5 @@ var GameReceiver = module.exports = Base.extend({
     } else if (this.game.isAnySideWin()) {
       this.router.changeScene('game_result');
     }
-    this.database.currentQuest = quest;
   },
 });

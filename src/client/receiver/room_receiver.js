@@ -48,15 +48,16 @@ var RoomReceiver = module.exports = Base.extend({
 
   onResumeRoom: function (json) {
     var room = this.database.createRoom(json);
+    this.database.currentRoom = room;
     this.router.changeScene('lobby');
   },
 
   onResumeGame: function (json) {
-    var room = this.database.findRoom(json.roomId);
+    var room = this.database.currentRoom;
+    this.database.currentGame = room.game;
     if (!room) return;
     room.game = this.database.createGame(json.game);
     var gameReceiver = new GameReceiver(room.game);
     gameReceiver.resumeGame(room.game);
-    this.database.currentGame = room.game;
   },
 });
