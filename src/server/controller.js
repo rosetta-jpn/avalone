@@ -7,11 +7,11 @@ var utils = require('../utils')
  * connector - the SocketIOConnector object which received the request.
  * socket - the SocketIO object which represents the sender.
  */
-var Controller = module.exports = function Controller(type, avalon, connector, socket) {
+var Controller = module.exports = function Controller(type, avalon, connector, socket, config) {
   this.type = type;
   this.avalon = avalon;
   this.connector = connector;
-  this.config = connector.config;
+  this.config = config;
   this.socket = socket;
 }
 
@@ -28,12 +28,8 @@ Controller.prototype.dispatch = function (data) {
   this[this.type + 'Callback'](data);
 }
 
-Controller.prototype.isProduction = function () {
-  return this.config.env === 'production';
-}
-
 Controller.prototype.refuseProduction = function () {
-  if (this.isProduction()) throw 'Development Only';
+  if (this.config.isProduction()) throw 'Development Only';
 }
 
 utils.property(Controller.prototype, {

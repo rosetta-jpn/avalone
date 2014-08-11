@@ -31,13 +31,8 @@ img.mission {
     font-weight: bold;
 }
 
-
 .username{
     white-space : nowrap;
-}
-
-.debug{
-    display: none;
 }
 
 .vote_approve {

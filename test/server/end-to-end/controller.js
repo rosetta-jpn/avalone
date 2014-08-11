@@ -6,6 +6,7 @@ var helpers = require('../../helpers')
   , User = require('../../../src/models/user')
   , RoomObserver = require('../../../src/observers/room_observer')
   , AvalonObserver = require('../../../src/observers/avalon_observer')
+  , Config = require('../../../src/server/config')
   , Controller = require('../../../src/server/controller');
 
 chai.use(sinonChai);
@@ -20,8 +21,9 @@ describe('Controller', function () {
     ctx.use('avalon', function () { return new Avalon(); });
     ctx.use('socket', function () { return this.user.socket; });
     ctx.use('controller', function () {
-      return new Controller(this.type, this.avalon, {}, this.socket);
+      return new Controller(this.type, this.avalon, {}, this.socket, this.config);
     });
+    ctx.use('config', function () { return new Config(); });
   });
 
   describe('#connectionCallback', function () {

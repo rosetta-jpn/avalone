@@ -4,12 +4,8 @@ var utils = require('../utils')
 var SocketIOConnector = module.exports = function SocketIOConnector (ioserver, avalon, config) {
   this.ioserver = ioserver;
   this.avalon = avalon;
-  this.parseConfig(config || {});
-  this.startListen();
-}
-
-SocketIOConnector.prototype.parseConfig = function (config) {
   this.config = config;
+  this.startListen();
 }
 
 SocketIOConnector.prototype.startListen = function () {
@@ -45,7 +41,7 @@ SocketIOConnector.prototype.newSocket = function (socket) {
 
 SocketIOConnector.prototype.callController = function (socket, type, data) {
   try {
-    new Controller(type, this.avalon, this, socket).dispatch(data);
+    new Controller(type, this.avalon, this, socket, this.config).dispatch(data);
   } catch (e) {
     utils.logError(e);
     console.log('An Error occurred when running Controller.');
