@@ -34,7 +34,13 @@ img.mission {
 .username{
     white-space : nowrap;
 }
+.no-collapsed:before{
+    content : "[-]";
+}
 
+.collapsed:before{
+    content : "[+]";
+}
 .vote_approve {
     background-color: #ffff00;
 }

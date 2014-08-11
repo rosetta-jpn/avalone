@@ -1,7 +1,7 @@
 <div id="team" class="scene">
   <% include "partials/team_select_info" %>
-  <h2 class="page-header">Progress</h2>
-  <div class="row placeholders rv-game">
+  <h2 class="page-header no-collapsed collapsed" data-toggle="collapse" data-target="#progress">Progress</h2>
+  <div class="row placeholders rv-game collapse" id="progress">
     <div class="col-xs-6 placeholder" rv-each-quest="game.quests">
       <img class="img-responsive"  width="100" height="30" rv-src="quest.state | stateImagePath" rv-alt="quest.state">
       <h4>{{ quest.state }} ({{ quest#team.selector.name }}, {{ quest.team_sz }})</h4>

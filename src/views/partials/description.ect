@@ -1,41 +1,45 @@
-<h2>説明</h2>
-AVALON ONLINEはAVALONの役職を割り振ったり、投票、ミッションなどの作業を軽減する生まれました。<br>
-ページ遷移としては<br>
-START -> LOBBY -> JOBS -> TEAM -> VOTE -> VOTERESULT -> MISSION -> MISSIONRESULT (-> ASSASSINPHASE) -> GAMERESULT<br>
-となっています。<br>
-<dt>START</dt>
-<dd>参加する人で部屋の番号を決め、それぞれユーザーネームを決めてください。ボタンを押すと、LOBBYに遷移します。</dd>
-<dt>LOBBY</dt>
-<dd>参加する人が集まるまでこのページで待ちます。集まっている人全員がボタンを押すとJOBSに遷移します。</dd>
-<dt>JOBS</dt>
-<dd>集まった人数ごとにJOBSが割り振られます。役職の割り振りについては一番下にも書いていますが、JOBSにも書いてあります。</dd>
-<dt>TEAM</dt>
-<dd>ここでミッションに参加するチームを、チームを決める人が選択します。TEAMが選ばれるとVOTEに遷移します。</dd>
-<dt>VOTE</dt>
-<dd>選ばれたチームについて承認/却下をここで投票します。全員が投票すると、VOTERESULTに遷移します。</dd>
-<dt>VOTERESULT</dt>
-<dd>投票の結果が書いてあります。もし承認ならMISSIONに遷移します。却下ならばTEAMに戻ります。</dd>
-<dt>MISSION</dt>
-<dd>TEAMに選ばれた人は成功/失敗を選びます。TEAMに選ばれた人が全員、成功/失敗を決めるとMISSIONRESULTに遷移します。</dd>
-<dt>MISSIONRESULT</dt>
-<dd>現在のミッションの結果が書いてあります。もし、Evil側が負けた場合ASSASSINPHASEに遷移します。Justice側が負けた場合GAMERESULTに遷移します。</dd>
-<dt>ASSASSINPHASE</dt>
-<dd>Evil側が、暗殺する(Merlin)を決めます。暗殺者が暗殺する人を選ぶと次のページに遷移します。</dd>
-<dt>GAMERESULT</dt>
-<dd>どちらが勝ったか、役職を公表します。次のゲームを始めるときはもう一度最初からやり直してください。</dd>
+<h2 class="page-header no-collapsed collapsed" data-toggle="collapse" data-target="#description">説明</h2>
+<div class="collapse" id="description">
+  AVALON ONLINEはAVALONの役職を割り振ったり、投票、ミッションなどの作業を軽減する生まれました。<br>
+  ページ遷移としては<br>
+  START -> LOBBY -> JOBS -> TEAM -> VOTE -> VOTERESULT -> MISSION -> MISSIONRESULT (-> ASSASSINPHASE) -> GAMERESULT<br>
+  となっています。<br>
+  <dt>START</dt>
+  <dd>参加する人で部屋の番号を決め、それぞれユーザーネームを決めてください。ボタンを押すと、LOBBYに遷移します。</dd>
+  <dt>LOBBY</dt>
+  <dd>参加する人が集まるまでこのページで待ちます。集まっている人全員がボタンを押すとJOBSに遷移します。</dd>
+  <dt>JOBS</dt>
+  <dd>集まった人数ごとにJOBSが割り振られます。役職の割り振りについては一番下にも書いていますが、JOBSにも書いてあります。</dd>
+  <dt>TEAM</dt>
+  <dd>ここでミッションに参加するチームを、チームを決める人が選択します。TEAMが選ばれるとVOTEに遷移します。</dd>
+  <dt>VOTE</dt>
+  <dd>選ばれたチームについて承認/却下をここで投票します。全員が投票すると、VOTERESULTに遷移します。</dd>
+  <dt>VOTERESULT</dt>
+  <dd>投票の結果が書いてあります。もし承認ならMISSIONに遷移します。却下ならばTEAMに戻ります。</dd>
+  <dt>MISSION</dt>
+  <dd>TEAMに選ばれた人は成功/失敗を選びます。TEAMに選ばれた人が全員、成功/失敗を決めるとMISSIONRESULTに遷移します。</dd>
+  <dt>MISSIONRESULT</dt>
+  <dd>現在のミッションの結果が書いてあります。もし、Evil側が負けた場合ASSASSINPHASEに遷移します。Justice側が負けた場合GAMERESULTに遷移します。</dd>
+  <dt>ASSASSINPHASE</dt>
+  <dd>Evil側が、暗殺する(Merlin)を決めます。暗殺者が暗殺する人を選ぶと次のページに遷移します。</dd>
+  <dt>GAMERESULT</dt>
+  <dd>どちらが勝ったか、役職を公表します。次のゲームを始めるときはもう一度最初からやり直してください。</dd>
 </dl>
-<h2>役職</h2>
-<dl>
-  <dt>5人(3,2)</dt>
-  <dd>Justice,Justice,Merlin,  Evil,Assassin</dd>
-  <dt>6人(4,2)</dt>
-  <dd>Justice,Justice,Merlin,Percival,   Mordred,Assassin</dd>
-  <dt>7人(4,3)</dt>
-  <dd>Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin</dd>
-  <dt>8人(5,3)</dt>
-  <dd>Justice,Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin</dd>
-  <dt>9人(6,3)</dt>
-  <dd>Justice,Justice,Justice,Justice,Merlin,Percival,   Morgana,Mordred,Assassin</dd>
-  <dt>10(6,4)</dt>
-  <dd>Justice,Justice,Justice,Justice,Merlin,Percival,   Evil,Morgana,Mordred,Assassin</dd>
-</dl>
+</div>
+<h2 class="page-header no-collapsed collapsed" data-toggle="collapse" data-target="#jobs_description">役職</h2>
+<div class="collapse" id="jobs_description">
+  <dl>
+    <dt>5人(3,2)</dt>
+    <dd>Justice,Justice,Merlin,  Evil,Assassin</dd>
+    <dt>6人(4,2)</dt>
+    <dd>Justice,Justice,Merlin,Percival,   Mordred,Assassin</dd>
+    <dt>7人(4,3)</dt>
+    <dd>Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin</dd>
+    <dt>8人(5,3)</dt>
+    <dd>Justice,Justice,Justice,Merlin,Percival,   Evil,Mordred,Assassin</dd>
+    <dt>9人(6,3)</dt>
+    <dd>Justice,Justice,Justice,Justice,Merlin,Percival,   Morgana,Mordred,Assassin</dd>
+    <dt>10(6,4)</dt>
+    <dd>Justice,Justice,Justice,Justice,Merlin,Percival,   Evil,Morgana,Mordred,Assassin</dd>
+  </dl>
+</div>
