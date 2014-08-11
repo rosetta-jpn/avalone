@@ -39,7 +39,8 @@ var RoomReceiver = module.exports = Base.extend({
   onLeaveUser: function (json) {
     var user = this.database.createUser(json.user);
     var room = this.database.findRoom(json.roomName);
-    if (room) this.room.leave(user);
+    if (room) room.leave(user);
+    this.database.destroyUser(user.id);
     if (user.id === this.database.id) this.database.currentRoom = null;
   },
 
