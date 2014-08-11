@@ -23,8 +23,11 @@ module.exports = function RoomModule (listProp, identifier) {
 
   function leaveByIndetifier(id, silent) {
     var userList = this[listProp];
-    if (userList[id]) delete userList[id];
-    if (!silent) this.emit('leave', user)
+    var user = userList[id];
+    if (user) {
+      delete userList[id];
+      if (!silent) this.emit('leave', user);
+    }
   }
 
   return { enter: enter, leave: leave, leaveByIndetifier: leaveByIndetifier };
