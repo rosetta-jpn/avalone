@@ -31,7 +31,7 @@ describe('Client', function () {
 
     it('receive User', function () {
       ctx.ioHelper.sendEvent('connection', ctx.id);
-      ctx.ioHelper.sendEvent('new:User', { user: ctx.user });
+      ctx.ioHelper.sendEvent('enter:User', { user: ctx.user });
 
       expect(ctx.app.database.userProfile.id).to.be.equal(ctx.id);
     });
