@@ -3,11 +3,11 @@ var BasePresenter = require('./base')
 
 RoomPresenter = module.exports = function (range) {
   this.model = {
-    room: this.database.Room,
+    room: this.database.currentRoom,
   };
   this.bind(range);
 
-  this.database.on('new:Room', this.changeRoom.bind(this));
+  this.database.on('change:currentRoom', this.changeRoom.bind(this));
 }
 
 utils.inherit(BasePresenter, RoomPresenter);
