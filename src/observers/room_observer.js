@@ -1,39 +1,52 @@
 var utils = require('../utils')
   , GameObserver = require('./game_observer');
 
-var RoomObserver = module.exports = function RoomObserver(room, avalon) {
+var RoomObserver = module.exports = function RoomObserver(room, avalon, connector) {
   this.room = room;
   this.avalon = avalon;
+  this.connector = connector;
   this.bind();
+  this.onNewRoom(room);
   this.onEnter(room.owner);
 }
 
 utils.extend(RoomObserver.prototype, {
   bind: function () {
-    this.room.on('enter', this.onEnter.bind(this))
-    this.room.on('leave', this.onLeave.bind(this))
-    this.room.on('newGame', this.onNewGame.bind(this))
+    this.room.on('enter', this.onEnter.bind(this));
+    this.room.on('leave', this.onLeave.bind(this));
+    this.room.on('newGame', this.onNewGame.bind(this));
+    this.room.on('destroy', this.onDestroy.bind(this));
+  },
+
+  onNewRoom: function (room) {
+    this.connector.notifyAll('new:Room', {
+      room: this.room.toJson(),
+    });
   },
 
   onEnter: function (user) {
     var users = this.room.calcUsers().map(function (user) { return user.toJson(); })
-    this.room.notifyAll('new:User', {
+    this.connector.notifyAll('enter:User', {
+      roomName: this.room.name,
       user: user.toJson(),
     });
     user.notify('go:lobby');
-    user.notify('new:Room', {
-      room: this.room.toJson(user),
-    });
   },
 
   onLeave: function (user) {
-    this.room.notifyAll('leaveRoom', {
-      room: this.room.name,
+    this.connector.notifyAll('leave:User', {
+      roomName: this.room.name,
       user: user.toJson(),
     });
   },
 
   onNewGame: function (game) {
     new GameObserver(game, this.room);
+  },
+
+  onDestroy: function (room) {
+    this.connector.notifyAll('destroy:Room', {
+      room: this.room.toJson(user),
+    });
   },
 })

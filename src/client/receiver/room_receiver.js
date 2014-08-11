@@ -5,8 +5,9 @@ var Room = require('../../models/room')
 
 var RoomReceiver = module.exports = Base.extend({
   initialize: function () {
+    this.listen(this.client, 'Rooms', this.onReceiveRoomList.bind(this));
     this.listen(this.client, 'new:Room', this.onReceiveRoom.bind(this));
-    this.listen(this.client, 'new:User', this.onReceiveUser.bind(this));
+    this.listen(this.client, 'enter:User', this.onReceiveUser.bind(this));
     this.listen(this.client, 'leave:User', this.onLeaveUser.bind(this));
     this.listen(this.client, 'new:Game', this.onNewGame.bind(this));
     this.listen(this.client, 'resume:Room', this.onResumeRoom.bind(this));
@@ -14,38 +15,48 @@ var RoomReceiver = module.exports = Base.extend({
   },
 
   onReceiveRoom: function (json) {
-    this.room = this.database.createRoom(json.room);
-    this.database.currentRoom = this.room;
-    // this.room.emit('update:Room')
+    this.database.createRoom(json.room);
+  },
+
+  onReceiveRoomList: function (json) {
+    for (var i = 0; i < json.rooms.length; i++) {
+      this.database.createRoom(json.rooms[i]);
+    }
   },
 
   onReceiveUser: function (json) {
     var user = this.database.createUser(json.user);
-    if (this.room) this.room.enter(user);
-    // this.room.emit('update:Room.users')
+    var room = this.database.findRoom(json.roomName);
+    if (room) room.enter(user);
+    if (user.id === this.database.id) this.database.currentRoom = room;
   },
 
   onLeaveUser: function (json) {
     var user = this.database.createUser(json.user);
-    if (this.room) this.room.leave(user);
+    var room = this.database.findRoom(json.roomName);
+    if (room) this.room.leave(user);
+    if (user.id === this.database.id) this.database.currentRoom = null;
   },
 
   onNewGame: function (json) {
-    this.room.game = this.database.createGame(json.game);
-    this.database.currentGame = this.room.game;
-    new GameReceiver(this.room.game);
-    // this.room.emit('update:Room.game')
+    var room = this.database.currentRoom
+    if (!room) return;
+    room.game = this.database.createGame(json.game);
+    this.database.currentGame = room.game;
+    new GameReceiver(room.game);
   },
 
   onResumeRoom: function (json) {
-    this.room = this.database.createRoom(json);
+    var room = this.database.createRoom(json);
     this.router.changeScene('lobby');
   },
 
   onResumeGame: function (json) {
-    this.room.game = this.database.createGame(json);
-    var gameReceiver = new GameReceiver(this.room.game);
-    gameReceiver.resumeGame(this.room.game);
-    this.database.currentGame = this.room.game;
+    var room = this.database.findRoom(json.roomId);
+    if (!room) return;
+    room.game = this.database.createGame(json.game);
+    var gameReceiver = new GameReceiver(room.game);
+    gameReceiver.resumeGame(room.game);
+    this.database.currentGame = room.game;
   },
 });

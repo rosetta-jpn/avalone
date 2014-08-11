@@ -1,0 +1,11 @@
+<div class="rv-avalon">
+  <h2>Rooms</h2>
+  <div rv-each-room="avalon.rooms" class="each-room">
+    <h3>{{ room.name }}</h3>
+    <ol>
+      <li rv-each-user="room#users" rv-id="user.id | toClassName">
+      {{ user.name }}
+      </li>
+    </ol>
+  </div>
+</div>

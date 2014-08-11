@@ -39,3 +39,8 @@ img.mission {
     background-color: #ffff00;
 }
 
+.each-room {
+  display: inline-block;
+  margin-right: 20px;
+}
+

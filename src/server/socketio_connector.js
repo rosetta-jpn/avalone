@@ -54,8 +54,11 @@ SocketIOConnector.prototype.broadcast = function (type, data) {
 
 SocketIOConnector.prototype.notice = function (type, value) {
   console.log('notice:', type + ',', value);
-  this.ioserver.emit('notice', {
+  this.ioserver.emit('event', {
     type: type,
-    value: value
+    content: value,
   });
 }
+
+SocketIOConnector.prototype.notifyAll = SocketIOConnector.prototype.notice;
+

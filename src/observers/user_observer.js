@@ -22,7 +22,10 @@ utils.extend(UserObserver.prototype, {
       var game;
       if (game = this.user.room.game) {
         var player = game.findPlayer(this.user.id);
-        this.user.notify('resume:Game', game.toJson(player));
+        this.user.notify('resume:Game', {
+          game: game.toJson(player),
+          roomId: this.user.room.toJson(),
+        });
       }
     }
   },

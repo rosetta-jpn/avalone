@@ -27,6 +27,10 @@ exports.createConnectorDummy = function (ctx) {
 }
 
 exports.createRoom = function (ctx) {
+  ctx.use('connector', function () {
+    { notifyAll: function (type, data) { ctx.users.notify(type, data); }}
+  });
+
   var sockets = ['hoge', 'fuga', 'java', 'gava', 'yaba'].map(function (name) {
     return { id: name, emit: function () {} };
   });
@@ -39,7 +43,7 @@ exports.createRoom = function (ctx) {
   ctx.user = users[0];
 
   ctx.room = ctx.avalon.createRoom(ctx.user, 'room');
-  new RoomObserver(ctx.room, ctx.avalon);
+  new RoomObserver(ctx.room, ctx.avalon, ctx.connector);
 
   for (var i = 1; i < users.length; i++) ctx.room.enter(users[i]);
 }

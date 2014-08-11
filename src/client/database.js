@@ -10,9 +10,18 @@ var Database = module.exports = function () {
   for (var i = 0; i < ModelNames.length; i++) {
     this[ModelNames[i]] = {};
   }
+  this.standbyRoomList();
 }
 
 utils.inherit(events.EventEmitter, Database);
+Database.prototype.standbyRoomList = function () {
+  var self = this;
+  this.avalon = { rooms: [] };
+  this.on('new:Room', function (obj) {
+    self.avalon.rooms.push(obj);
+  });
+}
+
 Database.prototype.createDummy = function () {
   createDummy(this);
 }
