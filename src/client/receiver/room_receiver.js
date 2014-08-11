@@ -7,6 +7,7 @@ var RoomReceiver = module.exports = Base.extend({
   initialize: function () {
     this.listen(this.client, 'Rooms', this.onReceiveRoomList.bind(this));
     this.listen(this.client, 'new:Room', this.onReceiveRoom.bind(this));
+    this.listen(this.client, 'destroy:Room', this.onDestroyRoom.bind(this));
     this.listen(this.client, 'enter:User', this.onReceiveUser.bind(this));
     this.listen(this.client, 'leave:User', this.onLeaveUser.bind(this));
     this.listen(this.client, 'new:Game', this.onNewGame.bind(this));
@@ -16,6 +17,10 @@ var RoomReceiver = module.exports = Base.extend({
 
   onReceiveRoom: function (json) {
     this.database.createRoom(json.room);
+  },
+
+  onDestroyRoom: function (json) {
+    this.database.destroyRoom(json.room.name);
   },
 
   onReceiveRoomList: function (json) {

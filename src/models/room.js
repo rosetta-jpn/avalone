@@ -69,8 +69,8 @@ Room.prototype.onEnter = function (user) {
 }
 
 Room.prototype.onLeave = function (user) {
-  delete user.room;
-  if (this.owner === user) this.emit('destroy');
+  if (user.room) delete user.room;
+  if (this.owner === user) this.emit('destroy', this);
   else this.emit('update');
 }
 

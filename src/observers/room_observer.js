@@ -44,9 +44,9 @@ utils.extend(RoomObserver.prototype, {
     new GameObserver(game, this.room);
   },
 
-  onDestroy: function (room) {
+  onDestroy: function () {
     this.connector.notifyAll('destroy:Room', {
-      room: this.room.toJson(user),
+      room: this.room.toJson(),
     });
   },
 })

@@ -7,6 +7,7 @@ AvalonPresenter = module.exports = function (range) {
   };
   this.bind(range);
   this.database.on('new:Room', this.addRoom.bind(this));
+  this.database.on('destroy:Room', this.destroyRoom.bind(this));
 }
 
 utils.inherit(BasePresenter, AvalonPresenter);
@@ -15,6 +16,10 @@ utils.extend(AvalonPresenter.prototype, {
 
   addRoom: function (room) {
     this.model.avalon.rooms.push(room);
+  },
+
+  destroyRoom: function () {
+    this.model.avalon.rooms = Object.values(this.database.Room);
   },
 
   formatters: {
