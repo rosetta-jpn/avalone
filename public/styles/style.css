@@ -7,6 +7,12 @@
   display: none;
 }
 
+table.room {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+
 form {
   max-width: 800px;
   margin: 0 auto;  

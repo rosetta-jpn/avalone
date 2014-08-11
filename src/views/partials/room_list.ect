@@ -1,11 +1,29 @@
 <div class="rv-avalon">
-  <h2>Rooms</h2>
-  <div rv-each-room="avalon.rooms" class="each-room">
-    <h3>{{ room.name }}</h3>
-    <ol>
-      <li rv-each-user="room#users" rv-id="user.id | toClassName">
-      {{ user.name }}
-      </li>
-    </ol>
-  </div>
+  <h2 class="page-header">Rooms</h2>
+  <table class="table table-striped room">
+    <thead>
+      <tr>
+        <th>Room Number</th>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+        <th>5</th>
+        <th>6</th>
+        <th>7</th>
+        <th>8</th>
+        <th>9</th>
+        <th>10</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr rv-each-room="avalon.rooms">
+          <td>{{ room.name }}</td>
+          <td rv-each-user="room#users" rv-id="user.id | toClassName">
+            {{ user.name }}
+          </td>
+        </tr>
+      </div>
+    </tbody>
+  </table>
 </div>
