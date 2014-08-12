@@ -24,6 +24,14 @@ utils.property(Room.prototype, {
   },
 });
 
+Room.prototype.destroy = function () {
+  var users = this.users;
+  for (var i = 0; i < users.length; i++) {
+    this.leave(users[i]);
+  }
+  this.emit('destroy', this);
+}
+
 Room.prototype.newGame = function (controller) {
   if (this.game)
     throw new Error('game is already started');
@@ -71,7 +79,7 @@ Room.prototype.onEnter = function (user) {
 Room.prototype.onLeave = function (user) {
   if (user.room) delete user.room;
   this._users = null;
-  if (this.owner === user) this.emit('destroy', this);
+  if (this.owner === user) this.destroy();
   else this.emit('update');
 }
 
