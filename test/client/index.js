@@ -39,14 +39,16 @@ describe('Client', function () {
 
   describe('login and exit', function () {
     beforeEach(function () {
-      ctx.use('id', 'hoge');
-      ctx.use('name', 'owner');
-      ctx.use('roomName', 'roomname');
+      ctx.use('id', 'hoge'); ctx.use('name', 'owner');
       ctx.use('user', function () { return { id: this.id, name: this.name }; });
+      ctx.use('anotherId', 'fuga'); ctx.use('anotherName', 'anotherUser');
+      ctx.use('anotherUser', function () { return { id: this.anotherId, name: this.anotherName }; });
+      ctx.use('users', function () { return [this.user]; });
+      ctx.use('roomName', 'roomname');
       ctx.use('room', function () {
         return {
           owner: this.user,
-          name: this.roomName, users: [this.user],
+          name: this.roomName, users: this.users,
         }; 
       });
       ctx.app.boot();
@@ -72,6 +74,20 @@ describe('Client', function () {
 
       expect(Object.values(ctx.app.database.Room)).to.has.length(0);
       expect(ctx.app.database.currentRoom).to.not.exist;
+    });
+
+    it('leave a user', function () {
+      ctx.use('users', function () { return [this.user, this.anotherUser]; });
+      ctx.ioHelper.sendEvent('connection', ctx.id);
+      ctx.ioHelper.sendEvent('new:Room', { room: ctx.room });
+      ctx.ioHelper.sendEvent('enter:User', { user: ctx.user, roomName: ctx.roomName });
+
+      expect(ctx.app.database.currentRoom.users).to.has.length(2);
+
+      ctx.ioHelper.sendEvent('leave:User', { user: ctx.anotherUser, roomName: ctx.roomName });
+
+      expect(ctx.app.database.currentRoom.users).to.has.length(1);
+      expect(ctx.app.database.currentRoom.users[0].id).to.equal(ctx.id);
     });
   });
 });
