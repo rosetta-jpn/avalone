@@ -7,7 +7,7 @@ GamePresenter = module.exports = function (range) {
   });
   this.bind(range);
 
-  this.database.on('new:Game', this.onChangeCurrentGame.bind(this));
+  this.database.on('change:currentGame', this.onChangeCurrentGame.bind(this));
 }
 
 utils.inherit(BasePresenter, GamePresenter);

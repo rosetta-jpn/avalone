@@ -7,7 +7,7 @@ TeamPresenter = module.exports = function (range) {
   });
   this.bind(range);
 
-  this.database.on('new:Team', this.onChangeCurrentTeam.bind(this));
+  this.database.on('change:currentTeam', this.onChangeCurrentTeam.bind(this));
   this.lock('changeTeam');
 }
 
