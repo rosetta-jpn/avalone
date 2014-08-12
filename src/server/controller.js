@@ -54,9 +54,11 @@ utils.property(Controller.prototype, {
 utils.extend(Controller.prototype, {
   debugCallback: function () {
     this.refuseProduction();
-    var users = []
     this.user.rename('owner');
-    var room = this.avalon.createRoom(this.user, 'debug');
+    var room = this.avalon.rooms['debug']
+    if (room) room.destroy();
+    room = this.avalon.createRoom(this.user, 'debug');
+    var users = []
     for (var id in this.avalon.users)
       if (id !== this.id) {
         users.push(this.avalon.users[id]);
