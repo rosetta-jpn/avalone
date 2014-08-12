@@ -70,8 +70,7 @@ Scene.TeamScene = AbstractScene.extend({
   },
 
   onShow: function () {
-    this.router.presenters.TeamPresenter.updateCurrentTeam();
-    this.router.presenters.QuestPresenter.updateCurrentQuest();
+    this.router.applyCurrentModels();
   },
 
   onGoVote: function (e) {

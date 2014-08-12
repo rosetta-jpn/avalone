@@ -63,3 +63,8 @@ Router.prototype.returnStart = function () {
   this.changeScene('start');
 }
 
+Router.prototype.applyCurrentModels = function () {
+  this.presenters.TeamPresenter.updateCurrentTeam();
+  this.presenters.QuestPresenter.updateCurrentQuest();
+}
+

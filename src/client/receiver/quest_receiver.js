@@ -54,5 +54,6 @@ var QuestReceiver = module.exports = Base.extend({
     } else if (this.quest.isSuccess() || this.quest.isFailure()) {
       this.router.changeScene('mission_result');
     }
+    this.router.applyCurrentModels();
   },
 });
