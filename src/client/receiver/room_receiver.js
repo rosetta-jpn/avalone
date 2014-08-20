@@ -49,7 +49,7 @@ var RoomReceiver = module.exports = Base.extend({
     if (!room) return;
     room.game = this.database.createGame(json.game);
     this.database.currentGame = room.game;
-    new GameReceiver(room.game);
+    new GameReceiver(this.app, room.game);
   },
 
   onResumeRoom: function (json) {
@@ -63,7 +63,7 @@ var RoomReceiver = module.exports = Base.extend({
     this.database.currentGame = room.game;
     if (!room) return;
     room.game = this.database.createGame(json.game);
-    var gameReceiver = new GameReceiver(room.game);
+    var gameReceiver = new GameReceiver(this.app, room.game);
     gameReceiver.resumeGame(room.game);
   },
 });

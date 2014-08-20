@@ -1,13 +1,14 @@
 var utils = require('../../utils');
 
 // Public: Presenter - Show models by rivets.js and manage views.
-module.exports = Presenter = function () {}
-
-utils.useClassMethods(Presenter);
-Presenter.classMethods.setting = function (app) {
-  this.app = app;
+var Presenter = module.exports = function Presenter(app, range) {
+  this.app = app; this.range = range;
+  var args = Array.prototype.slice.call(arguments, 2);
+  if (this.initialize) this.initialize.apply(this, args);
+  if (this.bind) this.bind(range);
 }
 
+utils.useClassMethods(Presenter);
 utils.extend(Presenter.prototype, {
   bind: function (range) {
     var self = this;
@@ -59,14 +60,14 @@ utils.extend(Presenter.prototype, {
 
 utils.property(Presenter.prototype, {
   client: {
-    get: function () { return this.classMethods.app.client; },
+    get: function () { return this.app.client; },
   },
 
   database: {
-    get: function () { return this.classMethods.app.database; },
+    get: function () { return this.app.database; },
   },
 
   router: {
-    get: function () { return this.classMethods.app.router; },
+    get: function () { return this.app.router; },
   },
 });

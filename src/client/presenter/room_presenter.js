@@ -1,26 +1,27 @@
 var BasePresenter = require('./base')
   , utils = require('../../utils');
 
-RoomPresenter = module.exports = function (range) {
-  this.model = {
-    room: this.database.currentRoom,
-  };
-  this.bind(range);
+var RoomPresenter = module.exports = utils.inherit(BasePresenter);
 
-  this.database.on('change:currentRoom', this.changeRoom.bind(this));
-}
+utils.extend(RoomPresenter.prototype, {
+  initialize: function () {
+    this.model = {
+      room: this.database.currentRoom,
+    };
 
-utils.inherit(BasePresenter, RoomPresenter);
+    this.database.on('change:currentRoom', this.changeRoom.bind(this));
+  },
 
-RoomPresenter.prototype.selector = '.rv-room'
+  selector: '.rv-room',
 
-RoomPresenter.prototype.changeRoom = function (room) {
-  this.model.room = room;
-  this.update();
-  console.log('Update:Room', this.model);
-}
+  changeRoom: function (room) {
+    this.model.room = room;
+    this.update();
+    console.log('Update:Room', this.model);
+  },
 
-RoomPresenter.prototype.formatters = {
-  toClassName: function (name) { return 'room-' + name; },
-}
+  formatters: {
+    toClassName: function (name) { return 'room-' + name; },
+  },
+});
 

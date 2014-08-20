@@ -25,11 +25,9 @@ utils.extend(App.prototype, {
   },
 
   boot: function () {
-    ReceiverBase.classMethods.setting(this);
-    PresenterBase.classMethods.setting(this);
-    this.router = new Router(this.client);
+    this.router = new Router(this, this.client);
     this.client.start();
-    new RoomReceiver();
-    new ProfileReceiver();
+    new RoomReceiver(this);
+    new ProfileReceiver(this);
   },
 });

@@ -1,7 +1,7 @@
-var Presenter = module.exports = function () {
+var Presenter = module.exports = function (app, range) {
   var presenters = {};
   for (var key in Presenter) {
-    presenters[key] = new Presenter[key];
+    presenters[key] = new Presenter[key](app, range);
   }
   return presenters;
 }

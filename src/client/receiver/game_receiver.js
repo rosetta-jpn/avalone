@@ -28,7 +28,7 @@ var GameReceiver = module.exports = Base.extend({
   },
 
   listenNewQuest: function (quest) {
-    var questReceiver = new QuestReceiver(quest);
+    var questReceiver = new QuestReceiver(this.app, quest);
     this.game.emit('new:Quest');
     this.game.once('new:Quest', function () {
       questReceiver.stopListening();
