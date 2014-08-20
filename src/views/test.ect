@@ -11,12 +11,13 @@
       mocha.setup('bdd');
     </script>
     <script src="/test.js"></script>
+    <script> $(function () { mocha.run(); }); </script>
   </head>
   <body>
     <div id="mocha"></div>
     </div>
-    <script>
-      mocha.run();
-    </script>
+    <div style="display: none;">
+      <% include 'scenes' %>
+    </div>
   </body>
 </html>
