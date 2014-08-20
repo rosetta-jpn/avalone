@@ -1,19 +1,15 @@
-var utils = require('../utils')
-  , events = require('events')
+var utils = require('../../utils')
   , User = require('./user')
   , Room = require('./room')
-  , roomModule = require('../utils/room_module');
+  , AvalonCore = require('../core/avalon');
 
-// Public: Avalon - treat Users and Rooms
-var Avalon = module.exports = function Avalon() {
-  this.rooms = {};
-  this.users = {};
-}
+var Avalon = module.exports = utils.inherit(AvalonCore, function Avalon() {
+  this.superClass.apply(this, arguments);
+});
 
-utils.inherit(events.EventEmitter, Avalon);
-utils.extend(Avalon.prototype, roomModule('users', 'socketId'));
-
-Avalon.classMethods.timeoutMSec = 1000 * 3 * 60;
+utils.extend(Avalon.classMethods, {
+  timeoutMSec: 1000 * 3 * 60,
+});
 
 utils.extend(Avalon.prototype, {
   createRoom: function (owner, name) {
@@ -41,7 +37,7 @@ utils.extend(Avalon.prototype, {
       utils.setTimeout(function() { user.destroy(); }, this.classMethods.timeoutMSec);
     user.once('relogin', function () { clearTimeout(timeoutId) });
     user.once('relogin', this.onRelogin.bind(this, user));
-    this.leaveByIndetifier(socketId, true);
+    this.leaveByIdetifier(socketId, true);
   },
 
   onRelogin: function (user) {
