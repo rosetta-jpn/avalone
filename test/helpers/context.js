@@ -7,6 +7,7 @@ var Context = module.exports = function () {
 }
 
 Context.prototype.use = function (name, obj) {
+  this.caches[name] = null;
   if (isFunction(obj)) {
     Object.defineProperty(this, name, {
       get: function () {
@@ -22,5 +23,10 @@ Context.prototype.use = function (name, obj) {
   } else {
     this[name] = obj;
   }
+}
+
+Context.prototype.useNow = function (name, obj) {
+  this.use(name, obj);
+  return this[name];
 }
 

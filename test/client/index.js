@@ -90,4 +90,23 @@ describe('Client', function () {
       expect(ctx.app.database.currentRoom.users[0].id).to.equal(ctx.id);
     });
   });
+
+  describe('resume', function () {
+    context('resume a game', function () {
+      beforeEach(function () {
+        ctx.use('id', 'hoge'); ctx.use('name', 'owner');
+        ctx.use('user', function () { return { id: this.id, name: this.name }; });
+        ctx.use('users', function () { return [this.user]; });
+        ctx.use('roomName', 'roomname');
+        ctx.use('room', function () {
+          return {
+            owner: this.user,
+            name: this.roomName, users: this.users,
+          }; 
+        });
+      })
+      context('the game is TeamOrg state', function () {
+      });
+    });
+  });
 });

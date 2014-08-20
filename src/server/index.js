@@ -6,7 +6,7 @@ var express = require('express')
   , ECT = require('ect')
   , socketio = require('./socketio')
   , Config = require('./config')
-  , Avalon = require('../models/avalon')
+  , Avalon = require('../models/server/avalon')
   , AvalonObserver = require('../observers/avalon_observer');
 
 var app = express();

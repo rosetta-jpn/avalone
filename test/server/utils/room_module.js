@@ -1,4 +1,4 @@
-var helpers = require('../../helpers')
+var helpers = require('../helpers')
   , chai = require('chai')
   , sinon = require('sinon')
   , events = require('events')

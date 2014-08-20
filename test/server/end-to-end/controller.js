@@ -1,13 +1,16 @@
-var helpers = require('../../helpers')
+var helpers = require('../helpers')
   , chai = require('chai')
   , sinon = require('sinon')
-  , sinonChai = require('sinon-chai')
-  , Avalon = require('../../../src/models/avalon')
-  , User = require('../../../src/models/user')
-  , RoomObserver = require('../../../src/observers/room_observer')
-  , AvalonObserver = require('../../../src/observers/avalon_observer')
-  , Config = require('../../../src/server/config')
-  , Controller = require('../../../src/server/controller');
+  , sinonChai = require('sinon-chai');
+
+var Requirements = require('../helpers/requirements');
+
+var Avalon = Requirements.Models.Avalon
+  , User = Requirements.Models.User
+  , RoomObserver = Requirements.Observers.RoomObserver
+  , AvalonObserver = Requirements.Observers.AvalonObserver
+  , Config = Requirements.Server.Config
+  , Controller = Requirements.Server.Controller
 
 chai.use(sinonChai);
 var expect = chai.expect
@@ -48,6 +51,8 @@ describe('Controller', function () {
     beforeEach(function () {
       helpers.createRoom(ctx);
       helpers.spyRoomMembers(ctx);
+
+      ctx.use('user', function () { return ctx.owner; });
     });
 
     it('notify go:jobs', function () {
@@ -67,22 +72,22 @@ describe('Controller', function () {
 
   describe('#orgTeamCallback', function () {
     beforeEach(function () {
-      ctx.use('game', function () { return this.room.newGame(ctx.user); });
-      ctx.use('user', function () { return this.game.currentSelector.user; });
-      ctx.use('data', function () { return { group: this.players }; });
+      helpers.createRoom(ctx);
+      helpers.spyRoomMembers(ctx);
+
+      ctx.use('game', function () { return this.room.newGame(ctx.owner); });
       ctx.use('players', function () {
         var players = [];
-        for (var i = 0; i < this.game.currentQuest.team.group_sz; i++) {
+        for (var i = 0; i < this.game.currentQuest.currentTeam.teamSize; i++) {
           players.push({ id: this.game.players[i].id });
         }
         return players;
       });
-
-      helpers.createRoom(ctx);
-      helpers.spyRoomMembers(ctx);
+      ctx.use('data', function () { return { members: this.players }; });
+      ctx.use('user', function () { return this.game.currentSelector; });
     });
 
-    it('with no error', function () {
+    it('with no errors', function () {
       ctx.controller.orgTeamCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been
         .calledWith('event', sinon.match.has('type', 'go:vote'));
@@ -91,14 +96,15 @@ describe('Controller', function () {
 
   describe('#approveTeamCallback', function () {
     beforeEach(function () {
-      ctx.use('game', function () { return this.room.newGame(ctx.user); });
+      ctx.use('game', function () { return this.room.newGame(ctx.owner); });
+      ctx.use('user', function () { return this.game.currentSelector; });
 
       helpers.createRoom(ctx);
       helpers.spyRoomMembers(ctx);
       helpers.orgTeam(ctx);
     });
 
-    it('with no error', function () {
+    it('with no errors', function () {
       ctx.controller.approveTeamCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been
         .calledWith('event', sinon.match.has('type', 'vote:Team'));
@@ -107,8 +113,9 @@ describe('Controller', function () {
 
   describe('#successQuestCallback', function () {
     beforeEach(function () {
-      ctx.use('game', function () { return this.room.newGame(ctx.user); });
+      ctx.use('game', function () { return this.room.newGame(ctx.owner); });
       ctx.use('data', function () { return {}; });
+      ctx.use('user', function () { return this.members[0].user; });
 
       helpers.createRoom(ctx);
       helpers.spyRoomMembers(ctx);
@@ -117,8 +124,6 @@ describe('Controller', function () {
     });
 
     it('with no error', function () {
-      ctx.user = ctx.game.currentQuest.members[0].user;
-      console.log(ctx.user);
       ctx.controller.successQuestCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been
         .calledWith('event', sinon.match.has('type', 'vote:Mission'));
@@ -126,11 +131,12 @@ describe('Controller', function () {
 
     context('approve all members', function () {
       beforeEach(function () {
+        ctx.use('members', function () { return this.game.currentQuest.vote.members; })
+        ctx.use('user', function () { return this.members[0]; });
         var quest = ctx.game.currentQuest;
-        for (var i = 1; i < quest.members.length; i++) {
-          quest.change_mission_list(quest.members[i], true);
+        for (var i = 1; i < ctx.members.length; i++) {
+          quest.vote.vote(ctx.members[i], true);
         }
-        ctx.user = ctx.game.currentQuest.members[0].user;
       });
 
       it ('receive successQuest', function () {
@@ -148,6 +154,14 @@ describe('Controller', function () {
 
     context('approve Three times', function () {
       beforeEach(function () {
+        ctx.use('assassin', function () { return this.room.game.findAssassin(); })
+        ctx.use('noAssasinPlayer', function () {
+          var players = this.room.game.players;
+          for (var i = 0; i < players.length; i++) {
+            if (players[i] !== this.assassin) return players[i];
+          }
+        });
+
         helpers.successMission(ctx);
         for (var i = 0; i < 2; i++) {
           helpers.orgTeam(ctx);
@@ -157,33 +171,26 @@ describe('Controller', function () {
       });
 
       it ('go to assassin phase', function () {
-        var assassin = ctx.room.game.findAssassin();
-        var noAssasinPlayer = (function () {
-          var players = ctx.room.game.players;
-          for (var i = 0; i < players.length; i++) {
-            if (players[i] !== assassin) return players[i];
-          }
-        })();
-
         expect(ctx.room.game.isAssassin()).to.be.true;
-        expect(noAssasinPlayer.user.socket.emit).to.have.been
+        expect(ctx.noAssasinPlayer.user.socket.emit).to.have.been
           .calledWith('event', sinon.match.has('type', 'go:AssassinPhase'));
-        expect(assassin.user.socket.emit).to.have.been
+        expect(ctx.assassin.user.socket.emit).to.have.been
           .calledWith('event', sinon.match.has('type', 'go:AssassinVote'));
       });
 
       context('assassinate', function () {
-        it ('evilwin', function () {
-          var assassin = ctx.room.game.findAssassin();
-          var merlin = (function () {
-            var players = ctx.room.game.players;
+        beforeEach(function () {
+          ctx.use('user', function () { return this.assassin.user; });
+          ctx.use('merlin', function () {
+            var players = this.room.game.players;
             for (var i = 0; i < players.length; i++) {
               if (players[i].isMerlin) return players[i];
             }
-          })();
+          });
+        });
 
-          ctx.user = assassin.user;
-          ctx.controller.assassinateCallback(merlin.toJson());
+        it ('evilwin', function () {
+          ctx.controller.assassinateCallback(ctx.merlin.toJson());
           expect(ctx.user.socket.emit).to.have.been
             .calledWith('event', sinon.match.has('type', 'go:game_result'));
           expect(ctx.user.socket.emit).to.have.been
