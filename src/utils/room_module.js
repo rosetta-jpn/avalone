@@ -12,16 +12,16 @@ module.exports = function RoomModule (listProp, identifier) {
   function enter(user, silent) {
     var id = user[identifier];
     this[listProp][id] = user;
-    user.once('destroy', this.leaveByIndetifier.bind(this, id, silent));
+    user.once('destroy', this.leaveByIdetifier.bind(this, id, silent));
     if (!silent) this.emit('enter', user)
   }
 
   // Public: let the specified user leave this[listProp].
   function leave(user, silent) {
-    this.leaveByIndetifier(user[identifier], silent);
+    this.leaveByIdetifier(user[identifier], silent);
   }
 
-  function leaveByIndetifier(id, silent) {
+  function leaveByIdetifier(id, silent) {
     var userList = this[listProp];
     var user = userList[id];
     if (user) {
@@ -30,5 +30,5 @@ module.exports = function RoomModule (listProp, identifier) {
     }
   }
 
-  return { enter: enter, leave: leave, leaveByIndetifier: leaveByIndetifier };
+  return { enter: enter, leave: leave, leaveByIdetifier: leaveByIdetifier };
 }

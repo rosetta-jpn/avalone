@@ -61,7 +61,7 @@ describe('RoomModule', function () {
     it('can leave the room', function () {
       ctx.room.enter(ctx.user);
       expect(ctx.room.users[ctx.name]).to.equal(ctx.user);
-      ctx.room.leaveByIndetifier(ctx.user.name);
+      ctx.room.leaveByIdetifier(ctx.user.name);
       expect(ctx.room.users[ctx.name]).to.not.exist;
     });
   });
