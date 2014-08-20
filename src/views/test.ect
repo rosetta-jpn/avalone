@@ -10,8 +10,9 @@
     <script>
       mocha.setup('bdd');
     </script>
+    <script src="node-source-map-support/browser-source-map-support.js"></script>
     <script src="/test.js"></script>
-    <script> $(function () { mocha.run(); }); </script>
+    <script> $(function () { sourceMapSupport.install(); mocha.run(); }); </script>
   </head>
   <body>
     <div id="mocha"></div>
