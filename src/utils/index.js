@@ -31,14 +31,20 @@ var inherit = exports.inherit = function (parent, child) {
   }
   extend(classMethods, {
     super: parent,
+    superClass: parent,
+    superProto: parent.prototype,
   });
 
   var proto = Object.create(parent.prototype);
   if (!child || typeof child !== 'function') {
     var properties = child || {};
-    child = function (){ parent.apply(this, arguments) };
+    child = function () { parent.apply(this, arguments) };
     extend(proto, properties);
   }
+  extend(proto, {
+    superClass: parent,
+    superProto: parent.prototype,
+  });
   child.prototype = proto;
   useClassMethods(child, classMethods);
   return child;
