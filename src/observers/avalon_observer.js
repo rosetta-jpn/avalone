@@ -22,20 +22,16 @@ utils.extend(AvalonObserver.prototype, {
 
   onNewRoom: function (room) {
     new RoomObserver(room, this.avalon, this.connector);
-    this.connector.notice('createRoom', room.toString());
+    this.connector.notice('createRoom', room.name);
   },
 
   onUserEnter: function (user) {
     user.on('rename', this.onUserRename.bind(this, user));
-    this.connector.notice('login', user.toString());
+    this.connector.notice('login', user.name);
     new UserObserver(user);
     user.notify('connection', user.id);
     user.notify('go:start');
-    user.notify('Rooms', {
-      rooms: Object.values(this.avalon.rooms).map(function (room) {
-        return room.toJson();
-      }),
-    });
+    user.notify('avalon', { avalon: this.avalon.toJson(user), });
   },
 
   onUserLeave: function (user) {

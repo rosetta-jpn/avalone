@@ -13,7 +13,8 @@ utils.extend(QuestObserver.prototype, {
     this.quest.on('newTeam', this.onNewTeam.bind(this))
     this.quest.on('success', this.onSuccess.bind(this))
     this.quest.on('failure', this.onFailure.bind(this))
-    this.quest.on('vote:Mission', this.onVoteMission.bind(this))
+    this.quest.on('vote', this.onVoteMission.bind(this))
+    this.quest.on('createVote', this.onCreateVote.bind(this))
   },
 
   onNewQuest: function () {
@@ -28,23 +29,34 @@ utils.extend(QuestObserver.prototype, {
   },
 
   onSuccess: function () {
-    this.game.notifyAll('succeededQuest', {
-      success: this.quest.successVotes(),
-      failure: this.quest.failureVotes(),
+    var quest = this.quest;
+    this.game.players.forEach(function (looker) {
+      looker.notify('succeededQuest', {
+        vote: quest.toJson(looker).vote,
+      });
     });
   },
 
   onFailure: function () {
-    this.game.notifyAll('failedQuest', {
-      success: this.quest.successVotes(),
-      failure: this.quest.failureVotes(),
+    var quest = this.quest;
+    this.game.players.forEach(function (looker) {
+      looker.notify('failedQuest', {
+        vote: quest.toJson(looker).vote,
+      });
     });
   },
 
-  onVoteMission: function (player, vote) {
+  onVoteMission: function (player, isSuccess) {
     player.notify('vote:Mission', {
       player: player.toJson(),
-      vote: vote,
+      isSuccess: isSuccess,
     })
+  },
+
+  onCreateVote: function (vote) {
+    var self = this;
+    this.game.players.forEach(function (looker) {
+      looker.notify('new:MissionVote', { vote: self.quest.toJson(looker).vote });
+    });
   },
 });
