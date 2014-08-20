@@ -18,8 +18,13 @@ Base.extend = function () {
 
 utils.extend(Base.prototype, {
   listen: function (target, event, callback) {
-    this.listens.push({ target: target, event: event, callback: callback });
-    target.on(event, callback);
+    var self = this;
+    function dispatch() {
+      callback.apply(self, arguments);
+      if (self.afterAction) self.afterAction();
+    }
+    this.listens.push({ target: target, event: event, callback: dispatch });
+    target.on(event, dispatch);
   },
 
   stopListening: function () {

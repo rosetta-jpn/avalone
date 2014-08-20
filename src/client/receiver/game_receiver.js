@@ -1,5 +1,4 @@
-var Game = require('../../models/game')
-  , Base = require('./base')
+var Base = require('./base')
   , QuestReceiver = require('./quest_receiver');
 
 var GameReceiver = module.exports = Base.extend({
@@ -23,7 +22,7 @@ var GameReceiver = module.exports = Base.extend({
   onNewQuest: function (json) {
     var quest = this.database.createQuest(json.quest)
     this.listenNewQuest(quest);
-    this.game.addNewQuest(quest);
+    this.game.addQuest(quest);
     this.database.currentQuest = quest;
   },
 
@@ -43,17 +42,15 @@ var GameReceiver = module.exports = Base.extend({
 
   onRevealPlayers: function (json) {
     for (var i = 0; i < json.players.length; i++)
-      this.database.updatePersona(json.players[i]);
+      this.database.updatePlayerPersonas(json.players[i]);
   },
 
   onJusticeWin: function () {
     this.game.state = this.game.classMethods.States.JusticeWin;
-    this.game.emit('update')
   },
   
   onEvilWin: function () {
     this.game.state = this.game.classMethods.States.EvilWin;
-    this.game.emit('update')
   },
 
   resumeGame: function () {
@@ -66,5 +63,9 @@ var GameReceiver = module.exports = Base.extend({
     } else if (this.game.isAnySideWin()) {
       this.router.changeScene('game_result');
     }
+  },
+
+  afterAction: function () {
+    this.game.emit('update');
   },
 });

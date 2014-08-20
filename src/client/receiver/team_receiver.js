@@ -1,22 +1,14 @@
-var Team = require('../../models/quest')
-  , Base = require('./base');
+var Base = require('./base');
 
 var TeamReceiver = module.exports = Base.extend({
   initialize: function (team) {
     this.team = team;
     this.listen(this.client, 'change:Team.members', this.onChangeMembers.bind(this));
     this.listen(this.client, 'vote:Team', this.onVote.bind(this));
-    this.listen(this.client, 'agree:Team', this.onAgree.bind(this));
-    this.listen(this.client, 'disagree:Team', this.onDisagree.bind(this));
+    this.listen(this.client, 'approve:Team', this.onApprove.bind(this));
+    this.listen(this.client, 'reject:Team', this.onReject.bind(this));
+    this.listen(this.client, 'new:Vote', this.onReceiveVote.bind(this));
     this.listen(this.team, 'change:Team.playerSelections', this.onChangeSelections.bind(this));
-  },
-
-  onAddMember: function (json) {
-    this.team.add_group(this.team.selector, this.collection.createPlayer(json.player));
-  },
-
-  onRemoveMember: function () {
-    this.team.remove_group(this.team.selector, this.collection.createPlayer(json.player));
   },
 
   onChangeMembers: function (json) {
@@ -27,21 +19,28 @@ var TeamReceiver = module.exports = Base.extend({
     this.team.members = members;
   },
 
-  onAgree: function () {
-    this.team.judge();
+  onApprove: function (json) {
+    this.database.updateVote(json.vote);
+    this.team.vote.judge();
   },
 
-  onDisagree: function () {
-    this.team.judge();
+  onReject: function (json) {
+    this.database.updateVote(json.vote);
+    this.team.vote.judge();
   },
 
   onVote: function (json) {
     var player = this.database.createPlayer(json.player);
-    this.team.change_voter_map(player, json.isAgree);
+    this.team.vote.vote(player, json.isAgree);
+  },
+
+  onReceiveVote: function (json) {
+    var vote = this.database.createVote(json.vote);
+    this.team.setVote(vote);
   },
 
   onChangeSelections: function () {
-    if (!this.team.isTeamSelector()) return;
+    if (!this.team.amITeamSelector()) return;
     this.client.submit('teamMemberChange', this.team.toJson());
   },
 
@@ -53,5 +52,10 @@ var TeamReceiver = module.exports = Base.extend({
     } else if (this.team.isApprove() || this.team.isReject()) {
       this.router.changeScene('vote_result');
     }
+  },
+
+  afterAction: function () {
+    this.team.emit('update');
+    if (this.team.vote) this.team.vote.emit('update');
   },
 });
