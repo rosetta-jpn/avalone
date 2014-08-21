@@ -20,7 +20,7 @@ utils.extend(GamePresenter.prototype, {
   changeGame: function (game) {
     this.model.game = game;
     this.update();
-    console.log('Update:Game', this.model);
+    utils.log('Update:Game', this.model);
   },
 
   formatters: {

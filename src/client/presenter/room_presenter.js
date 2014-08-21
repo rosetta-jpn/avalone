@@ -17,7 +17,7 @@ utils.extend(RoomPresenter.prototype, {
   changeRoom: function (room) {
     this.model.room = room;
     this.update();
-    console.log('Update:Room', this.model);
+    utils.log('Update:Room', this.model);
   },
 
   formatters: {

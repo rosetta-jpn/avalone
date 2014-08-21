@@ -189,7 +189,7 @@ Database.prototype.readRoom = function (json, save) {
 Database.prototype.log = function () {
   var args = Array.prototype.slice.call(arguments);
   args.unshift('Database:');
-  console.log.apply(console, args)
+  utils.log.apply(console, args)
 }
 
 Database.prototype.notify = function (type, obj) {
@@ -202,7 +202,7 @@ Database.prototype.updatePersona = function (json) {
   var player = this.findPlayer(json.id);
   if (player && player.changePersona) {
     player.changePersona(persona);
-    console.log('ChangePersona:', player.className);
+    utils.log('ChangePersona:', player.className);
   }
 }
 

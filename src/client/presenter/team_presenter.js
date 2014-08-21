@@ -22,7 +22,7 @@ utils.extend(TeamPresenter.prototype, {
   changeTeam: function (team) {
     this.model.team = team;
     this.update();
-    console.log('Update:Team', this.model);
+    utils.log('Update:Team', this.model);
   },
 
   updateCurrentTeam: function () {

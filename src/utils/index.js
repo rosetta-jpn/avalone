@@ -79,14 +79,27 @@ var setTimeoutUtil = exports.setTimeout = function (callback, timeout) {
       callback();
     } catch (e) {
       logError(e);
-      console.log('An Error occurred when running a timeout callback.');
+      log('An Error occurred when running a timeout callback.');
     }
   }
   setTimeout();
 }
 
 var logError = exports.logError = function (error) {
-  console.log(error.name);
-  console.log(error.message);
-  console.log(error.stack);
+  log(error.name);
+  log(error.message);
+  log(error.stack);
+}
+
+var logEnable = true
+var log = exports.log = function () {
+  if (logEnable) console.log.apply(console, arguments)
+}
+
+var disableLog = exports.disableLog = function () {
+  logEnable = false;
+}
+
+var enableLog = exports.enableLog = function () {
+  logEnable = true;
 }

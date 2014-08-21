@@ -1,6 +1,7 @@
 var Scene = require('./scene')
   , Client = require('./client')
-  , Presenter = require('./presenter');
+  , Presenter = require('./presenter')
+  , utils = require('../utils');
 
 // Public: Router - manage scenes and make scenes transit.
 var Router = module.exports = function Router(app, client, range) {
@@ -32,7 +33,7 @@ Router.prototype.standbyScenes = function () {
 Router.prototype.changeScene = function (sceneId) {
   var currentScene = this.currentScene, nextScene = this.scenes[sceneId];
   if (currentScene && currentScene.onHide) currentScene.onHide();
-  console.log('SceneChange:', sceneId);
+  utils.log('SceneChange:', sceneId);
   nextScene.show();
   location.hash = sceneId;
   if (nextScene && nextScene.onShow) nextScene.onShow();

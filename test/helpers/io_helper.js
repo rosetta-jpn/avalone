@@ -21,7 +21,7 @@ utils.extend(IOHelper.prototype, {
 
   invoke: originalEmit,
   sendEvent: function (type, content) {
-    console.log('SendEvent:', type, content);
+    utils.log('SendEvent:', type, content);
     this.invoke('event', {
       type: type,
       content: content,

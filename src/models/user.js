@@ -62,7 +62,7 @@ utils.extend(User.prototype, {
   },
 
   notify: function (type, value) {
-    console.log("Notify", "(" + this.toString() + ")", type, value)
+    utils.log("Notify", "(" + this.toString() + ")", type, value)
     if (this.isDisconnected()) return;
     this.socket.emit('event', {
       type: type,

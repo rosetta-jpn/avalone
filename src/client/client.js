@@ -26,7 +26,7 @@ Client.prototype.digestEventQueue = function (type, queue) {
 }
 
 Client.prototype.submit = function emit(type, value) {
-  console.log("Submit:", type, value)
+  utils.log("Submit:", type, value)
   this.socket.emit('submit', {
     type: type,
     value: value,
@@ -34,7 +34,7 @@ Client.prototype.submit = function emit(type, value) {
 }
 
 Client.prototype.log = function (type, obj) {
-  console.log("Receive:", type, obj);
+  utils.log("Receive:", type, obj);
 }
 
 Client.prototype.start = function () {
@@ -43,11 +43,11 @@ Client.prototype.start = function () {
 
   this.socket = this.ioBoot();
   this.socket.on('event', function (data) {
-    console.log('Received:', data);
+    utils.log('Received:', data);
     setTimeout(self.onEvent.bind(self), 0, data);
   });
 
-  console.log("Connect with socketIO")
+  utils.log("Connect with socketIO")
 }
 
 Client.prototype.onEvent = function (event) {

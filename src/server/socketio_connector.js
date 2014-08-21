@@ -5,13 +5,12 @@ var SocketIOConnector = module.exports = function SocketIOConnector (ioserver, a
   this.ioserver = ioserver;
   this.avalon = avalon;
   this.config = config;
-  this.startListen();
 }
 
 SocketIOConnector.prototype.startListen = function () {
   var self = this;
   this.ioserver.sockets.on('connection', function(socket) {
-    console.log('Connection: ' + socket.id);
+    utils.log('Connection: ' + socket.id);
 
     self.newSocket(socket);
   });
@@ -22,7 +21,7 @@ SocketIOConnector.prototype.newSocket = function (socket) {
   this.callController(socket, 'connection', {})
 
   socket.on('submit', function(data) {
-    console.log('Receive:', '(' + socket.id + ')', data.type, data.value);
+    utils.log('Receive:', '(' + socket.id + ')', data.type, data.value);
     self.callController(socket, data.type, data.value);
   });
 
@@ -44,7 +43,7 @@ SocketIOConnector.prototype.callController = function (socket, type, data) {
     new Controller(type, this.avalon, this, socket, this.config).dispatch(data);
   } catch (e) {
     utils.logError(e);
-    console.log('An Error occurred when running Controller.');
+    utils.log('An Error occurred when running Controller.');
   }
 }
 
@@ -53,7 +52,7 @@ SocketIOConnector.prototype.broadcast = function (type, data) {
 }
 
 SocketIOConnector.prototype.notice = function (type, value) {
-  console.log('notice:', type + ',', value);
+  utils.log('notice:', type + ',', value);
   this.ioserver.emit('event', {
     type: type,
     content: value,

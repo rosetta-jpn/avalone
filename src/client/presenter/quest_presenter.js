@@ -22,7 +22,7 @@ utils.extend(QuestPresenter.prototype, {
   changeQuest: function (quest) {
     this.model.quest = quest;
     this.update();
-    console.log('Update:Quest', this.model);
+    utils.log('Update:Quest', this.model);
   },
 
   updateCurrentQuest: function () {

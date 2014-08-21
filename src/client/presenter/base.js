@@ -24,7 +24,7 @@ utils.extend(Presenter.prototype, {
   },
 
   update: function () {
-    console.log('Update:View', this);
+    utils.log('Update:View', this);
     this.view.update(this.model);
     this.view.sync();
   },
@@ -43,7 +43,7 @@ utils.extend(Presenter.prototype, {
     this[name] = function () {
       var args = Array.prototype.slice.call(arguments);
       argQueue.push(args);
-      console.log('lock', arguments);
+      utils.log('lock', arguments);
     }
   },
 

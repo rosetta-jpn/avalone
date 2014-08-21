@@ -1,7 +1,7 @@
-var utils = require('../utils')
+var utils = require('../utils');
 
 /* Public: Controller - dispatches received requests
- * 
+ *
  * type - the string which represents the method to handle the request.
  * avalon - the Avalon object.
  * connector - the SocketIOConnector object which received the request.
@@ -99,7 +99,7 @@ utils.extend(Controller.prototype, {
   },
 
   disconnectCallback: function () {
-    console.log('Disconnect:', this.user.toJson());
+    utils.log('Disconnect:', this.user.toJson());
     this.user.disconnect();
   },
 
