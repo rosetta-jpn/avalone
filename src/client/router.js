@@ -13,7 +13,11 @@ var Router = module.exports = function Router(app, client, config) {
 
   this.client.on('go:start', this.returnStart.bind(this));
   this.changeScene('start');
-  this.presenters = Presenter(app, this.config.range);
+  this.presenters = Presenter.bindPresenters(app, this.config.range);
+}
+
+Router.prototype.unbindPresenters = function () {
+  Presenter.unbindPresenters(this.presenters);
 }
 
 Router.prototype.standbyScenes = function () {

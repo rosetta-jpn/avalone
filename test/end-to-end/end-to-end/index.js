@@ -23,6 +23,10 @@ describe('end to end', function () {
     ctx.given({ owner: ctx.client.a, });
   });
 
+  afterEach(function () {
+    Factories.unbindPresenters(ctx.client);
+  });
+
   describe('connection', function () {
     it('client has id', function () {
       ctx.client.a.connect();

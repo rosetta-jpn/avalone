@@ -41,7 +41,14 @@ module.exports = {
       });
     };
   },
-  
+
+  unbindPresenters: function (ctx) {
+    ctx.clients.forEach(function (client) {
+      if (client.app.router)
+        client.app.router.unbindPresenters();
+    });
+  },
+
   setupServer: function (ctx) {
     ctx.given({
       serverMock: function () {

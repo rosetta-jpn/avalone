@@ -23,6 +23,10 @@ utils.extend(Presenter.prototype, {
     });
   },
 
+  unbind: function () {
+    this.view.unbind();
+  },
+
   update: function () {
     utils.log('Update:View', this);
     this.view.update(this.model);

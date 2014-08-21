@@ -21,6 +21,11 @@ describe('Client', function () {
     ctx.use('ioHelper', function () { return new IOHelper(this.clock) });
   });
 
+  afterEach(function () {
+    if (ctx.app.router)
+      ctx.app.router.unbindPresenters();
+  })
+
   describe('login', function () {
     beforeEach(function () {
       ctx.use('id', 'hoge');
