@@ -7,10 +7,10 @@ var utils = require('../utils')
  * avalon - the Avalon object to observe.
  * connectorCreate - the constructor of SocketIOConnector.
  */
-var AvalonObserver = module.exports = function AvalonObserver(avalon, connectorCreate) {
+var AvalonObserver = module.exports = function AvalonObserver(avalon, connector) {
   this.avalon = avalon;
+  this.connector = connector;
   this.bind();
-  this.onInit(connectorCreate);
 }
 
 utils.extend(AvalonObserver.prototype, {
@@ -18,10 +18,6 @@ utils.extend(AvalonObserver.prototype, {
     this.avalon.on('createRoom', this.onNewRoom.bind(this));
     this.avalon.on('enter', this.onUserEnter.bind(this));
     this.avalon.on('leave', this.onUserLeave.bind(this));
-  },
-
-  onInit: function (connectorCreate) {
-    this.connector = connectorCreate(this.avalon);
   },
 
   onNewRoom: function (room) {

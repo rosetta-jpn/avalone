@@ -40,6 +40,8 @@ server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'))
 });
 
-var connectorConstructor = socketio(server, config);
-new AvalonObserver(new Avalon(), connectorConstructor);
+var avalon = new Avalon();
+var connector = socketio(server, config, avalon);
 
+new AvalonObserver(avalon, connector);
+connector.startListen();
