@@ -4,6 +4,7 @@ var Scene = module.exports = {};
 
 Scene.StartScene = AbstractScene.extend({
   selector: '#start',
+  name: 'start',
 
   bind: function () {
     $('form#enterRoom').on('submit', this.onSubmitRoom.bind(this));
@@ -29,6 +30,7 @@ Scene.StartScene = AbstractScene.extend({
 
 Scene.LobbyScene = AbstractScene.extend({
   selector: '#lobby',
+  name: 'lobby',
   users: {},
 
   bind: function () {
@@ -50,6 +52,7 @@ Scene.LobbyScene = AbstractScene.extend({
 
 Scene.JobsScene = AbstractScene.extend({
   selector: '#jobs',
+  name: 'jobs',
 
   bind: function() {
     this.$el.find('#go_team').on('click',this.goTeam.bind(this));
@@ -62,6 +65,7 @@ Scene.JobsScene = AbstractScene.extend({
 
 Scene.TeamScene = AbstractScene.extend({
   selector: '#team',
+  name: 'team',
 
   bind: function() {
     this.$el.find('#go_vote').on('submit',this.onGoVote.bind(this));
@@ -90,6 +94,7 @@ Scene.TeamScene = AbstractScene.extend({
 
 Scene.VoteScene = AbstractScene.extend({
   selector: '#vote',
+  name: 'vote',
 
   bind: function() {
     this.$el.find('button.debugApprove').on('click', this.onDebug.bind(this, true));
@@ -109,6 +114,7 @@ Scene.VoteScene = AbstractScene.extend({
 
 Scene.VoteResultScene = AbstractScene.extend({
   selector: '#vote_result',
+  name: 'vote_result',
 
   bind: function (){
     this.$el.find('#go_mission').on('click',this.onGoMission.bind(this));
@@ -132,6 +138,7 @@ Scene.VoteResultScene = AbstractScene.extend({
 
 Scene.MissionScene = AbstractScene.extend({
   selector: '#mission',
+  name: 'mission',
 
   bind: function(){
     this.$el.find('#mission_success').on('click',this.onMissionSuccess.bind(this));
@@ -165,6 +172,7 @@ Scene.MissionScene = AbstractScene.extend({
 
 Scene.MissionResultScene = AbstractScene.extend({
   selector: '#mission_result',
+  name: 'mission_result',
 
   bind: function(){
     this.$el.find('#go_next_team').on('click',this.onGoNextTeam.bind(this));
@@ -196,6 +204,7 @@ Scene.MissionResultScene = AbstractScene.extend({
 
 Scene.AssassinPhaseScene = AbstractScene.extend({
   selector: '#assassin_phase',
+  name: 'assassin_phase',
 
   bind : function(){
     this.$el.find('#assassin_assassinate').on('submit',this.onAssassinAssassinate.bind(this));
@@ -216,6 +225,8 @@ Scene.AssassinPhaseScene = AbstractScene.extend({
 
 Scene.GameResultScene= AbstractScene.extend({
   selector : '#game_result',
+  name: 'game_result',
+
   bind: function(){
     this.$el.find('#next_game').on('click',this.onNextGame.bind(this));
     this.$el.find('#exit_game').on('click',this.onExitGame.bind(this));
