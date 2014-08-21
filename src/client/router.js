@@ -4,15 +4,16 @@ var Scene = require('./scene')
   , utils = require('../utils');
 
 // Public: Router - manage scenes and make scenes transit.
-var Router = module.exports = function Router(app, client, range) {
+var Router = module.exports = function Router(app, client, config) {
   this.app = app;
   this.client = client;
   this.reservation = {};
   this.standbyScenes();
+  this.config = config || { changeLocation: true };
 
   this.client.on('go:start', this.returnStart.bind(this));
   this.changeScene('start');
-  this.presenters = Presenter(app, range);
+  this.presenters = Presenter(app, this.config.range);
 }
 
 Router.prototype.standbyScenes = function () {
@@ -35,7 +36,7 @@ Router.prototype.changeScene = function (sceneId) {
   if (currentScene && currentScene.onHide) currentScene.onHide();
   utils.log('SceneChange:', sceneId);
   nextScene.show();
-  location.hash = sceneId;
+  if (this.config.changeLocation) location.hash = sceneId;
   if (nextScene && nextScene.onShow) nextScene.onShow();
   this.currentScene = nextScene;
   this.checkReservation();

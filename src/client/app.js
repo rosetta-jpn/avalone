@@ -12,9 +12,10 @@ var Router = require('./router')
   , RoomReceiver = require('./receiver/room_receiver')
   , utils = require('../utils');
 
-var App = module.exports = function App (client, ioBoot) {
+var App = module.exports = function App (client, ioBoot, config) {
   this.ioBoot = ioBoot || io;
   this.client = new (client || Client)(this.ioBoot);
+  this.config = config;
   this.database = new Database();
   this.registerDatabase(this.database);
 }
@@ -25,7 +26,7 @@ utils.extend(App.prototype, {
   },
 
   boot: function () {
-    this.router = new Router(this, this.client);
+    this.router = new Router(this, this.client, this.config);
     this.client.start();
     new RoomReceiver(this);
     new ProfileReceiver(this);
