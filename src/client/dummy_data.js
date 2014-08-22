@@ -1,4 +1,4 @@
-var Model = require('../models')
+var Model = require('../models/client')
   , utils = require('../utils');
 
 var createDummy = module.exports = function (database) {
