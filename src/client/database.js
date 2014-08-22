@@ -40,7 +40,7 @@ utils.extend(Database.prototype, {
   log: function () {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('Database:');
-    console.log.apply(console, args)
+    utils.log.apply(console, args)
   },
 
   notify: function (type, obj) {
@@ -53,7 +53,7 @@ utils.extend(Database.prototype, {
     var player = this.findPlayer(json.id);
     if (player && player.changePersona) {
       player.changePersona(persona);
-      console.log('ChangePersona:', player.className);
+      utils.log('ChangePersona:', player.className);
     }
   },
 });
