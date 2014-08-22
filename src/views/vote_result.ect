@@ -2,7 +2,7 @@
   <h2 class="page-header">Vote Result</h2>
   <div class="rv-team">
     <div align="center">
-      <img rv-src="team#isApprove | showIsApprove | imagePath" height="400" width="300">
+      <img rv-src="team.vote#isApproved | showIsApprove | imagePath" height="400" width="300">
     </div>
   </div>
   <h2 class="page-header">Vote Detail</h2>
@@ -15,9 +15,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr rv-each-vote="team#votes">
+        <tr rv-each-vote="team.vote#eachPlayerVote">
           <td>
-            <div rv-class-vote_approve="vote.isApprove">
+            <div rv-class-vote_approve="vote#isApprove">
               <span>{{ vote.player.name }}</span>
             </div>
           </td>
@@ -30,12 +30,12 @@
   <% include "partials/team_member" %>
   
   <div class="col-lg-6 rv-team" align="center">
-    <div rv-show="team#isApprove">
+    <div rv-show="team.vote#isApproved">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="go_mission">Go Mission</a>
       </p>
     </div>
-    <div rv-hide="team#isApprove">
+    <div rv-hide="team.vote#isApproved">
       <p>
         <a class="btn btn-lg btn-success" role="button" id="next_team">Next Team</a>
       </p>

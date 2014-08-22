@@ -3,26 +3,26 @@
   <% include "partials/team_member" %>
   <br>
   <div class="rv-team">
-    <form role="form" rv-hide="team.isVoted">
+    <form role="form" rv-hide="team.vote#amIVoted">
       <div class="text-center">
         <div class="form-group">
           <label class="radio-inline">
-            <input type="radio" id="approve" name="votes" rv-checked="team.isVoteApprove">
+            <input type="radio" id="approve" name="votes" rv-checked="team.vote.approve">
             <img src="images/Approve.jpg" alt="Approve">
           </label>
           <label class="radio-inline">
-            <input type="radio" id="reject" name="votes" rv-unchecked="team.isVoteApprove">
+            <input type="radio" id="reject" name="votes" rv-unchecked="team.vote.approve">
             <img src="images/Reject.jpg" alt="Reject">
           </label>
         </div>
         <button type="submit" rv-on-click="handlers#submitVote" class="btn btn-primary">Vote!!</button>
       </div>
     </form>
-    <div rv-show="team.isVoted" class="text-center">
-      <div rv-show="team.isVoteApprove">
+    <div rv-show="team.vote#amIVoted" class="text-center">
+      <div rv-show="team.vote#amIApproved">
         <img src="images/Approve.jpg" alt="Approve">
       </div>
-      <div rv-hide="team.isVoteApprove">
+      <div rv-hide="team.vote#amIApproved">
         <img src="images/Reject.jpg" alt="Reject">
       </div>
     </div>

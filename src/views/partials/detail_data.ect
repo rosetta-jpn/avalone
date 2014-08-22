@@ -1,19 +1,19 @@
 <h2 class="page-header no-collapsed collapsed" data-toggle="collapse" data-target="#detail_data">Detail Data</h2>
   <div class="rv-game collapse" id="detail_data">
     <div rv-each-questlog="game#pastQuestLogs">
-      <h2>{{questlog.index}}</h2>
+      <h2>{{ questlog.index }}</h2>
       <div rv-each-teamlog="questlog.quest#pastTeamLogs">
-        <h4>{{questlog.index}}-{{teamlog.index}}</h4>
+        <h4>{{ questlog.index }}-{{ teamlog.index }}</h4>
         <font size="+1">
           <dl>
             <dt> selector </dt>
               <dd>{{ teamlog.team.selector.name }}</dd>
             <dt> team </dt>
               <dd>
-                <span rv-each-member="teamlog.team#members"> {{member.name }} </span>
+                <span rv-each-member="teamlog.team#members"> {{ member.name }} </span>
               </dd>
             <dt> result</dt>
-            <dd> {{teamlog.team#isApprove | showIsApprove}} </dd>
+            <dd> {{ teamlog.team#isApprove | showIsApprove }} </dd>
           </dl>
         </font>
         <table class="table">
@@ -24,9 +24,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr rv-each-vote="teamlog.team#votes">
+            <tr rv-each-vote="teamlog.team.vote#eachPlayerVote">
               <td>
-                <div rv-class-vote_approve="vote.isApprove">
+                <div rv-class-vote_approve="vote#isApprove">
                   <span>{{ vote.player.name }}</span>
 
                 </div>

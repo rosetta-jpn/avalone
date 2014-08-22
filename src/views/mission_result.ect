@@ -4,8 +4,8 @@
     <br>
     <br>
     <br>
-    <h2>Success : {{quest.successCount}}</h2>
-    <h2>Failure : {{quest.failureCount}}</h2>
+    <h2>Success : {{ quest.vote#approvalCount }}</h2>
+    <h2>Failure : {{ quest.vote#rejectionsCount }}</h2>
   </div>
   <div class="col-lg-6 rv-game" align="center">
     <div rv-show="game#isQuest">
