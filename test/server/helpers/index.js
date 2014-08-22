@@ -5,6 +5,9 @@ var chai = require('chai')
 chai.use(sinonChai);
 var expect = chai.expect;
 
+var utils = require('../../../src/utils');
+utils.disableLog();
+
 var Requirements = require('./requirements')
   , Context = require('../../helpers/context');
 
