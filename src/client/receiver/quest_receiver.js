@@ -7,7 +7,7 @@ var QuestReceiver = module.exports = Base.extend({
 
     this.listen(this.client, 'new:Team', this.onNewTeam.bind(this));
     this.listen(this.client, 'new:MissionVote', this.onMissionVote.bind(this));
-    this.listen(this.client, 'vote', this.onVote.bind(this));
+    this.listen(this.client, 'update:MissionVote', this.onUpdateMissionVote.bind(this));
     this.listen(this.client, 'succeededQuest', this.onQuestResult.bind(this, true));
     this.listen(this.client, 'failedQuest', this.onQuestResult.bind(this, false));
   },
@@ -35,9 +35,8 @@ var QuestReceiver = module.exports = Base.extend({
     this.quest.addMissionVote(secretVote);
   },
 
-  onVote: function (json) {
-    var player = this.database.createPlayer(json.player)
-    this.quest.vote.vote(player, json.isSuccess);
+  onUpdateMissionVote: function (json) {
+    this.database.updateSecretVote(json.vote);
   },
 
   onQuestResult: function (isSuccess, json) {

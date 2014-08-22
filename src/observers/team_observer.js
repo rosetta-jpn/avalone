@@ -40,10 +40,10 @@ utils.extend(TeamObserver.prototype, {
   },
 
   onVote: function (voter, isAgree) {
+    var team = this.team;
     this.game.players.forEach(function (player) {
-      player.notify('vote:Team', {
-        player: voter.toJson(player),
-        isAgree: isAgree,
+      player.notify('update:Vote', {
+        vote: team.toJson(player).vote,
       });
     });
   },

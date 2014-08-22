@@ -47,10 +47,10 @@ utils.extend(QuestObserver.prototype, {
   },
 
   onVoteMission: function (player, isSuccess) {
-    player.notify('vote:Mission', {
-      player: player.toJson(),
-      isSuccess: isSuccess,
-    })
+    var quest = this.quest;
+    player.notify('update:MissionVote', {
+      vote: quest.toJson(player).vote,
+    });
   },
 
   onCreateVote: function (vote) {
