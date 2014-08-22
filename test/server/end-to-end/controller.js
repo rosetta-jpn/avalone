@@ -107,7 +107,7 @@ describe('Controller', function () {
     it('with no errors', function () {
       ctx.controller.approveTeamCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been
-        .calledWith('event', sinon.match.has('type', 'vote:Team'));
+        .calledWith('event', sinon.match.has('type', 'update:Vote'));
     });
   });
 
@@ -126,7 +126,7 @@ describe('Controller', function () {
     it('with no error', function () {
       ctx.controller.successQuestCallback(ctx.data);
       expect(ctx.user.socket.emit).to.have.been
-        .calledWith('event', sinon.match.has('type', 'vote:Mission'));
+        .calledWith('event', sinon.match.has('type', 'update:MissionVote'));
     });
 
     context('approve all members', function () {
