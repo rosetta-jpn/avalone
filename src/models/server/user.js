@@ -1,5 +1,5 @@
 var utils = require('../../utils')
-  , UserCore = require('../core/User');
+  , UserCore = require('../core/user');
 
 var User = module.exports = utils.inherit(UserCore, function User(socket) {
   var args = Array.prototype.slice.call(arguments, 1);
