@@ -12,12 +12,20 @@ function Vote (id, members, requiredApproval) {
 utils.inherit(events.EventEmitter, Vote);
 utils.extend(Vote.prototype, {
   vote: function (voter, value) {
+    if (!this.isMember(voter))
+      throw new Error('Only members can vote.');
     this.voteMap[voter.id] = value;
     this.emit('vote', voter, value)
   },
 
   isAllVoted: function () {
     return Object.keys(this.voteMap).length === this.members.length;
+  },
+
+  isMember: function (player) {
+    return this.members.some(function (member) {
+      return member.isSame(player);
+    });
   },
 
   approvalCount: function () {
