@@ -49,21 +49,33 @@ describe('Client', function () {
         return {
           owner: this.user,
           name: this.roomName, users: this.users,
-        }; 
+        };
       });
       ctx.app.boot();
     });
 
-    it('set the room I enter as currentRoom', function () {
-      ctx.ioHelper.sendEvent('connection', ctx.id);
-      ctx.ioHelper.sendEvent('new:Room', { room: ctx.room });
+    context('received a room of anotherUser', function () {
+      beforeEach(function () {
+        ctx.use('users', function () { return [this.anotherUser]; });
+        ctx.use('room', function () {
+          return {
+            owner: this.anotherUser,
+            name: this.roomName, users: this.users,
+          };
+        });
+      });
 
-      expect(Object.values(ctx.app.database.Room)).to.has.length(1);
-      expect(ctx.app.database.currentRoom).to.not.exist;
+      it('set the room I enter as currentRoom', function () {
+        ctx.ioHelper.sendEvent('connection', ctx.id);
+        ctx.ioHelper.sendEvent('new:Room', { room: ctx.room });
 
-      ctx.ioHelper.sendEvent('enter:User', { user: ctx.user, roomName: ctx.roomName });
+        expect(Object.values(ctx.app.database.Room)).to.has.length(1);
+        expect(ctx.app.database.currentRoom).to.not.exist;
 
-      expect(ctx.app.database.currentRoom.name).to.equal(ctx.room.name);
+        ctx.ioHelper.sendEvent('enter:User', { user: ctx.user, roomName: ctx.roomName });
+
+        expect(ctx.app.database.currentRoom.name).to.equal(ctx.room.name);
+      });
     });
 
     it('remove the room when it destroyed', function () {
@@ -80,7 +92,7 @@ describe('Client', function () {
       ctx.use('users', function () { return [this.user, this.anotherUser]; });
       ctx.ioHelper.sendEvent('connection', ctx.id);
       ctx.ioHelper.sendEvent('new:Room', { room: ctx.room });
-      ctx.ioHelper.sendEvent('enter:User', { user: ctx.user, roomName: ctx.roomName });
+      ctx.ioHelper.sendEvent('enter:User', { user: ctx.anotherUser, roomName: ctx.roomName });
 
       expect(ctx.app.database.currentRoom.users).to.has.length(2);
 
@@ -102,7 +114,7 @@ describe('Client', function () {
           return {
             owner: this.user,
             name: this.roomName, users: this.users,
-          }; 
+          };
         });
       })
       context('the game is TeamOrg state', function () {
