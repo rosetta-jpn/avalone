@@ -99,21 +99,27 @@ module.exports = {
     });
   },
 
-  voteTeam: function (clients, isApprove) {
+  voteTeam: function (clients, isApprove, aroundAction) {
     clients.forEach(function (client) {
-      var game = client.app.database.currentGame;
-      var team = client.app.database.currentTeam;
-      team.vote.vote(client.app.database.playerProfile, isApprove);
-      client.submit(isApprove ? 'approveTeam' : 'rejectTeam', team.toJson());
+      aroundAction ? aroundAction(client, cont) : cont();
+      function cont () {
+        var game = client.app.database.currentGame;
+        var team = client.app.database.currentTeam;
+        team.vote.vote(client.app.database.playerProfile, isApprove);
+        client.submit(isApprove ? 'approveTeam' : 'rejectTeam', team.toJson());
+      }
     });
   },
 
-  voteMission: function (clients, isSuccess) {
+  voteMission: function (clients, isSuccess, aroundAction) {
     clients.forEach(function (client) {
-      var quest = client.app.database.currentQuest;
-      if (quest.amIMember()) {
-        quest.vote.vote(client.app.database.playerProfile, isSuccess);
-        client.submit(isSuccess ? 'successQuest' : 'failQuest', quest.toJson());
+      aroundAction ? aroundAction(client, cont) : cont();
+      function cont () {
+        var quest = client.app.database.currentQuest;
+        if (quest.amIMember()) {
+          quest.vote.vote(client.app.database.playerProfile, isSuccess);
+          client.submit(isSuccess ? 'successQuest' : 'failQuest', quest.toJson());
+        }
       }
     });
   },

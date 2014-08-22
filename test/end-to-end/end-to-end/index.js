@@ -112,11 +112,18 @@ describe('end to end', function () {
     });
 
     it('go to vote_result scene', function () {
-      helper.voteTeam(ctx.client.clients, true);
+      helper.voteTeam(ctx.client.clients, true, function (client, cont) {
+        var team = client.app.database.currentTeam;
+        cont();
+        expect(team.vote.amIVoted()).to.be.true;
+        expect(team.vote.amIApproved()).to.be.true;
+      });
+
       ctx.client.clients.forEach(function (client) {
         var router = client.app.router
           , team = client.app.database.currentGame.currentQuest.teams[0];
         expect(router.currentScene.name).to.equal('vote_result');
+
         expect(team.vote.isApproved()).to.be.true;
         expect(team.isApprove()).to.be.true;
       });
@@ -135,16 +142,21 @@ describe('end to end', function () {
     });
 
     it('go to mission_result scene', function () {
-      helper.voteMission(ctx.client.clients, true);
+      helper.voteMission(ctx.client.clients, true, function (client, cont) {
+        var quest = client.app.database.currentQuest;
+        cont();
+        if (quest.amIMember()) {
+          expect(quest.vote.amIVoted()).to.be.true;
+          expect(quest.vote.amIApproved()).to.be.true;
+        }
+      });
+
       ctx.client.clients.forEach(function (client) {
         var router = client.app.router, quest = client.app.database.currentGame.quests[0];
 
         expect(router.currentScene.name).to.equal('mission_result');
         expect(client.app.database.currentGame.quests).to.have.length(2);
-        if (quest.amIMember()) {
-          expect(quest.vote.amIVoted()).to.be.true;
-          expect(quest.vote.amIApproved()).to.be.true;
-        }
+
         expect(quest.vote.isApproved()).to.be.true;
         expect(quest.isSuccess()).to.be.true;
       });
