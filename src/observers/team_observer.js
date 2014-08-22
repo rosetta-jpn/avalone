@@ -12,11 +12,12 @@ utils.extend(TeamObserver.prototype, {
   bind: function () {
     this.team.on('newTeam', this.onNewTeam.bind(this))
     this.team.on('go:vote', this.onGoVote.bind(this))
+    this.team.on('changeMembers', this.onChangeMember.bind(this))
     this.team.on('add', this.onChangeMember.bind(this))
     this.team.on('remove', this.onChangeMember.bind(this))
     this.team.on('vote', this.onVote.bind(this))
-    this.team.on('agree', this.onAgree.bind(this))
-    this.team.on('disAgree', this.onDisagree.bind(this))
+    this.team.on('approve', this.onApprove.bind(this))
+    this.team.on('reject', this.onReject.bind(this))
   },
 
   onNewTeam: function () {
@@ -29,8 +30,13 @@ utils.extend(TeamObserver.prototype, {
     });
   },
 
-  onGoVote: function () {
+  onGoVote: function (vote) {
     this.game.notifyAll('go:vote');
+    this.game.players.forEach(function (player) {
+      player.notify('new:Vote', {
+        vote: vote.toJson(player),
+      });
+    });
   },
 
   onVote: function (voter, isAgree) {
@@ -45,20 +51,32 @@ utils.extend(TeamObserver.prototype, {
   onChangeMember: function () {
     var team = this.team;
     this.game.players.forEach(function (player) {
-      members = team.toJson(player).group;
+      members = team.toJson(player).members;
       player.notify('change:Team.members', {
         members: members,
       });
     });
   },
 
-  onAgree: function () {
-    this.game.notifyAll('agree:Team', this.team.voter_map);
+  onApprove: function () {
+    var team = this.team;
+    this.game.players.forEach(function (player) {
+      members = team.toJson(player).members;
+      player.notify('approve:Team', {
+        vote: team.toJson().vote,
+      });
+    });
     this.game.notifyAll('go:vote_result');
   },
 
-  onDisagree: function () {
-    this.game.notifyAll('disagree:Team', this.team.voter_map);
+  onReject: function () {
+    var team = this.team;
+    this.game.players.forEach(function (player) {
+      members = team.toJson(player).members;
+      player.notify('reject:Team', {
+        vote: team.toJson().vote,
+      });
+    });
     this.game.notifyAll('go:vote_result');
   },
 });

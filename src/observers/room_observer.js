@@ -25,7 +25,7 @@ utils.extend(RoomObserver.prototype, {
   },
 
   onEnter: function (user) {
-    var users = this.room.calcUsers().map(function (user) { return user.toJson(); })
+    var users = this.room.users.map(function (user) { return user.toJson(); })
     this.connector.notifyAll('enter:User', {
       roomName: this.room.name,
       user: user.toJson(),

@@ -31,14 +31,20 @@ var inherit = exports.inherit = function (parent, child) {
   }
   extend(classMethods, {
     super: parent,
+    superClass: parent,
+    superProto: parent.prototype,
   });
 
   var proto = Object.create(parent.prototype);
   if (!child || typeof child !== 'function') {
     var properties = child || {};
-    child = function (){ parent.apply(this, arguments) };
+    child = function () { parent.apply(this, arguments) };
     extend(proto, properties);
   }
+  extend(proto, {
+    superClass: parent,
+    superProto: parent.prototype,
+  });
   child.prototype = proto;
   useClassMethods(child, classMethods);
   return child;
@@ -73,14 +79,27 @@ var setTimeoutUtil = exports.setTimeout = function (callback, timeout) {
       callback();
     } catch (e) {
       logError(e);
-      console.log('An Error occurred when running a timeout callback.');
+      log('An Error occurred when running a timeout callback.');
     }
   }
   setTimeout();
 }
 
 var logError = exports.logError = function (error) {
-  console.log(error.name);
-  console.log(error.message);
-  console.log(error.stack);
+  log(error.name);
+  log(error.message);
+  log(error.stack);
+}
+
+var logEnable = true
+var log = exports.log = function () {
+  if (logEnable) console.log.apply(console, arguments)
+}
+
+var disableLog = exports.disableLog = function () {
+  logEnable = false;
+}
+
+var enableLog = exports.enableLog = function () {
+  logEnable = true;
 }

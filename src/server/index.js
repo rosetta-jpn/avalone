@@ -6,7 +6,7 @@ var express = require('express')
   , ECT = require('ect')
   , socketio = require('./socketio')
   , Config = require('./config')
-  , Avalon = require('../models/avalon')
+  , Avalon = require('../models/server/avalon')
   , AvalonObserver = require('../observers/avalon_observer');
 
 var app = express();
@@ -40,6 +40,8 @@ server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'))
 });
 
-var connectorConstructor = socketio(server, config);
-new AvalonObserver(new Avalon(), connectorConstructor);
+var avalon = new Avalon();
+var connector = socketio(server, config, avalon);
 
+new AvalonObserver(avalon, connector);
+connector.startListen();

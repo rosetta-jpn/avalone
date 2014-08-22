@@ -3,8 +3,8 @@
   <h2 class="page-header no-collapsed collapsed" data-toggle="collapse" data-target="#progress">Progress</h2>
   <div class="row placeholders rv-game collapse" id="progress">
     <div class="col-xs-6 placeholder" rv-each-quest="game.quests">
-      <img class="img-responsive"  width="100" height="30" rv-src="quest.state | stateImagePath" rv-alt="quest.state">
-      <h4>{{ quest.state }} ({{ quest#team.selector.name }}, {{ quest.team_sz }})</h4>
+      <img class="img-responsive"  width="100" height="30" rv-src="quest#result | stateImagePath" rv-alt="quest#result">
+      <h4>{{ quest#result }} ({{ quest#currentTeam.selector.name }}, {{ quest.memberCount }})</h4>
       <span class="text-muted">
         <span rv-each-player="quest#members">
           {{ player.name }}
@@ -14,14 +14,14 @@
   </div>
   <h2 class="page-header">Member Select</h2>
   <div class="rv-team">
-    <form  id="team_candidate" class="left" rv-show="team#isTeamSelector" rv-on-submit="handlers#submitTeam">
-      <div class="checkbox" rv-each-selection="team#playerSelections">
+    <form  id="team_candidate" class="left" rv-show="team#amITeamSelector" rv-on-submit="handlers#submitTeam">
+      <div class="checkbox" rv-each-selection="team#memberCandidates">
         <div
-           rv-class-alert="selection#isTeamMember"
-           rv-class-alert-success="selection#isTeamMember"
+           rv-class-alert="selection#isSelected"
+           rv-class-alert-success="selection#isSelected"
            role="alert">
           <label>
-            <input type="checkbox" align="left" rv-checked="selection#isTeamMember"> {{ selection.player.name }}
+            <input type="checkbox" align="left" rv-checked="selection#isSelected"> {{ selection.player.name }}
           </label>
         </div>
       </div>
@@ -29,14 +29,14 @@
       <input type="submit" class="btn btn-primary btn-lg" role="button" value="Vote »">
       <br>
     </form>
-    <form id="team_candidate_read" class="left" rv-hide="team#isTeamSelector" rv-on-submit="handlers#submitTeam">
-      <div class="checkbox" rv-each-selection="team#playerSelections">
+    <form id="team_candidate_read" class="left" rv-hide="team#amITeamSelector" rv-on-submit="handlers#submitTeam">
+      <div class="checkbox" rv-each-selection="team#memberCandidates">
         <div
-           rv-class-alert="selection#isTeamMember"
-           rv-class-alert-success="selection#isTeamMember"
+           rv-class-alert="selection#isSelected"
+           rv-class-alert-success="selection#isSelected"
            role="alert">
           <label>
-            <input type="checkbox" align="left" rv-checked="selection#isTeamMember" disabled readonly> {{ selection.player.name }}
+            <input type="checkbox" align="left" rv-checked="selection#isSelected" disabled readonly> {{ selection.player.name }}
           </label>
         </div>
       </div>

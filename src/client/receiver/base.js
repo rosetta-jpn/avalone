@@ -1,9 +1,11 @@
 var utils = require('../../utils');
 
 // Public: Receiver - control models according to messages from the server.
-var Base = module.exports = function () {
+var Base = module.exports = function (app) {
+  this.app = app;
   this.listens = [];
-  if (this.initialize) this.initialize.apply(this, arguments);
+  var args = Array.prototype.slice.call(arguments, 1);
+  if (this.initialize) this.initialize.apply(this, args);
 }
 
 utils.useClassMethods(Base);
@@ -14,14 +16,15 @@ Base.extend = function () {
   return utils.inherit.apply(this, args);
 }
 
-Base.classMethods.setting = function (app) {
-  this.app = app;
-}
-
 utils.extend(Base.prototype, {
   listen: function (target, event, callback) {
-    this.listens.push({ target: target, event: event, callback: callback });
-    target.on(event, callback);
+    var self = this;
+    function dispatch() {
+      callback.apply(self, arguments);
+      if (self.afterAction) self.afterAction();
+    }
+    this.listens.push({ target: target, event: event, callback: dispatch });
+    target.on(event, dispatch);
   },
 
   stopListening: function () {
@@ -35,14 +38,14 @@ utils.extend(Base.prototype, {
 
 utils.property(Base.prototype, {
   client: {
-    get: function () { return this.classMethods.app.client; },
+    get: function () { return this.app.client; },
   },
 
   database: {
-    get: function () { return this.classMethods.app.database; },
+    get: function () { return this.app.database; },
   },
 
   router: {
-    get: function () { return this.classMethods.app.router; },
+    get: function () { return this.app.router; },
   },
 });

@@ -1,5 +1,4 @@
-var Quest = require('../../models/quest')
-  , Base = require('./base')
+var Base = require('./base')
   , TeamReceiver = require('./team_receiver');
 
 var QuestReceiver = module.exports = Base.extend({
@@ -7,6 +6,7 @@ var QuestReceiver = module.exports = Base.extend({
     this.quest = quest;
 
     this.listen(this.client, 'new:Team', this.onNewTeam.bind(this));
+    this.listen(this.client, 'new:MissionVote', this.onMissionVote.bind(this));
     this.listen(this.client, 'vote', this.onVote.bind(this));
     this.listen(this.client, 'succeededQuest', this.onQuestResult.bind(this, true));
     this.listen(this.client, 'failedQuest', this.onQuestResult.bind(this, false));
@@ -22,7 +22,7 @@ var QuestReceiver = module.exports = Base.extend({
   },
 
   listenNewTeam: function (team) {
-    var teamReceiver = this.teamReceiver = new TeamReceiver(team);
+    var teamReceiver = this.teamReceiver = new TeamReceiver(this.app, team);
     this.quest.emit('new:Quest.team')
     this.quest.once('new:Quest.team', (function () {
       teamReceiver.stopListening();
@@ -30,13 +30,19 @@ var QuestReceiver = module.exports = Base.extend({
     return teamReceiver;
   },
 
+  onMissionVote: function (json) {
+    var secretVote = this.database.createSecretVote(json.vote);
+    this.quest.addMissionVote(secretVote);
+  },
+
   onVote: function (json) {
     var player = this.database.createPlayer(json.player)
-    this.quest.change_voter_map(player, json.isAgree);
+    this.quest.vote.vote(player, json.isSuccess);
   },
 
   onQuestResult: function (isSuccess, json) {
-    this.quest.applyResult(isSuccess, json.success, json.failure);
+    this.database.updateSecretVote(json.vote);
+    this.quest.vote.judge();
     this.router.reserveChangeScene('mission', 'mission_result');
   },
 
@@ -55,5 +61,11 @@ var QuestReceiver = module.exports = Base.extend({
       this.router.changeScene('mission_result');
     }
     this.router.applyCurrentModels();
+  },
+
+  afterAction: function () {
+    this.quest.emit('update');
+    if (this.quest.vote) this.quest.vote.emit('update');
+    if (this.quest.game) this.quest.game.emit('update');
   },
 });

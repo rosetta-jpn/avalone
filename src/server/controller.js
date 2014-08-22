@@ -1,7 +1,7 @@
-var utils = require('../utils')
+var utils = require('../utils');
 
 /* Public: Controller - dispatches received requests
- * 
+ *
  * type - the string which represents the method to handle the request.
  * avalon - the Avalon object.
  * connector - the SocketIOConnector object which received the request.
@@ -69,29 +69,31 @@ utils.extend(Controller.prototype, {
 
   debugTeamCallback: function () {
     this.refuseProduction();
-    var team = this.game.currentQuest.team;
-    for (var i = 0; i < this.game.currentQuest.team_sz; i++) {
-       team.add_group(team.selector, this.game.players[i])
-    }
-    team.go_vote();
+    var team = this.game.currentQuest.currentTeam;
+    var members = [];
+    for (var i = 0; i < this.game.currentQuest.memberCount; i++)
+      members.push(this.game.players[i]);
+
+    team.changeMembers(team.selector, members);
+    team.goVote(team.selector);
   },
 
   debugVoteCallback: function (isApprove) {
     this.refuseProduction();
-    var team = this.game.currentQuest.team;
+    var team = this.game.currentQuest.currentTeam;
     for (var i = 0; i < this.game.players.length; i++) {
-       team.change_voter_map(this.game.players[i], isApprove);
+       team.vote.vote(this.game.players[i], isApprove);
     }
-    team.judge();
+    team.vote.judge();
   },
 
   debugMissionCallback: function (isSuccess) {
     this.refuseProduction();
     var quest = this.game.currentQuest;
-    for (var i = 0; i < quest.members.length; i++) {
-       quest.change_mission_list(quest.members[i], isSuccess);
+    for (var i = 0; i < quest.vote.members.length; i++) {
+       quest.vote.vote(quest.vote.members[i], isSuccess);
     }
-    quest.judge_success();
+    quest.vote.judge();
   },
 
   connectionCallback: function () {
@@ -99,7 +101,7 @@ utils.extend(Controller.prototype, {
   },
 
   disconnectCallback: function () {
-    console.log('Disconnect:', this.user.toJson());
+    utils.log('Disconnect:', this.user.toJson());
     this.user.disconnect();
   },
 
@@ -118,39 +120,44 @@ utils.extend(Controller.prototype, {
     this.user.room.newGame(this.user);
   },
 
+  /* Public: Change Team Members. */
   teamMemberChangeCallback: function (data) {
     var self = this;
-    var members = data.group.map(function (playerData) {
+    var members = data.members.map(function (playerData) {
       return self.game.playerMap[playerData.id];
     });
-    this.game.currentQuest.team.changeMembers(this.player, members);
+    this.game.currentQuest.currentTeam.changeMembers(this.player, members);
   },
 
+  /* Public: Organize the team and go to vote state. */
   orgTeamCallback: function (data) {
     this.teamMemberChangeCallback(data);
-    this.game.currentQuest.team.go_vote();
+    var team = this.game.currentQuest.currentTeam;
+    team.goVote(this.player);
   },
 
+  /* Public: Vote for the team. */
   approveTeamCallback: function () {
-    var team = this.game.currentQuest.team;
-    team.change_voter_map(this.player, true);
-    if (team.isAllVoted()) team.judge();
+    var team = this.game.currentQuest.currentTeam;
+    team.vote.vote(this.player, true);
+    if (team.vote.isAllVoted()) team.vote.judge();
   },
 
+  /* Public: Vote against the team. */
   rejectTeamCallback: function () {
-    var team = this.game.currentQuest.team;
-    team.change_voter_map(this.player, false);
-    if (team.isAllVoted()) team.judge();
+    var team = this.game.currentQuest.currentTeam;
+    team.vote.vote(this.player, false);
+    if (team.vote.isAllVoted()) team.vote.judge();
   },
 
   successQuestCallback: function () {
-    this.game.currentQuest.change_mission_list(this.player, true);
-    if (this.game.currentQuest.isAllVoted()) this.game.currentQuest.judge_success();
+    this.game.currentQuest.vote.vote(this.player, true);
+    if (this.game.currentQuest.vote.isAllVoted()) this.game.currentQuest.vote.judge();
   },
 
   failQuestCallback: function () {
-    this.game.currentQuest.change_mission_list(this.player, false);
-    if (this.game.currentQuest.isAllVoted()) this.game.currentQuest.judge_success();
+    this.game.currentQuest.vote.vote(this.player, false);
+    if (this.game.currentQuest.vote.isAllVoted()) this.game.currentQuest.vote.judge();
   },
 
   assassinateCallback: function (data) {

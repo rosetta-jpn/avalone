@@ -1,14 +1,23 @@
-var Presenter = module.exports = function () {
+var Presenter = module.exports = {};
+
+Presenter.bindPresenters = function bindPresenters(app, range) {
   var presenters = {};
-  for (var key in Presenter) {
-    presenters[key] = new Presenter[key];
+  for (var key in Presenter.Presenters) {
+    presenters[key] = new Presenter.Presenters[key](app, range);
   }
   return presenters;
 }
 
-Presenter.RoomPresenter = require('./room_presenter');
-Presenter.GamePresenter = require('./game_presenter');
-Presenter.QuestPresenter = require('./quest_presenter');
-Presenter.TeamPresenter = require('./team_presenter');
-Presenter.AvalonPresenter = require('./avalon_presenter');
+Presenter.unbindPresenters = function unbindPresenters(presenters) {
+  for (var key in presenters) {
+    presenters[key].unbind();
+  }
+}
+
+Presenter.Presenters = {};
+Presenter.Presenters.RoomPresenter = require('./room_presenter');
+Presenter.Presenters.GamePresenter = require('./game_presenter');
+Presenter.Presenters.QuestPresenter = require('./quest_presenter');
+Presenter.Presenters.TeamPresenter = require('./team_presenter');
+Presenter.Presenters.AvalonPresenter = require('./avalon_presenter');
 

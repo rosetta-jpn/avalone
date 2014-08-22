@@ -1,17 +1,17 @@
 var BasePresenter = require('./base')
   , utils = require('../../utils');
 
-AvalonPresenter = module.exports = function (range) {
-  this.model = {
-    avalon: { rooms: [] },
-  };
-  this.bind(range);
-  this.database.on('new:Room', this.addRoom.bind(this));
-  this.database.on('destroy:Room', this.destroyRoom.bind(this));
-}
+var AvalonPresenter = module.exports = utils.inherit(BasePresenter);
 
-utils.inherit(BasePresenter, AvalonPresenter);
 utils.extend(AvalonPresenter.prototype, {
+  initialize: function () {
+    this.model = {
+      avalon: { rooms: [] },
+    };
+    this.database.on('new:Room', this.addRoom.bind(this));
+    this.database.on('destroy:Room', this.destroyRoom.bind(this));
+  },
+
   selector: '.rv-avalon',
 
   addRoom: function (room) {
@@ -25,4 +25,4 @@ utils.extend(AvalonPresenter.prototype, {
   formatters: {
     toClassName: function (name) { return 'room-' + name; },
   },
-})
+});

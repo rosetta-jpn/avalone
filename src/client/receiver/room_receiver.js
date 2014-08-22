@@ -1,6 +1,4 @@
-var Room = require('../../models/room')
-  , User = require('../../models/user')
-  , Base = require('./base')
+var Base = require('./base')
   , GameReceiver = require('./game_receiver');
 
 var RoomReceiver = module.exports = Base.extend({
@@ -16,7 +14,8 @@ var RoomReceiver = module.exports = Base.extend({
   },
 
   onReceiveRoom: function (json) {
-    this.database.createRoom(json.room);
+    var room = this.database.createRoom(json.room);
+    this.setCurrentMyRoom(room);
   },
 
   onDestroyRoom: function (json) {
@@ -32,8 +31,10 @@ var RoomReceiver = module.exports = Base.extend({
   onReceiveUser: function (json) {
     var user = this.database.createUser(json.user);
     var room = this.database.findRoom(json.roomName);
-    if (room) room.enter(user);
-    if (user.id === this.database.id) this.database.currentRoom = room;
+    if (room) {
+      room.enter(user);
+      this.setCurrentMyRoom(room);
+    }
   },
 
   onLeaveUser: function (json) {
@@ -49,7 +50,7 @@ var RoomReceiver = module.exports = Base.extend({
     if (!room) return;
     room.game = this.database.createGame(json.game);
     this.database.currentGame = room.game;
-    new GameReceiver(room.game);
+    new GameReceiver(this.app, room.game);
   },
 
   onResumeRoom: function (json) {
@@ -63,7 +64,19 @@ var RoomReceiver = module.exports = Base.extend({
     this.database.currentGame = room.game;
     if (!room) return;
     room.game = this.database.createGame(json.game);
-    var gameReceiver = new GameReceiver(room.game);
+    var gameReceiver = new GameReceiver(this.app, room.game);
     gameReceiver.resumeGame(room.game);
+  },
+
+  /* controller methods */
+
+  setCurrentMyRoom: function (room) {
+    if (room.hasMe()) this.database.currentRoom = room;
+  },
+
+  afterAction: function () {
+    for (var name in this.database.Room) {
+      this.database.Room[name].emit('update');
+    }
   },
 });

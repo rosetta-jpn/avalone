@@ -16,16 +16,20 @@ utils.extend(IOHelper.prototype, {
     return boot.bind(this);
   },
 
-  emit: function () {
-  },
-
   invoke: originalEmit,
   sendEvent: function (type, content) {
-    console.log('SendEvent:', type, content);
+    utils.log('SendEvent:', type, content);
     this.invoke('event', {
       type: type,
       content: content,
     });
     if (this.clock && this.clock.tick) this.clock.tick(0);
+  },
+
+  connectDummyServer: function (server) {
+    var self = this;
+    server.on('event', function (data) {
+      self.sendEvent(data.type, data.content);
+    });
   },
 });

@@ -1,34 +1,22 @@
-var Model = require('../models')
+var ClientModel = require('../models/client')
   , utils = require('../utils')
   , events = require('events')
   , createDummy = require('./dummy_data')
 
-var ModelNames = Object.keys(Model);
+var ModelNames = Object.keys(ClientModel);
 
 // Public: Database - parse received json objects and store them.
-var Database = module.exports = function () {
+var Database = module.exports = function Database() {
   for (var i = 0; i < ModelNames.length; i++) {
     this[ModelNames[i]] = {};
   }
-  this.standbyRoomList();
-}
-
-utils.inherit(events.EventEmitter, Database);
-Database.prototype.standbyRoomList = function () {
-  var self = this;
-  this.avalon = { rooms: [] };
-  this.on('new:Room', function (obj) {
-    self.avalon.rooms.push(obj);
-  });
-}
-
-Database.prototype.createDummy = function () {
-  createDummy(this);
 }
 
 var identifiers = {
   Room: 'name',
 }
+
+utils.inherit(events.EventEmitter, Database);
 
 utils.property(Database.prototype, {
   userProfile: {
@@ -44,23 +32,59 @@ utils.property(Database.prototype, {
   },
 });
 
+utils.extend(Database.prototype, {
+  createDummy: function () {
+    createDummy(this);
+  },
+
+  log: function () {
+    var args = Array.prototype.slice.call(arguments);
+    args.unshift('Database:');
+    console.log.apply(console, args)
+  },
+
+  notify: function (type, obj) {
+    this.log(type, obj);
+    return this.emit(type, obj);
+  },
+
+  updatePlayerPersonas: function (json) {
+    var persona = ClientModel.Player.classMethods.readPersona(json.class);
+    var player = this.findPlayer(json.id);
+    if (player && player.changePersona) {
+      player.changePersona(persona);
+      console.log('ChangePersona:', player.className);
+    }
+  },
+});
+
+// Define CRUD methods for each Model.
 ModelNames.forEach(function (key) {
   var identifier = identifiers[key] || 'id';
+  var model = ClientModel[key];
 
+  // Public: create{Model} - Parse Model's instance from json object and store in the database.
   var createMethodName = 'create' + key;
   Database.prototype[createMethodName] = function (json) {
-    return this[parseMethodName](json, true);
+    return this[parseMethodName](json, { save: true });
   }
 
+  // Public: parse{Model} - Parse Model's instance from json object.
   var parseMethodName = 'parse' + key;
-  Database.prototype[parseMethodName] = function (json, save) {
+  Database.prototype[parseMethodName] = function (json, options) {
+    options = options || {};
     var findResult = this[findMethodName](identifier ? json[identifier] : null)
-    if (findResult) return findResult;
-    var readResult = this['read' + key](json, save);
-    if (save) return this[addMethodName](readResult);
-    else readResult;
+    if (findResult && options.save) return this[updateMethodName](json, options);
+    var readResult = model.classMethods.parseJson(json, this, options);
+
+    if (options.save) {
+      return this[addMethodName](readResult);
+    } else {
+      return readResult;
+    }
   }
 
+  // Public: find{Model} - Search the model in the database from its id.
   var findMethodName = 'find' + key;
   Database.prototype[findMethodName] = function (id) {
     if (identifier) {
@@ -70,6 +94,7 @@ ModelNames.forEach(function (key) {
     }
   }
 
+  // Public: add{Model} - Store object in the database.
   var addMethodName = 'add' + key;
   Database.prototype[addMethodName] = function (obj) {
     if (identifier) {
@@ -82,20 +107,17 @@ ModelNames.forEach(function (key) {
     return obj;
   }
 
-  Database.prototype['update' + key] = function (json) {
+  // Public: update{Model} - Update object in the database.
+  var updateMethodName = 'update' + key;
+  Database.prototype[updateMethodName] = function (json, options) {
     var findResult = this[findMethodName](identifier ? json[identifier] : null)
-    if (findResult) {
-      findResult.mergeJson()
+    if (findResult && model.classMethods.mergeJson) {
+      model.classMethods.mergeJson(findResult, json, this, options)
     }
-
-    if (identifier) {
-      var id = json[identifier];
-      return this[key][id] = this[parseMethodName](json);
-    } else {
-      return this[key] = this[parseMethodName](json);
-    }
+    return findResult;
   }
 
+  // Public: destroy{Model} - Search the model in the database and remove it.
   Database.prototype['destroy' + key] = function (id) {
     var list = this[key];
     var value = this[findMethodName](id);
@@ -113,8 +135,8 @@ ModelNames.forEach(function (key) {
     }
   }
 
-  var currentPropName = 'current' + key;
   var property = {};
+  var currentPropName = 'current' + key;
   property[currentPropName] = {
     get: function () {
       return this['_current' + key];
@@ -133,81 +155,3 @@ ModelNames.forEach(function (key) {
 
   utils.property(Database.prototype, property);
 });
-
-Database.prototype.readGame = function (json, save) {
-  var self = this;
-  players = json.players.map(function (obj) { return self.parsePlayer(obj, save); });
-  var game = new Model.Game(players, json.id);
-  game.state = json.state;
-  game.quests = (json.quests || []).map(function (obj) { return self.parseQuest(obj, save); });
-  game.selectorIdx = json.selectorIdx;
-  return game;
-}
-
-Database.prototype.readQuest = function (json, save) {
-  var self = this;
-  var quest = new Model.Quest(this.currentGame, json.success_number, json.team_sz, json.id);
-  quest.state = json.state;
-  if (json.teams) quest.teams = json.teams.map(function (team) { return self.parseTeam(team, save); });
-  return quest;
-}
-
-Database.prototype.readTeam = function (json, save) {
-  var selector = this.parsePlayer(json.selector, save);
-  var team = new Model.Team(this.currentGame, selector, json.group_sz, json.voter_sz, json.id);
-  team.state = json.state;
-  team.group = json.group;
-  team.voter_map = json.voter_map;
-  if (json.game_id) {
-    this._autoSetGame(team, json.game_id)
-  }
-  return team;
-}
-
-Database.prototype.readUser = function (json, save) {
-  return new Model.User(json.id, json.name);
-}
-
-Database.prototype.readPlayer = function (json, save) {
-  var klass = Model.PlayerModule.readClass(json.class);
-  var user = this.parseUser(json, save);
-  var player = new Model.PlayerModule.Unknown(user);
-  player.changePersona(klass);
-  return player;
-}
-
-Database.prototype.readRoom = function (json, save) {
-  var self = this;
-  var owner = this.parseUser(json.owner, save);
-  var room = new Model.Room(owner, json.name);
-  json.users.forEach(function (obj) {
-    room.enter(self.parseUser(obj, save));
-  });
-  return room;
-}
-
-Database.prototype.log = function () {
-  var args = Array.prototype.slice.call(arguments);
-  args.unshift('Database:');
-  console.log.apply(console, args)
-}
-
-Database.prototype.notify = function (type, obj) {
-  this.log(type, obj);
-  return this.emit(type, obj);
-}
-
-Database.prototype.updatePersona = function (json) {
-  var persona = Model.PlayerModule.readClass(json.class);
-  var player = this.findPlayer(json.id);
-  if (player && player.changePersona) {
-    player.changePersona(persona);
-    console.log('ChangePersona:', player.className);
-  }
-}
-
-Database.prototype._autoSetGame = function (obj, game_id) {
-  var game = this.findGame(game_id);
-  if (game) obj.game = game; 
-  else this.once('new:Game', this._autoSetGame.bind(this, obj, game_id));
-}

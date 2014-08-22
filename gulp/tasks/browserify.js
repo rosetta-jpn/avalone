@@ -18,7 +18,7 @@ gulp.task('browserify', ['clean'], function() {
 
   function runBundleTest() {
     bundleLogger.start();
-    return browserify('./test/client/index.js')
+    return browserify('./test/client_tests.js')
       .bundle({ debug: true })
       .on('error', handleErrors)
       .pipe(source('test.js'))
@@ -26,6 +26,6 @@ gulp.task('browserify', ['clean'], function() {
       .on('end', bundleLogger.end);
   }
 
-  runBundle()
+  runBundle();
   return runBundleTest();
 });
