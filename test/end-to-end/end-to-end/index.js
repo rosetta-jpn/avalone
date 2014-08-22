@@ -24,7 +24,7 @@ describe('end to end', function () {
   });
 
   afterEach(function () {
-    Factories.unbindPresenters(ctx.client);
+    helper.unbindPresenters(ctx.client);
   });
 
   describe('connection', function () {
