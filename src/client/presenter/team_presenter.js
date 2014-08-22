@@ -44,12 +44,11 @@ utils.extend(TeamPresenter.prototype, {
 
     submitVote : function(ev){
       ev.preventDefault();
-      if (this.model.team.isVoteApprove) {
+      if (this.model.team.vote.approveCheck) {
         this.client.submit('approveTeam', this.model.team.toJson());
-      } else {
+      } else if (this.model.team.vote.rejectCheck) {
         this.client.submit('rejectTeam', this.model.team.toJson());
       }
-      this.model.team.isVoted = true;
     },
   },
 });

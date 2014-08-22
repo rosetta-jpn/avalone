@@ -7,18 +7,18 @@
       <div class="text-center">
         <div class="form-group">
           <label class="radio-inline">
-            <input type="radio" name="missions" rv-checked="quest.vote.approve">
+            <input type="radio" name="missions" rv-checked="quest.vote.approveCheck">
             <img src="images/Success.jpg" alt="Success" class="mission">
           </label>
           <label class="radio-inline">
-            <input type="radio" name="missions" rv-unchecked="quest.vote.approve">
+            <input type="radio" name="missions" rv-unchecked="quest.vote.rejectCheck">
             <img src="images/Failure.jpg" alt="Failure" class="mission">
           </label>
         </div>
         <button type="submit" rv-on-click="handlers#submitVote" class="btn btn-primary">Go Mission Result!!</button>
       </div>
     </form>
-    <div rv-show="quest.isVoted" align="center">
+    <div rv-show="quest.vote#amIVoted" align="center">
       <div rv-show="quest.vote#amIApproved">
         <img src="images/Success.jpg" alt="Success" class="mission">
       </div>

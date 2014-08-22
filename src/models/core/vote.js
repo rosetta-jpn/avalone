@@ -62,7 +62,7 @@ utils.extend(Vote.prototype, {
       members: this.members.map(toJson),
       voteMap: options.hideVoteMap ? undefined : this.voteMap,
       areYouVoted: user ? this.isVoted(user) : undefined,
-      areYouApproved: user ? this.isApproved(user) : undefined,
+      areYouApproved: user ? this.isApprovedBy(user) : undefined,
       approvalCount: this.approvalCount(),
       rejectionsCount: this.rejectionsCount(),
       requiredApproval: this.requiredApproval,

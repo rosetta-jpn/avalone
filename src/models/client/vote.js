@@ -27,6 +27,14 @@ utils.extend(Vote.classMethods, {
 utils.extend(Vote.prototype, {
   /* helper methods */
 
+  amIVoted: function () {
+    return this.database.playerProfile && this.isVoted(this.database.playerProfile);
+  },
+
+  amIApproved: function () {
+    return this.database.playerProfile && this.isApprovedBy(this.database.playerProfile);
+  },
+
   eachPlayerVote: function () {
     var self = this;
     return this.members.map(function (player) {
