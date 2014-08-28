@@ -35,17 +35,76 @@ describe('end to end', function () {
   });
 
   describe('login', function () {
-    beforeEach(function () {
-      ctx.client.a.connect();
-    });
-
-    it('client has currentRoom', function () {
-      ctx.client.a.submit('enter', {
-        user: { name: ctx.client.a.username },
-        room: { name: ctx.roomname },
+    context('a user enters', function () {
+      beforeEach(function () {
+        ctx.client.a.connect();
       });
 
-      expect(ctx.client.a.app.database.currentRoom.name).to.equal(ctx.roomname);
+      it('client has currentRoom', function () {
+        ctx.client.a.submit('enter', {
+          user: { name: ctx.client.a.username },
+          room: { name: ctx.roomname },
+        });
+
+        expect(ctx.client.a.app.database.currentRoom.name).to.equal(ctx.roomname);
+      });
+    });
+
+    context('login after a user enters a room', function () {
+      beforeEach(function () {
+        ctx.client.a.connect();
+        ctx.client.a.submit('enter', {
+          user: { name: ctx.client.a.username },
+          room: { name: ctx.roomname },
+        });
+        ctx.client.b.connect();
+      });
+
+      it('the new user know the room', function () {
+        var room = ctx.client.b.app.database.findRoom(ctx.roomname);
+        expect(room).to.exist;
+        expect(room.name).to.be.equal(ctx.roomname);
+        expect(room.users).to.have.length(1);
+        expect(room.users[0].id).to.be.equal(ctx.client.a.userid);
+      })
+    });
+  });
+
+  describe('enter room', function () {
+    context('enter two user', function () {
+      beforeEach(function () {
+        ctx.client.connectAll();
+        ctx.given({
+          clientsInRoom: ctx.client.clients.slice(0, 2),
+          otherClients: ctx.client.clients.slice(2),
+        });
+        helper.enterRoom(ctx.clientsInRoom);
+      });
+
+      it('users in room have currentRoom', function () {
+        ctx.clientsInRoom.forEach(function (client) {
+          var currentRoom = client.app.database.currentRoom
+          expect(currentRoom).to.exist;
+          expect(currentRoom.name).to.be.equal(ctx.roomname);
+          expect(currentRoom.users).to.have.length(ctx.clientsInRoom.length);
+        });
+      });
+
+      it('other users don\'t have currentRoom', function () {
+        ctx.otherClients.forEach(function (client) {
+          expect(client.app.database.currentRoom).not.to.exist;
+        });
+      });
+
+      it('other users know the room', function () {
+        ctx.otherClients.forEach(function (client) {
+          var room = client.app.database.findRoom(ctx.roomname);
+          expect(room).to.exist;
+          expect(room.name).to.be.equal(ctx.roomname);
+          expect(room.users).to.have.length(ctx.clientsInRoom.length);
+        });
+      });
+
     });
   });
 
@@ -162,7 +221,7 @@ describe('end to end', function () {
       });
     });
   });
-  
+
   context('assassinate non-merlin player', function () {
     beforeEach(function () {
       ctx.client.connectAll();

@@ -31,7 +31,7 @@ utils.extend(AvalonObserver.prototype, {
     new UserObserver(user);
     user.notify('connection', user.id);
     user.notify('go:start');
-    user.notify('avalon', { avalon: this.avalon.toJson(user), });
+    user.notify('new:Avalon', { avalon: this.avalon.toJson(user), });
   },
 
   onUserLeave: function (user) {

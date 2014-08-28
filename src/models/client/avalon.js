@@ -1,7 +1,7 @@
 var utils = require('../../utils')
   , AvalonCore = require('../core/avalon')
 
-var Avalon = utils.inherit(AvalonCore, function Avalon(database, rooms) {
+var Avalon = module.exports = utils.inherit(AvalonCore, function Avalon(database, rooms) {
   var args = Array.prototype.slice.call(arguments, 2);
   this.superClass.apply(this, args);
   this.database = database;
