@@ -67,6 +67,26 @@ describe('end to end', function () {
         expect(room.users).to.have.length(1);
         expect(room.users[0].id).to.be.equal(ctx.client.a.userid);
       })
+
+      context('login another user', function () {
+        beforeEach('enter the second user', function () {
+          ctx.client.b.submit('enter', {
+            user: { name: ctx.client.b.username },
+            room: { name: ctx.roomname },
+          });
+
+          ctx.client.c.connect();
+        });
+
+        it('the latest user know the room', function () {
+          var room = ctx.client.c.app.database.findRoom(ctx.roomname);
+          expect(room).to.exist;
+          expect(room.name).to.be.equal(ctx.roomname);
+          expect(room.users).to.have.length(2);
+          expect(room.users[0].id).to.be.equal(ctx.client.a.userid);
+          expect(room.users[1].id).to.be.equal(ctx.client.b.userid);
+        })
+      });
     });
   });
 

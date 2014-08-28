@@ -20,7 +20,13 @@ utils.property(Room.prototype, {
     get: function () {
       if (this._users) return this._users;
       return this._users = Object.values(this.userList);
-    }
+    },
+    set: function (users) {
+      var newUserList = {};
+      for (var i = 0; i < users.length; i++) newUserList[users[i].id] = users[i];
+      this.changeList(newUserList);
+      return this.users;
+    },
   },
 });
 

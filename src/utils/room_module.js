@@ -30,5 +30,18 @@ module.exports = function RoomModule (listProp, identifier) {
     }
   }
 
-  return { enter: enter, leave: leave, leaveByIdetifier: leaveByIdetifier };
+  function changeList(newList) {
+    var oldList = this[listProp], removes = [], joins = [], self = this;
+    for (var prop in oldList)
+      if (!newList[prop]) removes.push(oldList[prop]);
+
+    for (var prop in newList)
+      if (!oldList[prop]) joins.push(newList[prop]);
+
+    removes.forEach(function (user) { self.leave(user); });
+    joins.forEach(function (user) { self.enter(user); });
+    return this[listProp] = newList;
+  }
+
+  return { enter: enter, leave: leave, leaveByIdetifier: leaveByIdetifier, changeList: changeList };
 }
