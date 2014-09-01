@@ -12,6 +12,7 @@ var Router = module.exports = function Router(app, client, config) {
   this.config = config || { changeLocation: true };
 
   this.client.on('go:start', this.returnStart.bind(this));
+  this.client.on('changeScene', this.changeScene.bind(this));
   this.changeScene('start');
   this.presenters = Presenter.bindPresenters(app, this.config.range);
 }

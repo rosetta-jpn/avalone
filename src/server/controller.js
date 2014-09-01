@@ -69,6 +69,7 @@ utils.extend(Controller.prototype, {
 
   debugTeamCallback: function () {
     this.refuseProduction();
+    this.game.notifyAll('changeScene', 'team');
     var team = this.game.currentQuest.currentTeam;
     var members = [];
     for (var i = 0; i < this.game.currentQuest.memberCount; i++)
@@ -80,6 +81,7 @@ utils.extend(Controller.prototype, {
 
   debugVoteCallback: function (isApprove) {
     this.refuseProduction();
+    this.game.notifyAll('changeScene', 'vote');
     var team = this.game.currentQuest.currentTeam;
     for (var i = 0; i < this.game.players.length; i++) {
        team.vote.vote(this.game.players[i], isApprove);
@@ -89,6 +91,7 @@ utils.extend(Controller.prototype, {
 
   debugMissionCallback: function (isSuccess) {
     this.refuseProduction();
+    this.game.notifyAll('changeScene', 'mission');
     var quest = this.game.currentQuest;
     for (var i = 0; i < quest.vote.members.length; i++) {
        quest.vote.vote(quest.vote.members[i], isSuccess);
