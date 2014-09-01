@@ -220,24 +220,49 @@ describe('end to end', function () {
       helper.changeScenes(ctx.client.clients, ['mission']);
     });
 
-    it('go to mission_result scene', function () {
-      helper.voteMission(ctx.client.clients, true, function (client, cont) {
-        var quest = client.app.database.currentQuest;
-        cont();
-        if (quest.amIMember()) {
-          expect(quest.vote.amIVoted()).to.be.true;
-          expect(quest.vote.amIApproved()).to.be.true;
-        }
+    context('success mission', function () {
+      it('go to mission_result scene', function () {
+        helper.voteMission(ctx.client.clients, true, function (client, cont) {
+          var quest = client.app.database.currentQuest;
+          cont();
+          if (quest.amIMember()) {
+            expect(quest.vote.amIVoted()).to.be.true;
+            expect(quest.vote.amIApproved()).to.be.true;
+          }
+        });
+
+        ctx.client.clients.forEach(function (client) {
+          var router = client.app.router, quest = client.app.database.currentGame.quests[0];
+
+          expect(router.currentScene.name).to.equal('mission_result');
+          expect(client.app.database.currentGame.quests).to.have.length(2);
+
+          expect(quest.vote.isApproved()).to.be.true;
+          expect(quest.isSuccess()).to.be.true;
+        });
       });
+    });
 
-      ctx.client.clients.forEach(function (client) {
-        var router = client.app.router, quest = client.app.database.currentGame.quests[0];
+    context('fail mission', function () {
+      it('the latest mission is failed', function () {
+        helper.voteMission(ctx.client.clients, false, function (client, cont) {
+          var quest = client.app.database.currentQuest;
+          cont();
+          if (quest.amIMember()) {
+            expect(quest.vote.amIVoted()).to.be.true;
+            expect(quest.vote.amIApproved()).to.be.false;
+          }
+        });
 
-        expect(router.currentScene.name).to.equal('mission_result');
-        expect(client.app.database.currentGame.quests).to.have.length(2);
+        ctx.client.clients.forEach(function (client) {
+          var router = client.app.router, quest = client.app.database.currentGame.quests[0];
 
-        expect(quest.vote.isApproved()).to.be.true;
-        expect(quest.isSuccess()).to.be.true;
+          expect(router.currentScene.name).to.equal('mission_result');
+          expect(client.app.database.currentGame.quests).to.have.length(2);
+
+          expect(quest.vote.isApproved()).to.be.false;
+          expect(quest.isSuccess()).to.be.false;
+        });
       });
     });
   });
