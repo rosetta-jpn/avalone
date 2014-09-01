@@ -44,10 +44,13 @@ utils.extend(TeamPresenter.prototype, {
 
     submitVote : function(ev){
       ev.preventDefault();
-      if (this.model.team.vote.approveCheck) {
-        this.client.submit('approveTeam', this.model.team.toJson());
-      } else if (this.model.team.vote.rejectCheck) {
-        this.client.submit('rejectTeam', this.model.team.toJson());
+      switch (this.model.team.vote.checkValue) {
+        case 'approve':
+          this.client.submit('approveTeam', this.model.team.toJson());
+          break;
+        case 'reject':
+          this.client.submit('rejectTeam', this.model.team.toJson());
+          break;
       }
     },
   },

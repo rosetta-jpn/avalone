@@ -54,10 +54,13 @@ utils.extend(QuestPresenter.prototype, {
 
     submitVote: function (ev) {
       ev.preventDefault();
-      if (this.model.quest.vote.approveCheck) {
-        this.client.submit('successQuest', this.model.quest.toJson());
-      } else if (this.model.quest.vote.rejectCheck) {
-        this.client.submit('failQuest', this.model.quest.toJson());
+      switch (this.model.quest.vote.checkValue) {
+        case 'success':
+          this.client.submit('successQuest', this.model.quest.toJson());
+          break;
+        case 'failure':
+          this.client.submit('failQuest', this.model.quest.toJson());
+          break;
       }
     },
   },
