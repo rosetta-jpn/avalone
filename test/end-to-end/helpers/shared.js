@@ -11,8 +11,9 @@ var ClientApp = Requirements.Client.App
   , Config = Requirements.Server.Server.Config;
 
 module.exports = {
+  // Public: prepare each client.
   setupClients: function (ctx, namespaces) {
-    namespaces = namespaces || ['a', 'b', 'c', 'd', 'e'];
+    namespaces = namespaces || ['A', 'B', 'C', 'D', 'E'];
     ctx.namespace.apply(ctx, namespaces);
 
     namespaces.forEach(function (name) {
@@ -67,69 +68,51 @@ module.exports = {
     });
   },
 
-  enterRoom: function (clients) {
-    clients.forEach(function (ctx) {
-      ctx.submit('enter', {
-        user: { name: ctx.username },
-        room: { name: ctx.root.roomname },
-      });
+  enterRoom: function (client) {
+    client.submit('enter', {
+      user: { name: client.username },
+      room: { name: client.root.roomname },
     });
   },
 
-  changeScenes: function (clients, scenes) {
-    clients.forEach(function (client) {
-      scenes.forEach(function (scene) {
-        client.app.router.changeScene(scene);
-      });
+  changeScenes: function (client, scenes) {
+    scenes.forEach(function (scene) {
+      client.app.router.changeScene(scene);
     });
   },
 
-  orgnizeTeam: function (clients) {
-    clients.forEach(function (client) {
-      var game = client.app.database.currentGame;
-      var team = client.app.database.currentTeam;
-      if (team.amITeamSelector()) {
-        var selection = team.memberSelection();
-        var player = client.app.database.playerProfile;
-        for (var i = 0; i < selection.selectionSize; i++)
-          selection.publish(game.players[i], true);
+  orgnizeTeam: function (client) {
+    var game = client.app.database.currentGame;
+    var team = client.app.database.currentTeam;
+    if (team.amITeamSelector()) {
+      var selection = team.memberSelection();
+      var player = client.app.database.playerProfile;
+      for (var i = 0; i < selection.selectionSize; i++)
+      selection.publish(game.players[i], true);
 
-        client.submit('orgTeam', team.toJson());
-      }
-    });
+      client.submit('orgTeam', team.toJson());
+    }
   },
 
-  voteTeam: function (clients, isApprove, aroundAction) {
-    clients.forEach(function (client) {
-      aroundAction ? aroundAction(client, cont) : cont();
-      function cont () {
-        var game = client.app.database.currentGame;
-        var team = client.app.database.currentTeam;
-        team.vote.vote(client.app.database.playerProfile, isApprove);
-        client.submit(isApprove ? 'approveTeam' : 'rejectTeam', team.toJson());
-      }
-    });
+  voteTeam: function (client, isApprove) {
+    var game = client.app.database.currentGame;
+    var team = client.app.database.currentTeam;
+    team.vote.vote(client.app.database.playerProfile, isApprove);
+    client.submit(isApprove ? 'approveTeam' : 'rejectTeam', team.toJson());
   },
 
-  voteMission: function (clients, isSuccess, aroundAction) {
-    clients.forEach(function (client) {
-      aroundAction ? aroundAction(client, cont) : cont();
-      function cont () {
-        var quest = client.app.database.currentQuest;
-        if (quest.amIMember()) {
-          quest.vote.vote(client.app.database.playerProfile, isSuccess);
-          client.submit(isSuccess ? 'successQuest' : 'failQuest', quest.toJson());
-        }
-      }
-    });
+  voteMission: function (client, isSuccess) {
+    var quest = client.app.database.currentQuest;
+    if (quest.amIMember()) {
+      quest.vote.vote(client.app.database.playerProfile, isSuccess);
+      client.submit(isSuccess ? 'successQuest' : 'failQuest', quest.toJson());
+    }
   },
 
-  assassinateMyself: function (clients) {
-    clients.forEach(function (client) {
-      var game = client.app.database.currentGame;
-      if (game.canAssassinate()) {
-        client.submit('assassinate', client.app.database.playerProfile.toJson());
-      }
-    });
+  assassinateMyself: function (client) {
+    var game = client.app.database.currentGame;
+    if (game.canAssassinate()) {
+      client.submit('assassinate', client.app.database.playerProfile.toJson());
+    }
   },
 };
