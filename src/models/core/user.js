@@ -5,6 +5,9 @@ var User = module.exports = function User(id, name, socket) {
   this.id = id;
   this.name = name;
   this.socket = socket;
+
+  if (this.name.length >= 50)
+    throw new Error('username is too long');
 }
 
 utils.inherit(events.EventEmitter, User);

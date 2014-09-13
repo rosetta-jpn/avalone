@@ -10,6 +10,9 @@ var Room = module.exports = function Room(owner, name) {
   this.on('enter', this.onEnter.bind(this));
   this.on('leave', this.onLeave.bind(this));
   this.enter(owner);
+
+  if (this.name.length >= 50)
+    throw new Error('roomname is too long');
 }
 
 utils.inherit(events.EventEmitter, Room);
