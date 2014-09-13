@@ -57,6 +57,10 @@ utils.extend(Team.prototype, {
     return this.state === this.classMethods.States.Reject;
   },
 
+  isFinished: function () {
+    return this.isApprove() || this.isReject();
+  },
+
   isMember: function (player) {
     var members = this.members;
     for (var i = 0; i < members.length; i++) {

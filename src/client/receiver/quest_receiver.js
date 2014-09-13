@@ -22,11 +22,7 @@ var QuestReceiver = module.exports = Base.extend({
   },
 
   listenNewTeam: function (team) {
-    var teamReceiver = this.teamReceiver = new TeamReceiver(this.app, team);
-    this.quest.emit('new:Quest.team')
-    this.quest.once('new:Quest.team', (function () {
-      teamReceiver.stopListening();
-    }).bind(this));
+    var teamReceiver = this.teamReceiver = new TeamReceiver(this.app, this.quest, team);
     return teamReceiver;
   },
 

@@ -31,18 +31,22 @@ utils.extend(TeamObserver.prototype, {
   },
 
   onGoVote: function (vote) {
+    var self = this;
     this.game.notifyAll('go:vote');
     this.game.players.forEach(function (player) {
       player.notify('new:Vote', {
+        team: self.team.toJson(player),
         vote: vote.toJson(player),
       });
     });
   },
 
   onVote: function (voter, isAgree) {
+    var self = this;
     var team = this.team;
     this.game.players.forEach(function (player) {
       player.notify('update:Vote', {
+        team: self.team.toJson(player),
         vote: team.toJson(player).vote,
       });
     });
@@ -53,6 +57,7 @@ utils.extend(TeamObserver.prototype, {
     this.game.players.forEach(function (player) {
       members = team.toJson(player).members;
       player.notify('change:Team.members', {
+        team: team.toJson(player),
         members: members,
       });
     });
@@ -63,6 +68,7 @@ utils.extend(TeamObserver.prototype, {
     this.game.players.forEach(function (player) {
       members = team.toJson(player).members;
       player.notify('approve:Team', {
+        team: team.toJson(player),
         vote: team.toJson().vote,
       });
     });
@@ -74,6 +80,7 @@ utils.extend(TeamObserver.prototype, {
     this.game.players.forEach(function (player) {
       members = team.toJson(player).members;
       player.notify('reject:Team', {
+        team: team.toJson(player),
         vote: team.toJson().vote,
       });
     });

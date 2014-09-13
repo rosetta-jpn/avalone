@@ -19,9 +19,22 @@ Base.extend = function () {
 utils.extend(Base.prototype, {
   listen: function (target, event, callback) {
     var self = this;
+
     function dispatch() {
-      callback.apply(self, arguments);
-      if (self.afterAction) self.afterAction();
+      var args = Array.prototype.slice.apply(arguments);
+      var originalArgs = arguments;
+      args.unshift(next);
+
+      if (self.beforeAction) {
+        self.beforeAction.apply(self, args);
+      } else {
+        next();
+      }
+
+      function next() {
+        callback.apply(self, originalArgs);
+        if (self.afterAction) self.afterAction();
+      }
     }
     this.listens.push({ target: target, event: event, callback: dispatch });
     target.on(event, dispatch);

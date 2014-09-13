@@ -6,7 +6,7 @@
       <img class="img-responsive"  width="100" height="30" rv-src="quest#result | stateImagePath" rv-alt="quest#result">
       <h4>{{ quest#result }} ({{ quest#currentTeam.selector.name }}, {{ quest.memberCount }})</h4>
       <span class="text-muted">
-        <span rv-each-player="quest#members">
+        <span rv-each-player="quest#currentTeam#members">
           {{ player.name }}
         </span>
       </span>

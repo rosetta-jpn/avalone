@@ -46,6 +46,10 @@ utils.extend(Quest.prototype, {
     return this.currentTeam.amIMember();
   },
 
+  hasFinishedTeam: function () {
+    return this.teams[0].isFinished();
+  },
+
   result: function () {
     if (this.isSuccess()) {
       return 'Success'

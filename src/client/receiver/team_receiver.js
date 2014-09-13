@@ -1,7 +1,9 @@
-var Base = require('./base');
+var Base = require('./base')
 
 var TeamReceiver = module.exports = Base.extend({
-  initialize: function (team) {
+  // TODO: emit update automatically
+  initialize: function (quest, team) {
+    this.quest = quest;
     this.team = team;
     this.listen(this.client, 'change:Team.members', this.onChangeMembers.bind(this));
     this.listen(this.client, 'approve:Team', this.onApprove.bind(this));
@@ -22,11 +24,15 @@ var TeamReceiver = module.exports = Base.extend({
   onApprove: function (json) {
     this.database.updateVote(json.vote);
     this.team.vote.judge();
+    this.stopListening()
+    this.quest.emit('update');
   },
 
   onReject: function (json) {
     this.database.updateVote(json.vote);
     this.team.vote.judge();
+    this.stopListening()
+    this.quest.emit('update');
   },
 
   onReceiveVote: function (json) {
@@ -56,5 +62,10 @@ var TeamReceiver = module.exports = Base.extend({
   afterAction: function () {
     this.team.emit('update');
     if (this.team.vote) this.team.vote.emit('update');
+  },
+
+  beforeAction: function (next, json) {
+    if (json && json.team && json.team.id !== this.team.id) return;
+    next();
   },
 });
