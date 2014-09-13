@@ -48,6 +48,10 @@ img.mission {
     content : "[-]";
 }
 
+.selectingMember {
+  font-size: 70%;
+}
+
 .collapsed:before{
     content : "[+]";
 }

@@ -12,9 +12,8 @@
       </span>
     </div>
   </div>
-  <h2 class="page-header">Member Select</h2>
+  <h2 class="page-header">Member Select <span class="selectingMember rv-quest">{{ quest#currentTeam.selector.name }} is selecting member ...</span></h2>
   <div class="rv-team">
-    <h4 class="rv-quest">{{ quest#currentTeam.selector.name }} is selecting member ...</h4>
     <form  id="team_candidate" class="left" rv-show="team#amITeamSelector" rv-on-submit="handlers#submitTeam">
       <div class="checkbox" rv-each-selection="team#memberCandidates">
         <div
