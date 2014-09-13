@@ -46,6 +46,10 @@ utils.extend(Quest.prototype, {
     return this.currentTeam.amIMember();
   },
 
+  amIJustice: function () {
+    return this.database.playerProfile && this.database.playerProfile.isJustice;
+  },
+
   hasFinishedTeam: function () {
     return this.teams[0].isFinished();
   },
