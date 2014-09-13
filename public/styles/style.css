@@ -12,6 +12,10 @@ table.room {
     word-wrap: break-word;
 }
 
+.isDisconnected{
+    color : red;
+}
+
 
 form {
   max-width: 800px;

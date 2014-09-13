@@ -47,6 +47,7 @@ utils.extend(User.prototype, {
     return {
       id: this.id,
       name: this.name,
+      isDisconnected: this.isDisconnected(),
       room: this.room ? this.room.name : undefined,
     };
   },

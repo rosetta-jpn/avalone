@@ -10,6 +10,12 @@ var Player = module.exports = utils.inherit(PlayerCore, function Player(database
   this.changePersona(persona);
 });
 
+utils.property(Player.prototype, {
+  isDisconnected: {
+    get: function () { return this.user.isDisconnected; },
+  },
+});
+
 utils.extend(Player.classMethods, {
   parseJson: function (json, database, options) {
     var persona = this.readPersona(json.class)
