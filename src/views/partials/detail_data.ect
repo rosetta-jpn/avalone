@@ -1,5 +1,5 @@
-<h2 class="page-header no-collapsed collapsed" data-toggle="collapse" data-target="#detail_data">Detail Data</h2>
-  <div class="rv-game collapse" id="detail_data">
+<h2 class="page-header no-collapsed collapsed" data-toggle="collapse" data-target="#<%- @id %>">Detail Data</h2>
+  <div class="rv-game collapse" id="<%- @id %>">
     <div rv-each-questlog="game#pastQuestLogs">
       <div rv-show="questlog.quest#hasFinishedTeam">
         <h2>{{ questlog.index }}</h2>
