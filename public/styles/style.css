@@ -12,7 +12,7 @@ table.room {
     word-wrap: break-word;
 }
 
-.isDisconnected{
+.isdisconnected{
     color : red;
 }
 
