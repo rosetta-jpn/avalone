@@ -33,7 +33,7 @@ utils.extend(Game.classMethods, {
   },
 
   Jobs: {
-    5:  [Justice, Justice, Merlin, Evil, Assassin],
+    5:  [Justice, Percival, Merlin, Mordred, Assassin],
     6:  [Justice, Justice, Merlin, Percival, Mordred, Assassin],
     7:  [Justice, Justice, Merlin, Percival, Evil, Mordred, Assassin],
     8:  [Justice, Justice, Justice, Merlin, Percival, Evil, Mordred, Assassin],
