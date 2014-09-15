@@ -8,6 +8,7 @@ var RoomReceiver = module.exports = Base.extend({
     this.listen(this.client, 'destroy:Room', this.onDestroyRoom.bind(this));
     this.listen(this.client, 'enter:User', this.onReceiveUser.bind(this));
     this.listen(this.client, 'leave:User', this.onLeaveUser.bind(this));
+    this.listen(this.client, 'disconnect:User', this.onDisconnectUser.bind(this));
     this.listen(this.client, 'new:Game', this.onNewGame.bind(this));
     this.listen(this.client, 'resume:Room', this.onResumeRoom.bind(this));
     this.listen(this.client, 'resume:Game', this.onResumeGame.bind(this));
@@ -41,6 +42,11 @@ var RoomReceiver = module.exports = Base.extend({
     if (room) room.leave(user);
     this.database.destroyUser(user.id);
     if (user.id === this.database.id) this.database.currentRoom = null;
+  },
+
+  onDisconnectUser: function (json) {
+    var user = this.database.findUser(json.user.id);
+    if (user) user.disconnect();
   },
 
   onNewGame: function (json) {

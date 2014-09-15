@@ -91,6 +91,34 @@ describe('end to end', function () {
       });
     });
 
+    context('disconnect a User in game', function () {
+      beforeEach(function () {
+        ctx.client.connectAll();
+        ctx.client.clients.forEach(helper.enterRoom);
+      });
+
+      it('the user disconnected is disappeared', function () {
+        ctx.client.E.disconnect();
+
+        var userE = ctx.client.A.app.database.findUser(ctx.client.E.app.database.id);
+        expect(userE).to.not.exist;
+      });
+
+      context('disconnect after game start', function () {
+        beforeEach(function () {
+          ctx.owner.submit('gameStart');
+        });
+
+        it('other users know that the user disconnected', function () {
+          ctx.client.E.disconnect();
+
+          var userE = ctx.client.A.app.database.findUser(ctx.client.E.app.database.id);
+          expect(userE.isDisconnected).to.be.true;
+        });
+      });
+
+    });
+
     describe('all clients enter room', function () {
       context('enter two user', function () {
         beforeEach(function () {

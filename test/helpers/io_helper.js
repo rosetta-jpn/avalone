@@ -26,6 +26,10 @@ utils.extend(IOHelper.prototype, {
     if (this.clock && this.clock.tick) this.clock.tick(0);
   },
 
+  disconnect: function () {
+    this.invoke('disconnect');
+  },
+
   connectDummyServer: function (server) {
     var self = this;
     server.on('event', function (data) {

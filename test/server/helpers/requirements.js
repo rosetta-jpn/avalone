@@ -8,4 +8,5 @@ Requirements.Server = {
   Config: require('../../../src/server/config'),
   Controller: require('../../../src/server/controller'),
 }
+Requirements.utils = require('../../../src/utils');
 

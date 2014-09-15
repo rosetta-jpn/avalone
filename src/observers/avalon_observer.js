@@ -27,6 +27,7 @@ utils.extend(AvalonObserver.prototype, {
 
   onUserEnter: function (user) {
     user.on('rename', this.onUserRename.bind(this, user));
+    user.on('disconnect', this.onUserDisconnect.bind(this, user));
     this.connector.notice('login', user.name);
     new UserObserver(user);
     user.notify('connection', user.id);
@@ -35,6 +36,10 @@ utils.extend(AvalonObserver.prototype, {
   },
 
   onUserLeave: function (user) {
+  },
+
+  onUserDisconnect: function (user) {
+    this.connector.notice('disconnect:User', { user: user.toJson() });
   },
 
   onUserRename: function (user, name) {

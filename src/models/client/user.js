@@ -16,5 +16,8 @@ utils.extend(User.classMethods, {
 
 utils.extend(User.prototype, {
   /* helper methods */
+  disconnect: function () {
+    this.isDisconnected = true;
+  },
 });
 

@@ -32,6 +32,9 @@ module.exports = {
         this.app.boot();
         connect(this.ioHelper, this.root.server.serverMock, this.socketOptions);
       };
+      ctx[name].disconnect = function () {
+        this.ioHelper.disconnect();
+      };
     });
 
     ctx.namespaces = namespaces;

@@ -43,8 +43,13 @@ utils.extend(ServerConnection.prototype, {
     client.sendEvent(data.type, data.content);
   },
 
+  onDisconnect: function (socket) {
+    this.dispatchSubmittion(socket, 'disconnect', {});
+  },
+
   bindSocketAndClient: function (client, socket) {
     client.on('submit', this.receive.bind(this, socket));
+    client.on('disconnect', this.onDisconnect.bind(this, socket));
     socket.on('event', this.sendToClient.bind(this, client, socket));
   },
 
