@@ -82,7 +82,7 @@ var setTimeoutUtil = exports.setTimeout = function (callback, timeout) {
       log('An Error occurred when running a timeout callback.');
     }
   }
-  setTimeout();
+  return setTimeout(callbackSafe);
 }
 
 var logError = exports.logError = function (error) {
